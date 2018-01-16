@@ -1,0 +1,9 @@
+package ye.chilyn.youaccounts.contant;
+
+/**
+ * Created by Alex on 2018/1/15.
+ */
+
+public interface RefreshViewType {
+    int SHOW_ACCOUNTS = 0;
+}

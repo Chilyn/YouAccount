@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">YouAccounts</string>
+    <string name="keep_accounts">记账</string>
+    <string name="me">我的</string>
+    <string name="paid_money">支付金额：</string>
+    <string name="bill_type">账单类型：</string>
 </resources>
