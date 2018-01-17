@@ -6,4 +6,6 @@ package ye.chilyn.youaccounts.contant;
 
 public interface RefreshViewType {
     int SHOW_ACCOUNTS = 0;
+    int INSERT_ACCOUNTS_SUCCESS = 1;
+    int INSERT_ACCOUNTS_FAIL = 2;
 }

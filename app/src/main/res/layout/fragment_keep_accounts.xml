@@ -7,12 +7,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
             android:gravity="center"
             android:text="@string/paid_money"/>
 
@@ -46,6 +46,33 @@
             android:gravity="center"
             android:text="@string/keep_accounts"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:background="@color/background_gray">
+
+        <TextView
+            android:id="@+id/tv_this_week_total_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/this_week_total"/>
+
+        <TextView
+            android:id="@+id/tv_this_week_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_this_week_total_title"
+            android:text=""/>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"

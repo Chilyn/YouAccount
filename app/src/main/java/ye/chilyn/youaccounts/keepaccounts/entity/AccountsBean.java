@@ -6,19 +6,29 @@ package ye.chilyn.youaccounts.keepaccounts.entity;
 
 public class AccountsBean {
 
-    private String billType;
-    private String time;
-    private long timeMill;
+    private int userId;
     private float money;
+    private String billType;
+    private long timeMill;
+    private String time;
 
     public AccountsBean() {
     }
 
-    public AccountsBean(String billType, String time, long timeMill, float money) {
-        this.billType = billType;
-        this.time = time;
-        this.timeMill = timeMill;
+    public AccountsBean(int userId, float money, String billType, long timeMill, String time) {
+        this.userId = userId;
         this.money = money;
+        this.billType = billType;
+        this.timeMill = timeMill;
+        this.time = time;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getBillType() {

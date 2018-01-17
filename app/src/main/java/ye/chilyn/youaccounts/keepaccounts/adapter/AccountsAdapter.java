@@ -4,6 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -18,15 +22,19 @@ import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 
 public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter.ViewHolder> {
 
+    private DecimalFormat mNumberFormat;
+
     public AccountsAdapter(Context context) {
         super(context, R.layout.list_item_accounts);
+        mNumberFormat = new DecimalFormat(",##0.00");
+        mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date();
         for (int i = 0; i < 20; i++) {
             date.setTime(date.getTime() + 1000);
             AccountsBean bean = new AccountsBean();
             bean.setBillType(i % 2 == 0 ? "其他":"服饰");
-            bean.setMoney(i % 2 == 0 ? 1.2f:2.5f);
+            bean.setMoney(i % 2 == 0 ? 211.874f:1.135f);
             bean.setTime(format.format(date));
             bean.setTimeMill(date.getTime());
             mListData.add(bean);
@@ -42,7 +50,8 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
     protected void onBindViewHolder(ViewHolder holder, AccountsBean item, int position) {
         holder.mTvBillType.setText(item.getBillType());
         holder.mTvTime.setText(item.getTime());
-        holder.mTvMoney.setText(item.getMoney() + "");
+        BigDecimal decimal = new BigDecimal(Float.toString(item.getMoney()));
+        holder.mTvMoney.setText(mNumberFormat.format(decimal.doubleValue()));
     }
 
     @Override
