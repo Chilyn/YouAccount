@@ -18,7 +18,9 @@ import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.contant.HandleModelType;
+import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
+import ye.chilyn.youaccounts.keepaccounts.model.AccountsCalculateModel;
 import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
 import ye.chilyn.youaccounts.keepaccounts.view.KeepAccountsView;
 import ye.chilyn.youaccounts.util.DateUtil;
@@ -31,6 +33,7 @@ public class KeepAccountsFragment extends Fragment {
 
     private IBaseView mKeepAccountsView;
     private IBaseModel mKeepAccountsSqlModel;
+    private IBaseModel mAccountsCalculateModel;
 
     @Nullable
     @Override
@@ -43,6 +46,7 @@ public class KeepAccountsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mKeepAccountsView = new KeepAccountsView(view, mHandleModelListener);
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
+        mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
         initData();
         EventBus.getDefault().register(this);
     }
@@ -81,7 +85,17 @@ public class KeepAccountsFragment extends Fragment {
 
         @Override
         public void onRefreshView(int refreshType, Object data) {
-            mKeepAccountsView.refreshViews(refreshType, data);
+            switch (refreshType) {
+                case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
+                    //计算总账目
+                    mAccountsCalculateModel.handleModelEvent(HandleModelType.CALCULATE_TOTAL_ACCOUNTS, data);
+                    mKeepAccountsView.refreshViews(refreshType, data);
+                    break;
+
+                default:
+                    mKeepAccountsView.refreshViews(refreshType, data);
+                    break;
+            }
         }
     }
 

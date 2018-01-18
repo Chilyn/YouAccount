@@ -9,4 +9,5 @@ public interface RefreshViewType {
     int INSERT_ACCOUNTS_SUCCESS = 1;
     int INSERT_ACCOUNTS_FAIL = 2;
     int QUERY_ACCOUNTS_SUCCESS = 3;
+    int SHOW_TOTAL_ACCOUNTS = 4;
 }

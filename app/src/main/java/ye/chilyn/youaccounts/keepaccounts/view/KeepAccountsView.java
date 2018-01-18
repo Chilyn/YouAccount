@@ -34,6 +34,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
     private ListView mLv;
     private AccountsAdapter mAdapter;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private NumberFormat mNumberFormat;
 
     public KeepAccountsView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -55,9 +56,8 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
     public void initData() {
         mAdapter = new AccountsAdapter(mContext);
         mLv.setAdapter(mAdapter);
-        NumberFormat format = NumberFormat.getCurrencyInstance();
-        format.setRoundingMode(RoundingMode.HALF_UP);
-        mTvThisWeekTotal.setText(format.format(1.145));
+        mNumberFormat = NumberFormat.getCurrencyInstance();
+        mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
     }
 
     @Override
@@ -127,6 +127,10 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
                 case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
                     view.onQueryAccountsSuccess((List<AccountsBean>) msg.obj);
                     break;
+
+                case RefreshViewType.SHOW_TOTAL_ACCOUNTS:
+                    view.showTotalAccounts((Float) msg.obj);
+                    break;
             }
         }
     }
@@ -137,6 +141,10 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
 
     private void onQueryAccountsSuccess(List<AccountsBean> data) {
         mAdapter.setListData(data);
+    }
+
+    private void showTotalAccounts(Float totalMoney) {
+        mTvThisWeekTotal.setText(mNumberFormat.format(totalMoney));
     }
 
     @Override

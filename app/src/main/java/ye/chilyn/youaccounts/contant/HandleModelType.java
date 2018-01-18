@@ -9,4 +9,5 @@ public interface HandleModelType {
     int QUERY_ACCOUNTS = 1;
     int UPDATE_ACCOUNTS = 2;
     int DELETE_ACCOUNTS = 3;
+    int CALCULATE_TOTAL_ACCOUNTS = 4;
 }
