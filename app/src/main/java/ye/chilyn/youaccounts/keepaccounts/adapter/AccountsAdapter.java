@@ -41,6 +41,9 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
         holder.mTvTime.setText(item.getTime());
         BigDecimal decimal = new BigDecimal(Float.toString(item.getMoney()));
         holder.mTvMoney.setText(mNumberFormat.format(decimal.doubleValue()));
+        if (position == (getCount() - 1)) {
+            holder.mTvDivider.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -56,13 +59,14 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
 
     protected class ViewHolder extends CommonAdapter.ViewHolder {
 
-        private TextView mTvBillType, mTvTime, mTvMoney;
+        private TextView mTvBillType, mTvTime, mTvMoney, mTvDivider;
 
         public ViewHolder(View rootView) {
             super(rootView);
             mTvBillType = (TextView) rootView.findViewById(R.id.tv_bill_type);
             mTvTime = (TextView) rootView.findViewById(R.id.tv_time);
             mTvMoney = (TextView) rootView.findViewById(R.id.tv_money);
+            mTvDivider = (TextView) rootView.findViewById(R.id.tv_divider);
         }
     }
 }

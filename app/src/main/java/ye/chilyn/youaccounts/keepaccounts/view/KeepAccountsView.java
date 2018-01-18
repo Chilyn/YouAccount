@@ -20,6 +20,8 @@ import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
+import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
+import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
@@ -137,6 +139,10 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
 
     private void onInsertAccountsSuccess(){
         ToastUtil.showShortToast("记录成功");
+        mEtMoney.setText(null);
+        Date now = new Date();
+        callHandleModel(HandleModelType.QUERY_ACCOUNTS,
+                new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     private void onQueryAccountsSuccess(List<AccountsBean> data) {
