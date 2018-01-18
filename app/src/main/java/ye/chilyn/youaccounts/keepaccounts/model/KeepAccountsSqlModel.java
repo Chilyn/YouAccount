@@ -49,6 +49,10 @@ public class KeepAccountsSqlModel extends BaseModel {
                 case HandleModelType.QUERY_ACCOUNTS:
                     queryAccounts((QueryAccountsParameter) mData);
                     break;
+
+                case HandleModelType.DELETE_ACCOUNTS:
+                    deleteAccounts((AccountsBean) mData);
+                    break;
             }
         }
     }
@@ -65,6 +69,14 @@ public class KeepAccountsSqlModel extends BaseModel {
     private void queryAccounts(QueryAccountsParameter param) {
         List<AccountsBean> listAccountsBean = mSqlHelper.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
         callRefreshView(RefreshViewType.QUERY_ACCOUNTS_SUCCESS, listAccountsBean);
+    }
+
+    private void deleteAccounts(AccountsBean bean) {
+        if (mSqlHelper.deleteAccount(bean)) {
+            callRefreshView(RefreshViewType.DELETE_ACCOUNT_SUCCESS, null);
+        } else {
+            callRefreshView(RefreshViewType.DELETE_ACCOUNT_FAIL, null);
+        }
     }
 
     @Override

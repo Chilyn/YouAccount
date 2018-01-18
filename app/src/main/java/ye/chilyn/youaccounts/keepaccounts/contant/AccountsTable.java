@@ -26,4 +26,6 @@ public interface AccountsTable {
             + AccountsTable.PAYMENT_TIME_MILL + "<=?";
 
     String SQL_QUERY_ACCOUNTS_ORDER_BY = AccountsTable.PAYMENT_TIME_MILL + " DESC";
+
+    String SQL_DELETE_ACCOUNT_WHERE = AccountsTable.PAYMENT_TIME_MILL + "=?";
 }

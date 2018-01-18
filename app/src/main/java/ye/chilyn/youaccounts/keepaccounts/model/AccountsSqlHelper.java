@@ -78,7 +78,7 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
             int uid = Integer.valueOf(cursor.getString(cursor.getColumnIndex(AccountsTable.USER_ID)));
             float money = cursor.getFloat(cursor.getColumnIndex(AccountsTable.MONEY));
             String billType = cursor.getString(cursor.getColumnIndex(AccountsTable.BILL_TYPE));
-            long timeMill = Long.valueOf(cursor.getColumnIndex(AccountsTable.PAYMENT_TIME_MILL));
+            long timeMill = cursor.getLong(cursor.getColumnIndex(AccountsTable.PAYMENT_TIME_MILL));
             String time = cursor.getString(cursor.getColumnIndex(AccountsTable.PAYMENT_TIME));
             bean.setUserId(uid);
             bean.setMoney(money);
@@ -91,6 +91,15 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         cursor.close();
         closeDatabase();
         return listAccountsBean;
+    }
+
+    public boolean deleteAccount(AccountsBean bean) {
+        int deleteRows = openDatabase().delete(AccountsTable.TABLE_NAME, AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getTimeMill() + ""});
+        if (deleteRows == 0) {
+            return false;
+        }
+
+        return true;
     }
 
     private synchronized SQLiteDatabase openDatabase() {

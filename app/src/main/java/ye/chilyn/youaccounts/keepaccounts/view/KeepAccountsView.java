@@ -1,9 +1,13 @@
 package ye.chilyn.youaccounts.keepaccounts.view;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseView;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
@@ -24,6 +29,7 @@ import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.util.DateUtil;
+import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
@@ -42,6 +48,11 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     /**账单类型选择弹窗*/
     private BillTypeDialogView mBillTypeDialogView;
 
+    private Dialog mDialogDeleteOrModify;
+    private View mDeleteOrModifyDialogView;
+    private TextView mTvDeleteAccount, mTvModifyAccount;
+    private int mLongClickPosition = -1;
+
     public KeepAccountsView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
         initViews();
@@ -58,6 +69,9 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
         mLvAccounts = findView(R.id.lv);
 
         mBillTypeDialogView = new BillTypeDialogView(mContext, mBillTypeSelectedListener);
+        mDeleteOrModifyDialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_delete_or_modify_account, null);
+        mTvModifyAccount = (TextView) mDeleteOrModifyDialogView.findViewById(R.id.tv_modify_account);
+        mTvDeleteAccount = (TextView) mDeleteOrModifyDialogView.findViewById(R.id.tv_delete_account);
     }
 
     @Override
@@ -72,33 +86,35 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     public void setViewListener() {
         mTvBillType.setOnClickListener(this);
         mTvKeepAccounts.setOnClickListener(this);
+        mTvModifyAccount.setOnClickListener(this);
+        mTvDeleteAccount.setOnClickListener(this);
+        mLvAccounts.setOnItemLongClickListener(mOnItemLongClickListener);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_bill_type:
-                chooseBillType();
+                mBillTypeDialogView.showDialog();
                 break;
 
             case R.id.tv_keep_accounts:
                 keepAccounts();
                 break;
 
+            case R.id.tv_modify_account:
+                mContext.startActivity(new Intent(mContext, MainActivity.class));
+                mDialogDeleteOrModify.dismiss();
+                break;
+
+            case R.id.tv_delete_account:
+                callHandleModel(HandleModelType.DELETE_ACCOUNTS, mAdapterAccounts.getItem(mLongClickPosition));
+                mDialogDeleteOrModify.dismiss();
+                break;
+
             default:
                 break;
         }
-    }
-
-    private BillTypeDialogView.OnBillTypeSelectedListener mBillTypeSelectedListener = new BillTypeDialogView.OnBillTypeSelectedListener() {
-        @Override
-        public void onItemSelected(String billType) {
-            mTvBillType.setText(billType);
-        }
-    };
-
-    private void chooseBillType() {
-        mBillTypeDialogView.showDialog();
     }
 
     /**
@@ -121,6 +137,30 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     private void closeSoftKeyboard() {
         InputMethodManager imm = (InputMethodManager) AccountsApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEtMoney.getWindowToken(), 0); //强制隐藏键盘
+    }
+
+    private BillTypeDialogView.OnBillTypeSelectedListener mBillTypeSelectedListener = new BillTypeDialogView.OnBillTypeSelectedListener() {
+        @Override
+        public void onItemSelected(String billType) {
+            mTvBillType.setText(billType);
+        }
+    };
+
+    private AdapterView.OnItemLongClickListener mOnItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            mLongClickPosition = position;
+            showDeleteOrModifyAccountDialog();
+            return false;
+        }
+    };
+
+    private void showDeleteOrModifyAccountDialog() {
+        if (mDialogDeleteOrModify == null) {
+            mDialogDeleteOrModify = DialogUtil.createDialog(mContext, mDeleteOrModifyDialogView, 200, 100);
+        }
+
+        mDialogDeleteOrModify.show();
     }
 
     @Override
@@ -161,6 +201,14 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
                 case RefreshViewType.SHOW_TOTAL_ACCOUNTS:
                     view.showTotalAccounts((Float) msg.obj);
                     break;
+
+                case RefreshViewType.DELETE_ACCOUNT_SUCCESS:
+                    view.onDeleteAccountSuccess();
+                    break;
+
+                case RefreshViewType.DELETE_ACCOUNT_FAIL:
+                    ToastUtil.showShortToast("删除失败");
+                    break;
             }
         }
     }
@@ -179,6 +227,13 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
 
     private void showTotalAccounts(Float totalMoney) {
         mTvThisWeekTotal.setText(mNumberFormat.format(totalMoney));
+    }
+
+    private void onDeleteAccountSuccess() {
+        ToastUtil.showShortToast("删除成功");
+        Date now = new Date();
+        callHandleModel(HandleModelType.QUERY_ACCOUNTS,
+                new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     @Override
