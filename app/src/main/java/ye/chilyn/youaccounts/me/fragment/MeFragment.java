@@ -27,7 +27,7 @@ public class MeFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         ListView lv = findView(R.id.lv);
         List<String> data = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 12; i++) {
             data.add("" + i);
         }
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, data);

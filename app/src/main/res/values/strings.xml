@@ -10,4 +10,14 @@
     <string name="this_week_total">本周支出：</string>
     <string name="yuan">元</string>
     <string name="data_invalid">输入数据无效</string>
+    <string name="choose_bill_type">账单类型</string>
+    <string name="eat">吃饭</string>
+    <string name="keep_an_account">记一笔</string>
+
+    <string-array name="bill_type">
+        <item>吃饭</item>
+        <item>购物</item>
+        <item>娱乐</item>
+        <item>其他</item>
+    </string-array>
 </resources>

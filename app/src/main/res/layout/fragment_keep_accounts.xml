@@ -7,44 +7,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/paid_money"/>
+            android:layout_weight="5"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_money"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:maxLines="1"
-            android:inputType="numberDecimal"
-            android:background="@null"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/paid_money"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/bill_type"/>
+            <EditText
+                android:id="@+id/et_money"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:gravity="left|center_vertical"
+                android:maxLines="1"
+                android:inputType="numberDecimal"
+                android:imeOptions="actionDone"
+                android:background="@null"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_bill_type"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="其他"/>
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/bill_type"/>
+
+            <TextView
+                android:id="@+id/tv_bill_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/eat"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_keep_accounts"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             android:layout_marginLeft="15dp"
             android:gravity="center"
-            android:text="@string/keep_accounts"/>
+            android:text="@string/keep_an_account"/>
     </LinearLayout>
 
     <TextView

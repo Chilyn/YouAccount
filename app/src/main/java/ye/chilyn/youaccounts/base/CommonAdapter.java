@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class CommonAdapter<T, V extends CommonAdapter.ViewHolder> extends BaseAdapter {
 
-    private Context mContext;
+    protected Context mContext;
     private int mLayoutResId;
     protected List<T> mListData = new ArrayList<>();
 

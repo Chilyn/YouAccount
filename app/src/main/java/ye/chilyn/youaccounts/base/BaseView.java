@@ -12,7 +12,7 @@ import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 public abstract class BaseView implements IBaseView {
 
     private OnHandleModelListener mHandleModelListener;
-    private View mRootView;
+    protected View mRootView;
     protected Context mContext;
 
     public BaseView(View rootView, OnHandleModelListener listener) {

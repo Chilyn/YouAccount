@@ -43,6 +43,8 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
         holder.mTvMoney.setText(mNumberFormat.format(decimal.doubleValue()));
         if (position == (getCount() - 1)) {
             holder.mTvDivider.setVisibility(View.GONE);
+        } else {
+            holder.mTvDivider.setVisibility(View.VISIBLE);
         }
     }
 

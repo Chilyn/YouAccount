@@ -2,18 +2,17 @@ package ye.chilyn.youaccounts.keepaccounts.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ypy.eventbus.EventBus;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
+import ye.chilyn.youaccounts.base.BaseFragment;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 import ye.chilyn.youaccounts.contant.EventType;
@@ -29,7 +28,7 @@ import ye.chilyn.youaccounts.util.DateUtil;
  * Created by Alex on 2018/1/15.
  */
 
-public class KeepAccountsFragment extends Fragment {
+public class KeepAccountsFragment extends BaseFragment {
 
     private IBaseView mKeepAccountsView;
     private IBaseModel mKeepAccountsSqlModel;
@@ -44,14 +43,18 @@ public class KeepAccountsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mKeepAccountsView = new KeepAccountsView(view, mHandleModelListener);
-        mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
-        mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
+        initViews();
         initData();
         EventBus.getDefault().register(this);
     }
 
+    private void initViews() {
+        mKeepAccountsView = new KeepAccountsView(mRootView, mHandleModelListener);
+    }
+
     private void initData() {
+        mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
+        mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
         if (AccountsApplication.canCreateFile()) {
             Date now = new Date();
             mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
