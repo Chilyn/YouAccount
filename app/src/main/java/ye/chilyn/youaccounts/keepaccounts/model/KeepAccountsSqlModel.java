@@ -1,5 +1,6 @@
 package ye.chilyn.youaccounts.keepaccounts.model;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -8,6 +9,7 @@ import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
+import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -16,11 +18,10 @@ import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 public class KeepAccountsSqlModel extends BaseModel {
 
     private ExecutorService mSqlTaskExecutor = Executors.newSingleThreadExecutor();
-    private AccountsSqlHelper mSqlHelper;
+    private AccountsSqlHelper mSqlHelper = AccountsSqlHelper.getInstance();
 
     public KeepAccountsSqlModel(OnRefreshViewListener listener) {
         super(listener);
-        mSqlHelper = new AccountsSqlHelper(AccountsApplication.getAppContext());
     }
 
     @Override
@@ -44,6 +45,10 @@ public class KeepAccountsSqlModel extends BaseModel {
                 case HandleModelType.INSERT_ACCOUNTS:
                     insertAccounts((AccountsBean) mData);
                     break;
+
+                case HandleModelType.QUERY_ACCOUNTS:
+                    queryAccounts((QueryAccountsParameter) mData);
+                    break;
             }
         }
     }
@@ -57,8 +62,9 @@ public class KeepAccountsSqlModel extends BaseModel {
         }
     }
 
-    private void queryAccounts() {
-        // TODO: 2018/1/16  
+    private void queryAccounts(QueryAccountsParameter param) {
+        List<AccountsBean> listAccountsBean = mSqlHelper.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
+        callRefreshView(RefreshViewType.QUERY_ACCOUNTS_SUCCESS, listAccountsBean);
     }
 
     @Override

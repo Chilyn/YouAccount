@@ -9,10 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.ypy.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ye.chilyn.youaccounts.contant.AppFilePath;
+import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.keepaccounts.fragment.KeepAccountsFragment;
 import ye.chilyn.youaccounts.me.fragment.MeFragment;
 import ye.chilyn.youaccounts.util.FragmentTabManager;
@@ -32,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        verifyStoragePermissions(this);
         initViews();
         initData();
-        verifyStoragePermissions(this);
     }
 
     private void initViews() {
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 // 没有写的权限，去申请写的权限，会弹出对话框
                 ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+            } else {
+                AccountsApplication.setCanCreateFile(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_EXTERNAL_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     AppFilePath.createAppDirectories();
+                    AccountsApplication.setCanCreateFile(true);
+                    EventBus.getDefault().post(EventType.WRITE_FILE_PERMISSION_GOTTEN);
                 }
                 break;
         }

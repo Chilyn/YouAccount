@@ -7,12 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ypy.eventbus.EventBus;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.base.interfaces.IBaseView;
+import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.contant.HandleModelType;
+import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
 import ye.chilyn.youaccounts.keepaccounts.view.KeepAccountsView;
+import ye.chilyn.youaccounts.util.DateUtil;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -34,6 +43,16 @@ public class KeepAccountsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mKeepAccountsView = new KeepAccountsView(view, mHandleModelListener);
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
+        initData();
+        EventBus.getDefault().register(this);
+    }
+
+    private void initData() {
+        if (AccountsApplication.canCreateFile()) {
+            Date now = new Date();
+            mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
+                    new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+        }
     }
 
     private HandleModelListener mHandleModelListener = new HandleModelListener();
@@ -66,8 +85,22 @@ public class KeepAccountsFragment extends Fragment {
         }
     }
 
+    public void onEvent(Integer eventType) {
+        switch (eventType) {
+            case EventType.WRITE_FILE_PERMISSION_GOTTEN:
+                Date now = new Date();
+                mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
+                        new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                break;
+
+            default:
+                break;
+        }
+    }
+
     @Override
     public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
         mKeepAccountsView.onDestroy();
         releaseModels();
         super.onDestroyView();

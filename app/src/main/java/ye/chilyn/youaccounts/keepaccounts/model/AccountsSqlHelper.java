@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
@@ -24,9 +25,19 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = AppFilePath.DB_FILE_PATH +
             AccountsApplication.getAppContext().getString(R.string.db_name);
     private static final int VERSION = 1;
+    private int mDbOpenCount = 0;
+    private SQLiteDatabase mDb;
 
-    public AccountsSqlHelper(Context context) {
-        super(context, DB_NAME, null, VERSION);
+    private static class InstanceHolder {
+        private static final AccountsSqlHelper mInstance = new AccountsSqlHelper();
+    }
+
+    public static AccountsSqlHelper getInstance() {
+        return InstanceHolder.mInstance;
+    }
+
+    private AccountsSqlHelper() {
+        super(AccountsApplication.getAppContext(), DB_NAME, null, VERSION);
     }
 
     @Override
@@ -40,15 +51,15 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertAccounts(AccountsBean bean) {
-        SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(AccountsTable.USER_ID, bean.getUserId());
         values.put(AccountsTable.MONEY, bean.getMoney());
         values.put(AccountsTable.BILL_TYPE, bean.getBillType());
         values.put(AccountsTable.PAYMENT_TIME_MILL, bean.getTimeMill());
         values.put(AccountsTable.PAYMENT_TIME, bean.getTime());
-        long errCode = db.insert(AccountsTable.TABLE_NAME, null, values);
-        db.close();
+        long errCode = openDatabase().insert(AccountsTable.TABLE_NAME, null, values);
+
+        closeDatabase();
         if (errCode == -1) {
             return false;
         }
@@ -57,12 +68,11 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
     }
 
     public List<AccountsBean> queryAccounts(int userId, long startTime, long endTime) {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.query(AccountsTable.TABLE_NAME, null,
-                AccountsTable.USER_ID + "=? and " + AccountsTable.PAYMENT_TIME_MILL + ">=? and " + AccountsTable.PAYMENT_TIME_MILL + "<=?",
+        Cursor cursor = openDatabase().query(AccountsTable.TABLE_NAME, null,
+                AccountsTable.SQL_QUERY_ACCOUNTS_WHERE,
                 new String[]{userId + "", startTime + "", endTime + ""},
                 null, null,
-                AccountsTable.PAYMENT_TIME_MILL);
+                AccountsTable.SQL_QUERY_ACCOUNTS_ORDER_BY);
 
         List<AccountsBean> listAccountsBean = new ArrayList<>();
         while(cursor.moveToNext()) {
@@ -81,7 +91,23 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
+        closeDatabase();
         return listAccountsBean;
+    }
+
+    private synchronized SQLiteDatabase openDatabase() {
+        if (mDbOpenCount == 0) {
+            mDb = getWritableDatabase();
+        }
+
+        mDbOpenCount++;
+        return mDb;
+    }
+
+    private synchronized void closeDatabase() {
+        mDbOpenCount--;
+        if (mDbOpenCount == 0) {
+            mDb.close();
+        }
     }
 }

@@ -56,7 +56,7 @@ public abstract class CommonAdapter<T, V extends CommonAdapter.ViewHolder> exten
 
     protected abstract V onCreateViewHolder(View view, int viewType);
     protected abstract void onBindViewHolder(V holder, T item, int position);
-    protected abstract void setListData(List<T> data);
+    public abstract void setListData(List<T> data);
 
     public abstract class ViewHolder {
         public ViewHolder(View rootView) {

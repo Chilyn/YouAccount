@@ -20,4 +20,10 @@ public interface AccountsTable {
             PAYMENT_TIME + " TEXT DEFAULT '')";
 
     String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+
+    String SQL_QUERY_ACCOUNTS_WHERE = AccountsTable.USER_ID + "=? and " +
+            AccountsTable.PAYMENT_TIME_MILL + ">=? and "
+            + AccountsTable.PAYMENT_TIME_MILL + "<=?";
+
+    String SQL_QUERY_ACCOUNTS_ORDER_BY = AccountsTable.PAYMENT_TIME_MILL + " DESC";
 }

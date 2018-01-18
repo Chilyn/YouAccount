@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
@@ -84,7 +85,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
         try {
             float money = Float.valueOf(moneyStr);
             Date date = new Date();
-            AccountsBean bean = new AccountsBean(1, money, "其他", date.getTime(), dateFormat.format(date));
+            AccountsBean bean = new AccountsBean(1, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
@@ -122,12 +123,20 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener{
                 case RefreshViewType.INSERT_ACCOUNTS_FAIL:
                     ToastUtil.showShortToast("记录失败");
                     break;
+
+                case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
+                    view.onQueryAccountsSuccess((List<AccountsBean>) msg.obj);
+                    break;
             }
         }
     }
 
     private void onInsertAccountsSuccess(){
         ToastUtil.showShortToast("记录成功");
+    }
+
+    private void onQueryAccountsSuccess(List<AccountsBean> data) {
+        mAdapter.setListData(data);
     }
 
     @Override

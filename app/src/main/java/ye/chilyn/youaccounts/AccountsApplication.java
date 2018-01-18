@@ -10,6 +10,7 @@ import android.content.Context;
 public class AccountsApplication extends Application {
 
     private static Context mContext;
+    private static boolean mCanCreateFile = false;
 
     @Override
     public void onCreate() {
@@ -19,5 +20,13 @@ public class AccountsApplication extends Application {
 
     public static Context getAppContext() {
         return mContext;
+    }
+
+    public static boolean canCreateFile() {
+        return mCanCreateFile;
+    }
+
+    public static void setCanCreateFile(boolean canCreateFile) {
+        mCanCreateFile = canCreateFile;
     }
 }

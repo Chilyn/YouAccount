@@ -28,17 +28,6 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
         super(context, R.layout.list_item_accounts);
         mNumberFormat = new DecimalFormat(",##0.00");
         mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
-        for (int i = 0; i < 20; i++) {
-            date.setTime(date.getTime() + 1000);
-            AccountsBean bean = new AccountsBean();
-            bean.setBillType(i % 2 == 0 ? "其他":"服饰");
-            bean.setMoney(i % 2 == 0 ? 211.874f:1.135f);
-            bean.setTime(format.format(date));
-            bean.setTimeMill(date.getTime());
-            mListData.add(bean);
-        }
     }
 
     @Override
@@ -55,7 +44,7 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
     }
 
     @Override
-    protected void setListData(List<AccountsBean> data) {
+    public void setListData(List<AccountsBean> data) {
         if (data == null || data.size() == 0) {
             return;
         }
