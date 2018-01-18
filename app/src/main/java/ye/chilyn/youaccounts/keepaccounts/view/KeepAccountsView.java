@@ -47,10 +47,8 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     private NumberFormat mNumberFormat;
     /**账单类型选择弹窗*/
     private BillTypeDialogView mBillTypeDialogView;
-
-    private Dialog mDialogDeleteOrModify;
-    private View mDeleteOrModifyDialogView;
-    private TextView mTvDeleteAccount, mTvModifyAccount;
+    /**修改或删除弹窗*/
+    private DeleteOrModifyDialogView mDeleteOrModifyDialogView;
     private int mLongClickPosition = -1;
 
     public KeepAccountsView(View rootView, OnHandleModelListener listener) {
@@ -69,9 +67,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
         mLvAccounts = findView(R.id.lv);
 
         mBillTypeDialogView = new BillTypeDialogView(mContext, mBillTypeSelectedListener);
-        mDeleteOrModifyDialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_delete_or_modify_account, null);
-        mTvModifyAccount = (TextView) mDeleteOrModifyDialogView.findViewById(R.id.tv_modify_account);
-        mTvDeleteAccount = (TextView) mDeleteOrModifyDialogView.findViewById(R.id.tv_delete_account);
+        mDeleteOrModifyDialogView = new DeleteOrModifyDialogView(mContext, mDeleteOrModifyCallback);
     }
 
     @Override
@@ -86,8 +82,6 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     public void setViewListener() {
         mTvBillType.setOnClickListener(this);
         mTvKeepAccounts.setOnClickListener(this);
-        mTvModifyAccount.setOnClickListener(this);
-        mTvDeleteAccount.setOnClickListener(this);
         mLvAccounts.setOnItemLongClickListener(mOnItemLongClickListener);
     }
 
@@ -100,19 +94,6 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
 
             case R.id.tv_keep_accounts:
                 keepAccounts();
-                break;
-
-            case R.id.tv_modify_account:
-                mContext.startActivity(new Intent(mContext, MainActivity.class));
-                mDialogDeleteOrModify.dismiss();
-                break;
-
-            case R.id.tv_delete_account:
-                callHandleModel(HandleModelType.DELETE_ACCOUNTS, mAdapterAccounts.getItem(mLongClickPosition));
-                mDialogDeleteOrModify.dismiss();
-                break;
-
-            default:
                 break;
         }
     }
@@ -146,22 +127,26 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
         }
     };
 
+    private DeleteOrModifyDialogView.ClickCallBack mDeleteOrModifyCallback = new DeleteOrModifyDialogView.ClickCallBack() {
+        @Override
+        public void onModify() {
+            mContext.startActivity(new Intent(mContext, MainActivity.class));
+        }
+
+        @Override
+        public void onDelete() {
+            callHandleModel(HandleModelType.DELETE_ACCOUNTS, mAdapterAccounts.getItem(mLongClickPosition));
+        }
+    };
+
     private AdapterView.OnItemLongClickListener mOnItemLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             mLongClickPosition = position;
-            showDeleteOrModifyAccountDialog();
+            mDeleteOrModifyDialogView.showDialog();
             return false;
         }
     };
-
-    private void showDeleteOrModifyAccountDialog() {
-        if (mDialogDeleteOrModify == null) {
-            mDialogDeleteOrModify = DialogUtil.createDialog(mContext, mDeleteOrModifyDialogView, 200, 100);
-        }
-
-        mDialogDeleteOrModify.show();
-    }
 
     @Override
     public void refreshViews(int refreshType, Object data) {
