@@ -23,7 +23,8 @@
         </activity>
         <activity
             android:name=".keepaccounts.modifyaccount.activity.ModifyAccountActivity"
-            android:windowSoftInputMode="adjustPan|stateVisible"></activity>
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+        <activity android:name=".keepaccounts.queryaccounts.QueryAccountsActivity"></activity>
     </application>
 
 </manifest>

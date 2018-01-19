@@ -1,5 +1,6 @@
 package ye.chilyn.youaccounts.keepaccounts.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -21,8 +22,10 @@ import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.keepaccounts.model.AccountsCalculateModel;
 import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
+import ye.chilyn.youaccounts.keepaccounts.queryaccounts.QueryAccountsActivity;
 import ye.chilyn.youaccounts.keepaccounts.view.KeepAccountsView;
 import ye.chilyn.youaccounts.util.DateUtil;
+import ye.chilyn.youaccounts.view.TitleBarView;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -33,6 +36,7 @@ public class KeepAccountsFragment extends BaseFragment {
     private IBaseView mKeepAccountsView;
     private IBaseModel mKeepAccountsSqlModel;
     private IBaseModel mAccountsCalculateModel;
+    private TitleBarView mTitleBarView;
 
     @Nullable
     @Override
@@ -45,14 +49,20 @@ public class KeepAccountsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initViews();
         initData();
+        setViewListener();
         EventBus.getDefault().register(this);
     }
 
     private void initViews() {
+        mTitleBarView = new TitleBarView(findView(R.id.title_bar), getActivity());
+        mTitleBarView.setLeftOptionViewVisibility(false);
         mKeepAccountsView = new KeepAccountsView(mRootView, mHandleModelListener);
     }
 
     private void initData() {
+        mTitleBarView.setTitle(getString(R.string.keep_accounts));
+        mTitleBarView.setRightOptionViewText(getString(R.string.query));
+
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
         mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
         if (AccountsApplication.canCreateFile()) {
@@ -61,6 +71,17 @@ public class KeepAccountsFragment extends BaseFragment {
                     new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
         }
     }
+
+    private void setViewListener() {
+        mTitleBarView.setRightOptionViewListener(mRightOptionViewListener);
+    }
+
+    private View.OnClickListener mRightOptionViewListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(new Intent(getActivity(), QueryAccountsActivity.class));
+        }
+    };
 
     private HandleModelListener mHandleModelListener = new HandleModelListener();
 

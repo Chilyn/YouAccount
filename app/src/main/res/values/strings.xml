@@ -17,6 +17,9 @@
     <string name="keep_accounts_time">记录时间：</string>
     <string name="modify_success">修改成功</string>
     <string name="modify_fail">修改失败</string>
+    <string name="query">查询</string>
+    <string name="query_accounts">查询账单</string>
+    <string name="modify_account">修改账单</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

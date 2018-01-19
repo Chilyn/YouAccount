@@ -24,6 +24,7 @@ import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
 import ye.chilyn.youaccounts.keepaccounts.view.BillTypeDialogView;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
+import ye.chilyn.youaccounts.view.TitleBarView;
 
 public class ModifyAccountActivity extends BaseActivity implements View.OnClickListener {
 
@@ -33,6 +34,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
     private TextView mTvModify;
     private AccountsBean mModifyBean;
     private BillTypeDialogView mBillTypeDialogView;
+    private TitleBarView mTitleBarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
+        mTitleBarView = new TitleBarView(findView(R.id.title_bar), this);
+        mTitleBarView.setRightOptionViewVisibility(false);
         mEtMoney = findView(R.id.et_money);
         mTvBillType = findView(R.id.tv_bill_type);
         mTvTime = findView(R.id.tv_time);
@@ -52,6 +56,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initData() {
+        mTitleBarView.setTitle(getString(R.string.modify_account));
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
         mModifyBean = (AccountsBean) getIntent().getSerializableExtra(ExtraKey.ACCOUNTS_BEAN);
         if (mModifyBean != null) {
