@@ -26,8 +26,7 @@ public abstract class BaseView implements IBaseView {
         this.mHandleModelListener = listener;
     }
 
-    @Override
-    public void callHandleModel(int type, Object data) {
+    protected void callHandleModel(int type, Object data) {
         if (mHandleModelListener != null) {
             mHandleModelListener.onHandleModel(type, data);
         }

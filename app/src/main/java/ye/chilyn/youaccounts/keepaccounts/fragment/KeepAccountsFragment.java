@@ -109,9 +109,6 @@ public class KeepAccountsFragment extends BaseFragment {
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
                         new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
                 break;
-
-            default:
-                break;
         }
     }
 

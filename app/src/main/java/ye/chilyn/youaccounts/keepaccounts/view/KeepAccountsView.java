@@ -3,6 +3,7 @@ package ye.chilyn.youaccounts.keepaccounts.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.ypy.eventbus.EventBus;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -26,10 +29,13 @@ import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
+import ye.chilyn.youaccounts.keepaccounts.contant.ExtraKey;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
+import ye.chilyn.youaccounts.keepaccounts.modifyaccount.activity.ModifyAccountActivity;
 import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.util.DialogUtil;
+import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
@@ -56,6 +62,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
         initViews();
         initData();
         setViewListener();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -108,16 +115,11 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
             Date date = new Date();
             AccountsBean bean = new AccountsBean(1, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
-            closeSoftKeyboard();
+            SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
             ToastUtil.showShortToast(AccountsApplication.getAppContext().getString(R.string.data_invalid));
         }
-    }
-
-    private void closeSoftKeyboard() {
-        InputMethodManager imm = (InputMethodManager) AccountsApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mEtMoney.getWindowToken(), 0); //强制隐藏键盘
     }
 
     private BillTypeDialogView.OnBillTypeSelectedListener mBillTypeSelectedListener = new BillTypeDialogView.OnBillTypeSelectedListener() {
@@ -130,7 +132,9 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     private DeleteOrModifyDialogView.ClickCallBack mDeleteOrModifyCallback = new DeleteOrModifyDialogView.ClickCallBack() {
         @Override
         public void onModify() {
-            mContext.startActivity(new Intent(mContext, MainActivity.class));
+            Intent intent = new Intent(mContext, ModifyAccountActivity.class);
+            intent.putExtra(ExtraKey.ACCOUNTS_BEAN, mAdapterAccounts.getItem(mLongClickPosition));
+            mContext.startActivity(intent);
         }
 
         @Override
@@ -221,9 +225,18 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
                 new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
+    public void onEvent(Integer eventType) {
+        if (eventType == RefreshViewType.UPDATE_ACCOUNT_SUCCESS) {
+            Date now = new Date();
+            callHandleModel(HandleModelType.QUERY_ACCOUNTS,
+                    new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

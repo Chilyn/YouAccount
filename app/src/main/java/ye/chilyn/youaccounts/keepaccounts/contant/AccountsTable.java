@@ -21,11 +21,11 @@ public interface AccountsTable {
 
     String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    String SQL_QUERY_ACCOUNTS_WHERE = AccountsTable.USER_ID + "=? and " +
-            AccountsTable.PAYMENT_TIME_MILL + ">=? and "
-            + AccountsTable.PAYMENT_TIME_MILL + "<=?";
+    String SQL_QUERY_ACCOUNTS_WHERE = USER_ID + "=? AND " + PAYMENT_TIME_MILL + ">=? AND " + PAYMENT_TIME_MILL + "<=?";
 
-    String SQL_QUERY_ACCOUNTS_ORDER_BY = AccountsTable.PAYMENT_TIME_MILL + " DESC";
+    String SQL_QUERY_ACCOUNTS_ORDER_BY = PAYMENT_TIME_MILL + " DESC";
 
-    String SQL_DELETE_ACCOUNT_WHERE = AccountsTable.PAYMENT_TIME_MILL + "=?";
+    String SQL_DELETE_ACCOUNT_WHERE = PAYMENT_TIME_MILL + "=?";
+
+    String SQL_UPDATE_ACCOUNT_WHERE = USER_ID + "=? AND " + PAYMENT_TIME_MILL + "=?";
 }

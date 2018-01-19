@@ -44,7 +44,7 @@ public class BillTypeDialogView {
         mLvBillType = (ListView) mBillTypeDialogView.findViewById(R.id.lv);
     }
 
-    public void setViewListener() {
+    private void setViewListener() {
         mLvBillType.setOnItemClickListener(mOnItemClickListener);
     }
 

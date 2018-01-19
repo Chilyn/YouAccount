@@ -7,7 +7,6 @@ package ye.chilyn.youaccounts.base.interfaces;
 public interface IBaseModel {
     void handleModelEvent(int type, Object data);
     void setOnRefreshViewListener(OnRefreshViewListener listener);
-    void callRefreshView(int type, Object data);
     void onDestroy();
 
     interface OnRefreshViewListener {

@@ -12,4 +12,6 @@ public interface RefreshViewType {
     int SHOW_TOTAL_ACCOUNTS = 4;
     int DELETE_ACCOUNT_SUCCESS = 5;
     int DELETE_ACCOUNT_FAIL = 6;
+    int UPDATE_ACCOUNT_SUCCESS = 7;
+    int UPDATE_ACCOUNT_FAIL = 8;
 }

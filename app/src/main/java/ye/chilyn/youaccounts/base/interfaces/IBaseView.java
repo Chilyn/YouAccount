@@ -10,7 +10,6 @@ public interface IBaseView {
     void setViewListener();
     void refreshViews(int refreshType, Object data);
     void setOnHandleModelListener(OnHandleModelListener listener);
-    void callHandleModel(int type, Object data);
     void onDestroy();
 
     interface OnHandleModelListener {

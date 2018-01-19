@@ -13,6 +13,10 @@
     <string name="choose_bill_type">账单类型</string>
     <string name="eat">吃饭</string>
     <string name="keep_an_account">记一笔</string>
+    <string name="modify">修改</string>
+    <string name="keep_accounts_time">记录时间：</string>
+    <string name="modify_success">修改成功</string>
+    <string name="modify_fail">修改失败</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

@@ -1,11 +1,14 @@
 package ye.chilyn.youaccounts.keepaccounts.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Alex on 2018/1/16.
  */
 
-public class AccountsBean {
+public class AccountsBean implements Serializable{
 
+    private static final long serialVersionUID = -5550692612906926408L;
     private int userId;
     private float money;
     private String billType;

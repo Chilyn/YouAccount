@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
@@ -53,6 +52,10 @@ public class KeepAccountsSqlModel extends BaseModel {
                 case HandleModelType.DELETE_ACCOUNTS:
                     deleteAccounts((AccountsBean) mData);
                     break;
+
+                case HandleModelType.UPDATE_ACCOUNTS:
+                    updateAccounts((AccountsBean) mData);
+                    break;
             }
         }
     }
@@ -76,6 +79,14 @@ public class KeepAccountsSqlModel extends BaseModel {
             callRefreshView(RefreshViewType.DELETE_ACCOUNT_SUCCESS, null);
         } else {
             callRefreshView(RefreshViewType.DELETE_ACCOUNT_FAIL, null);
+        }
+    }
+
+    private void updateAccounts(AccountsBean bean) {
+        if (mSqlHelper.updateAccount(bean)) {
+            callRefreshView(RefreshViewType.UPDATE_ACCOUNT_SUCCESS, null);
+        } else {
+            callRefreshView(RefreshViewType.UPDATE_ACCOUNT_FAIL, null);
         }
     }
 

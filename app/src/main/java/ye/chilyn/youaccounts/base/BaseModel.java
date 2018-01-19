@@ -19,8 +19,7 @@ public abstract class BaseModel implements IBaseModel{
         this.mRefreshViewListener = listener;
     }
 
-    @Override
-    public void callRefreshView(int type, Object data) {
+    protected void callRefreshView(int type, Object data) {
         synchronized (this) {
             if (mRefreshViewListener != null) {
                 mRefreshViewListener.onRefreshView(type, data);

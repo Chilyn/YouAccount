@@ -102,6 +102,20 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateAccount(AccountsBean bean) {
+        ContentValues values = new ContentValues();
+        values.put(AccountsTable.MONEY, bean.getMoney());
+        values.put(AccountsTable.BILL_TYPE, bean.getBillType());
+        int affectedRows = openDatabase().update(AccountsTable.TABLE_NAME, values,
+                AccountsTable.SQL_UPDATE_ACCOUNT_WHERE,
+                new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});
+        if (affectedRows > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     private synchronized SQLiteDatabase openDatabase() {
         if (mDbOpenCount == 0) {
             mDb = getWritableDatabase();
