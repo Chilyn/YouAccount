@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".keepaccounts.modifyaccount.activity.ModifyAccountActivity"
+            android:name=".keepaccounts.modifyaccount.ModifyAccountActivity"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity android:name=".keepaccounts.queryaccounts.QueryAccountsActivity"></activity>
     </application>

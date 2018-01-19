@@ -1,15 +1,12 @@
-package ye.chilyn.youaccounts.keepaccounts.modifyaccount.activity;
+package ye.chilyn.youaccounts.keepaccounts.modifyaccount;
 
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ypy.eventbus.EventBus;
-
-import java.util.Date;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;

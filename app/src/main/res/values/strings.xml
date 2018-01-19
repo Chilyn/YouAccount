@@ -20,6 +20,10 @@
     <string name="query">查询</string>
     <string name="query_accounts">查询账单</string>
     <string name="modify_account">修改账单</string>
+    <string name="record_success">记录成功</string>
+    <string name="record_fail">记录失败</string>
+    <string name="delete_success">删除成功</string>
+    <string name="delete_fail">删除失败</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

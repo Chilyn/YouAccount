@@ -1,13 +1,8 @@
 package ye.chilyn.youaccounts.keepaccounts.view;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 
 import ye.chilyn.youaccounts.AccountsApplication;
-import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseView;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
@@ -32,9 +26,8 @@ import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
 import ye.chilyn.youaccounts.keepaccounts.contant.ExtraKey;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
-import ye.chilyn.youaccounts.keepaccounts.modifyaccount.activity.ModifyAccountActivity;
+import ye.chilyn.youaccounts.keepaccounts.modifyaccount.ModifyAccountActivity;
 import ye.chilyn.youaccounts.util.DateUtil;
-import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 
@@ -180,7 +173,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
                     break;
 
                 case RefreshViewType.INSERT_ACCOUNTS_FAIL:
-                    ToastUtil.showShortToast("记录失败");
+                    ToastUtil.showShortToast(view.getString(R.string.record_success));
                     break;
 
                 case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
@@ -196,14 +189,14 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
                     break;
 
                 case RefreshViewType.DELETE_ACCOUNT_FAIL:
-                    ToastUtil.showShortToast("删除失败");
+                    ToastUtil.showShortToast(view.getString(R.string.delete_fail));
                     break;
             }
         }
     }
 
     private void onInsertAccountsSuccess(){
-        ToastUtil.showShortToast("记录成功");
+        ToastUtil.showShortToast(getString(R.string.record_success));
         mEtMoney.setText(null);
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
@@ -219,7 +212,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
     }
 
     private void onDeleteAccountSuccess() {
-        ToastUtil.showShortToast("删除成功");
+        ToastUtil.showShortToast(getString(R.string.delete_success));
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
                 new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
@@ -231,6 +224,10 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
                     new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
         }
+    }
+
+    private String getString(int id) {
+        return mContext.getString(id);
     }
 
     @Override
