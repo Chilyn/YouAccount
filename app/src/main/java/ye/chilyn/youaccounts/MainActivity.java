@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                     AppFilePath.createAppDirectories();
                     AccountsApplication.setCanCreateFile(true);
                     EventBus.getDefault().post(EventType.WRITE_FILE_PERMISSION_GOTTEN);
+                } else {
+                    finish();
                 }
                 break;
         }

@@ -13,6 +13,7 @@ import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
+import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.contant.ExtraKey;
@@ -134,7 +135,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
             switch (msg.what) {
                 case RefreshViewType.UPDATE_ACCOUNT_SUCCESS:
                     ToastUtil.showShortToast(activity.getString(R.string.modify_success));
-                    EventBus.getDefault().post(msg.what);
+                    EventBus.getDefault().post(EventType.QUERY_ACCOUNTS);
                     activity.finish();
                     break;
 
@@ -150,5 +151,15 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
         mHandler.clearReference();
         mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
+    }
+
+    @Override
+    protected void destroyViews() {
+    }
+
+    @Override
+    protected void releaseModels() {
+        mKeepAccountsSqlModel.onDestroy();
+        mKeepAccountsSqlModel = null;
     }
 }

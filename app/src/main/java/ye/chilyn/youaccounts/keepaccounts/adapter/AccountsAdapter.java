@@ -50,7 +50,7 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
 
     @Override
     public void setListData(List<AccountsBean> data) {
-        if (data == null || data.size() == 0) {
+        if (data == null) {
             return;
         }
 

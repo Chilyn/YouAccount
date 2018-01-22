@@ -33,4 +33,14 @@ public class MeFragment extends BaseFragment {
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, data);
         lv.setAdapter(adapter);
     }
+
+    @Override
+    protected void destroyViews() {
+
+    }
+
+    @Override
+    protected void releaseModels() {
+
+    }
 }

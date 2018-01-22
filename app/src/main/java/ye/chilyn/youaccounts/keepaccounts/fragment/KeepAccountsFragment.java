@@ -126,6 +126,7 @@ public class KeepAccountsFragment extends BaseFragment {
     public void onEvent(Integer eventType) {
         switch (eventType) {
             case EventType.WRITE_FILE_PERMISSION_GOTTEN:
+            case EventType.QUERY_ACCOUNTS:
                 Date now = new Date();
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
                         new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
@@ -136,12 +137,16 @@ public class KeepAccountsFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
-        mKeepAccountsView.onDestroy();
-        releaseModels();
         super.onDestroyView();
     }
 
-    private void releaseModels() {
+    @Override
+    protected void destroyViews() {
+        mKeepAccountsView.onDestroy();
+    }
+
+    @Override
+    protected void releaseModels() {
         mKeepAccountsSqlModel.onDestroy();
         mKeepAccountsSqlModel = null;
     }

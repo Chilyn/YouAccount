@@ -8,6 +8,7 @@
     <string name="paid_money">支付金额：</string>
     <string name="bill_type">账单类型：</string>
     <string name="this_week_total">本周支出：</string>
+    <string name="expenditure">支出</string>
     <string name="yuan">元</string>
     <string name="data_invalid">输入数据无效</string>
     <string name="choose_bill_type">账单类型</string>
@@ -24,6 +25,11 @@
     <string name="record_fail">记录失败</string>
     <string name="delete_success">删除成功</string>
     <string name="delete_fail">删除失败</string>
+    <string name="to">至</string>
+    <string name="choose_month">按月选择</string>
+    <string name="choose_date">按日选择</string>
+    <string name="this_month">本月</string>
+    <string name="choose_time">选择时间</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

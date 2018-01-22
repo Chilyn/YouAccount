@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.keepaccounts.adapter.BillTypeAdapter;
 import ye.chilyn.youaccounts.util.DialogUtil;

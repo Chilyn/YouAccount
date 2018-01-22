@@ -13,6 +13,7 @@ import com.ypy.eventbus.EventBus;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseView;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
+import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
@@ -35,20 +37,15 @@ import ye.chilyn.youaccounts.util.ToastUtil;
  * Created by Alex on 2018/1/15.
  */
 
-public class KeepAccountsView extends BaseView implements View.OnClickListener {
+public class KeepAccountsView extends BaseAccountsView implements View.OnClickListener {
 
     private EditText mEtMoney;
     private TextView mTvBillType, mTvKeepAccounts;
     private TextView mTvThisWeekTotal;
-    private ListView mLvAccounts;
-    private AccountsAdapter mAdapterAccounts;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private NumberFormat mNumberFormat;
     /**账单类型选择弹窗*/
     private BillTypeDialogView mBillTypeDialogView;
-    /**修改或删除弹窗*/
-    private DeleteOrModifyDialogView mDeleteOrModifyDialogView;
-    private int mLongClickPosition = -1;
 
     public KeepAccountsView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -60,29 +57,26 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
 
     @Override
     public void initViews() {
+        super.initViews();
         mEtMoney = findView(R.id.et_money);
         mTvBillType = findView(R.id.tv_bill_type);
         mTvKeepAccounts = findView(R.id.tv_keep_accounts);
         mTvThisWeekTotal = findView(R.id.tv_this_week_total);
-        mLvAccounts = findView(R.id.lv);
-
         mBillTypeDialogView = new BillTypeDialogView(mContext, mBillTypeSelectedListener);
-        mDeleteOrModifyDialogView = new DeleteOrModifyDialogView(mContext, mDeleteOrModifyCallback);
     }
 
     @Override
     public void initData() {
-        mAdapterAccounts = new AccountsAdapter(mContext);
-        mLvAccounts.setAdapter(mAdapterAccounts);
+        super.initData();
         mNumberFormat = NumberFormat.getCurrencyInstance();
         mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
     }
 
     @Override
     public void setViewListener() {
+        super.setViewListener();
         mTvBillType.setOnClickListener(this);
         mTvKeepAccounts.setOnClickListener(this);
-        mLvAccounts.setOnItemLongClickListener(mOnItemLongClickListener);
     }
 
     @Override
@@ -111,7 +105,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
-            ToastUtil.showShortToast(AccountsApplication.getAppContext().getString(R.string.data_invalid));
+            ToastUtil.showShortToast(getString(R.string.data_invalid));
         }
     }
 
@@ -119,29 +113,6 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
         @Override
         public void onItemSelected(String billType) {
             mTvBillType.setText(billType);
-        }
-    };
-
-    private DeleteOrModifyDialogView.ClickCallBack mDeleteOrModifyCallback = new DeleteOrModifyDialogView.ClickCallBack() {
-        @Override
-        public void onModify() {
-            Intent intent = new Intent(mContext, ModifyAccountActivity.class);
-            intent.putExtra(ExtraKey.ACCOUNTS_BEAN, mAdapterAccounts.getItem(mLongClickPosition));
-            mContext.startActivity(intent);
-        }
-
-        @Override
-        public void onDelete() {
-            callHandleModel(HandleModelType.DELETE_ACCOUNTS, mAdapterAccounts.getItem(mLongClickPosition));
-        }
-    };
-
-    private AdapterView.OnItemLongClickListener mOnItemLongClickListener = new AdapterView.OnItemLongClickListener() {
-        @Override
-        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            mLongClickPosition = position;
-            mDeleteOrModifyDialogView.showDialog();
-            return false;
         }
     };
 
@@ -185,7 +156,7 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
                     break;
 
                 case RefreshViewType.DELETE_ACCOUNT_SUCCESS:
-                    view.onDeleteAccountSuccess();
+                    view.onDeleteAccountSuccess(null);
                     break;
 
                 case RefreshViewType.DELETE_ACCOUNT_FAIL:
@@ -203,31 +174,25 @@ public class KeepAccountsView extends BaseView implements View.OnClickListener {
                 new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
-    private void onQueryAccountsSuccess(List<AccountsBean> data) {
-        mAdapterAccounts.setListData(data);
-    }
-
     private void showTotalAccounts(Float totalMoney) {
         mTvThisWeekTotal.setText(mNumberFormat.format(totalMoney));
     }
 
-    private void onDeleteAccountSuccess() {
+    @Override
+    protected void onDeleteAccountSuccess(AccountsBean bean) {
         ToastUtil.showShortToast(getString(R.string.delete_success));
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
                 new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
+    @Override
     public void onEvent(Integer eventType) {
-        if (eventType == RefreshViewType.UPDATE_ACCOUNT_SUCCESS) {
+        if (eventType == EventType.QUERY_ACCOUNTS_AFTER_DELETE) {
             Date now = new Date();
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
                     new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
         }
-    }
-
-    private String getString(int id) {
-        return mContext.getString(id);
     }
 
     @Override

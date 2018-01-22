@@ -76,7 +76,7 @@ public class KeepAccountsSqlModel extends BaseModel {
 
     private void deleteAccounts(AccountsBean bean) {
         if (mSqlHelper.deleteAccount(bean)) {
-            callRefreshView(RefreshViewType.DELETE_ACCOUNT_SUCCESS, null);
+            callRefreshView(RefreshViewType.DELETE_ACCOUNT_SUCCESS, bean);
         } else {
             callRefreshView(RefreshViewType.DELETE_ACCOUNT_FAIL, null);
         }
