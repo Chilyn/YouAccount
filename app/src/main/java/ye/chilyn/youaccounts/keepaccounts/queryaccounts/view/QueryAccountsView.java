@@ -1,7 +1,10 @@
 package ye.chilyn.youaccounts.keepaccounts.queryaccounts.view;
 
+import android.app.AlertDialog;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ypy.eventbus.EventBus;
@@ -22,7 +25,9 @@ import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.keepaccounts.view.BaseAccountsView;
+import ye.chilyn.youaccounts.keepaccounts.view.ProgressDialogView;
 import ye.chilyn.youaccounts.util.DateUtil;
+import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 import ye.chilyn.youaccounts.widget.pickers.DateTimePicker;
 
@@ -34,10 +39,12 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
 
     private static final int YEAR_MONTH = DateTimePicker.YEAR_MONTH;
     private static final int YEAR_MONTH_DAY = DateTimePicker.YEAR_MONTH_DAY;
-    private static final int START_TIME = 0;
-    private static final int END_TIME = 1;
+    private static final int START_TIME = 0, END_TIME = 1;
+    private static final int DATE1 = 0, DATE2 = 1;
+    private static final int NONE = -1;
     private TextView mTvChooseMonthOrDate;
-    private TextView mTvAccountsRange, mTvMonth, mTvDate1, mTvDate2;
+    private RelativeLayout mRlMonth, mRlDate;
+    private TextView mTvAccountsRange, mTvMonth, mTvDate1, mTvTo, mTvDate2;
     private TextView mTvQuery;
     private TextView mTvTotalMoney;
     private NumberFormat mNumberFormat;
@@ -45,6 +52,9 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private SimpleDateFormat mMonthFormat = new SimpleDateFormat("yyyy-MM");
     private DateTimePicker mPicker;
     private int mCurrentChooseMode = DateTimePicker.YEAR_MONTH;
+    private int mCurrentSelectingDate = NONE;
+    private AlertDialog mDialogOverSixMonth;
+    private ProgressDialogView mProgressDialogView;
 
     public QueryAccountsView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -58,12 +68,16 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     public void initViews() {
         super.initViews();
         mTvChooseMonthOrDate = findView(R.id.tv_choose_month_or_date);
+        mRlMonth = findView(R.id.rl_month);
+        mRlDate = findView(R.id.rl_date);
         mTvAccountsRange = findView(R.id.tv_accounts_range);
         mTvMonth = findView(R.id.tv_month);
         mTvDate1 = findView(R.id.tv_date1);
+        mTvTo = findView(R.id.tv_to);
         mTvDate2 = findView(R.id.tv_date2);
         mTvQuery = findView(R.id.tv_query);
         mTvTotalMoney = findView(R.id.tv_total_money);
+        mProgressDialogView = new ProgressDialogView(mContext, getString(R.string.querying));
     }
 
     @Override
@@ -77,20 +91,59 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     @Override
     public void setViewListener() {
         super.setViewListener();
+        mTvChooseMonthOrDate.setOnClickListener(this);
         mTvMonth.setOnClickListener(this);
+        mTvDate1.setOnClickListener(this);
+        mTvDate2.setOnClickListener(this);
         mTvQuery.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_choose_month_or_date:
+                changeQueryMode();
+                break;
+
             case R.id.tv_month:
                 showPicker(getString(R.string.choose_time));
                 break;
 
+            case R.id.tv_date1:
+                mCurrentSelectingDate = DATE1;
+                showPicker(getString(R.string.choose_start_date));
+                break;
+
+            case R.id.tv_date2:
+                mCurrentSelectingDate = DATE2;
+                showPicker(getString(R.string.choose_end_date));
+                break;
+
             case R.id.tv_query:
+                mProgressDialogView.showProgressDialog();
                 queryAccounts();
                 break;
+        }
+    }
+
+    private void changeQueryMode() {
+        if (mCurrentChooseMode == YEAR_MONTH) {
+            mCurrentChooseMode = YEAR_MONTH_DAY;
+            mTvChooseMonthOrDate.setText(getString(R.string.choose_date));
+            mRlMonth.setVisibility(View.GONE);
+            mRlDate.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(mTvDate1.getText())) {
+                mTvDate1.setText(mDateFormat.format(new Date()));
+            }
+            return;
+        }
+
+        if (mCurrentChooseMode == YEAR_MONTH_DAY) {
+            mCurrentChooseMode = YEAR_MONTH;
+            mTvChooseMonthOrDate.setText(getString(R.string.choose_month));
+            mRlMonth.setVisibility(View.VISIBLE);
+            mRlDate.setVisibility(View.GONE);
+            return;
         }
     }
 
@@ -99,7 +152,44 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         int endYear = calendar.get(Calendar.YEAR);
         int endMonth = calendar.get(Calendar.MONTH) + 1;
         int endDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int selectedYear = endYear;
+        int selectedMonth = endMonth;
+        int selectedDay = endDay;
+        //如果是按日期选择的模式，弹窗日期默认选中上次选中的月份
+        if (mCurrentChooseMode == YEAR_MONTH) {
+            try {
+                Date lastChooseDate = mMonthFormat.parse(mTvMonth.getText().toString());
+                calendar.setTime(lastChooseDate);
+                selectedYear = calendar.get(Calendar.YEAR);
+                selectedMonth = calendar.get(Calendar.MONTH) + 1;
+                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
+        //如果是按日期选择的模式，弹窗日期默认选中上次选中的日期
+        if (mCurrentChooseMode == YEAR_MONTH_DAY && mCurrentSelectingDate == DATE1) {
+            try {
+                Date lastChooseDate = mDateFormat.parse(mTvDate1.getText().toString());
+                calendar.setTime(lastChooseDate);
+                selectedYear = calendar.get(Calendar.YEAR);
+                selectedMonth = calendar.get(Calendar.MONTH) + 1;
+                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else if (mCurrentChooseMode == YEAR_MONTH_DAY && mCurrentSelectingDate == DATE2) {
+            try {
+                Date lastChooseDate = mDateFormat.parse(mTvDate2.getText().toString());
+                calendar.setTime(lastChooseDate);
+                selectedYear = calendar.get(Calendar.YEAR);
+                selectedMonth = calendar.get(Calendar.MONTH) + 1;
+                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
         mPicker = new DateTimePicker(mContext, mCurrentChooseMode, DateTimePicker.NONE);
         mPicker.setDateRangeStart(2017, 1, 1);
@@ -113,8 +203,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         } else if (mCurrentChooseMode == YEAR_MONTH_DAY) {
             mPicker.setOnDateTimePickListener(mYearMonthDayPickListener);
         }
-        mPicker.setSelectedItem(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH) + 1), calendar.get(Calendar.DAY_OF_MONTH),
-                0, 0);
+        mPicker.setSelectedItem(selectedYear, selectedMonth, selectedDay, 0, 0);
         mPicker.show();
     }
 
@@ -129,18 +218,78 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private DateTimePicker.OnYearMonthDayTimePickListener mYearMonthDayPickListener = new DateTimePicker.OnYearMonthDayTimePickListener() {
         @Override
         public void onDateTimePicked(String year, String month, String day, String hour, String minute) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(year).append("-").append(month).append("-").append(day);
+            switch (mCurrentSelectingDate) {
+                case DATE1:
+                    mTvDate1.setText(sb.toString());
+                    break;
 
+                case DATE2:
+                    mTvDate2.setText(sb.toString());
+                    break;
+            }
+            mCurrentSelectingDate = NONE;
         }
     };
 
     private void queryAccounts() {
-        mTvAccountsRange.setText(mTvMonth.getText());
-        try {
-            Date chooseDate = mMonthFormat.parse(mTvMonth.getText().toString());
+        if (mCurrentChooseMode == YEAR_MONTH) {
+            Date chooseDate;
+            try {
+                chooseDate = mMonthFormat.parse(mTvMonth.getText().toString());
+                if (DateUtil.isThisMonth(chooseDate)) {
+                    mTvAccountsRange.setText(getString(R.string.this_month));
+                } else {
+                    mTvAccountsRange.setText(mTvMonth.getText());
+                }
+
+                callHandleModel(HandleModelType.QUERY_ACCOUNTS,
+                        new QueryAccountsParameter(1, DateUtil.getMonthStartTime(chooseDate), DateUtil.getMonthEndTime(chooseDate)));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        if (mCurrentChooseMode == YEAR_MONTH_DAY) {
+            Date date1 = null, date2;
+            try {
+                date1 = mDateFormat.parse(mTvDate1.getText().toString());
+                date2 = mDateFormat.parse(mTvDate2.getText().toString());
+            } catch (ParseException e) {
+                date2 = date1;
+            }
+
+            if (date1.getTime() > date2.getTime()) {
+                //如果第二个日期在第一个日期前面，将两个日期调换
+                Date temp = new Date(date1.getTime());
+                date1.setTime(date2.getTime());
+                date2.setTime(temp.getTime());
+            }
+
+            if (!DateUtil.isTheSameDate(date1, date2) && DateUtil.isOverSixMonth(date1, date2)) {
+                mProgressDialogView.dismissProgressDialog();
+                showOverSixMonthDialog();
+                return;
+            }
+
+            //显示查询范围
+            if (date1.getTime() == date2.getTime()) {
+                mTvAccountsRange.setText(mDateFormat.format(date1));
+            } else {
+                StringBuilder sb = new StringBuilder();
+                sb.append(mDateFormat.format(date1))
+                    .append(" ")
+                    .append(mTvTo.getText())
+                    .append(" ")
+                    .append(mDateFormat.format(date2));
+                mTvAccountsRange.setText(sb.toString());
+            }
+
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(1, DateUtil.getMonthStartTime(chooseDate), DateUtil.getMonthEndTime(chooseDate)));
-        } catch (ParseException e) {
-            e.printStackTrace();
+                    new QueryAccountsParameter(1, DateUtil.getDateStartTime(date1), DateUtil.getDateEndTime(date2)));
+            return;
         }
     }
 
@@ -167,8 +316,13 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
 
             QueryAccountsView view = getReference();
             switch (msg.what) {
+                case RefreshViewType.SHOW_PROGRESS_DIALOG:
+                    view.mProgressDialogView.showProgressDialog();
+                    break;
+
                 case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
                     view.onQueryAccountsSuccess((List<AccountsBean>) msg.obj);
+                    view.mProgressDialogView.dismissProgressDialog();
                     break;
 
                 case RefreshViewType.DELETE_ACCOUNT_SUCCESS:
@@ -244,6 +398,15 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
 
         return new long[]{startTime, endTime};
+    }
+
+    private void showOverSixMonthDialog() {
+        if (mDialogOverSixMonth == null) {
+            mDialogOverSixMonth = DialogUtil.createNoNegativeDialog(mContext,
+                    getString(R.string.over_six_month_message), getString(R.string.confirm));
+        }
+
+        mDialogOverSixMonth.show();
     }
 
     @Override

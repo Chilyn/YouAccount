@@ -5,7 +5,7 @@ package ye.chilyn.youaccounts.contant;
  */
 
 public interface RefreshViewType {
-    int SHOW_ACCOUNTS = 100;
+    int SHOW_PROGRESS_DIALOG = 100;
     int INSERT_ACCOUNTS_SUCCESS = 101;
     int INSERT_ACCOUNTS_FAIL = 102;
     int QUERY_ACCOUNTS_SUCCESS = 103;
@@ -14,4 +14,5 @@ public interface RefreshViewType {
     int DELETE_ACCOUNT_FAIL = 106;
     int UPDATE_ACCOUNT_SUCCESS = 107;
     int UPDATE_ACCOUNT_FAIL = 108;
+    int FORCE_CLOSE_SOFT_KEYBOARD = 109;
 }

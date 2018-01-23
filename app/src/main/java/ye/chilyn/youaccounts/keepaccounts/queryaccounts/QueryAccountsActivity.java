@@ -45,6 +45,7 @@ public class QueryAccountsActivity extends BaseActivity {
         Date now = new Date();
         mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
                 new QueryAccountsParameter(1, DateUtil.getMonthStartTime(now), DateUtil.getMonthEndTime(now)));
+        mQueryAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 
     private HandleModelListener mHandleModelListener = new HandleModelListener();

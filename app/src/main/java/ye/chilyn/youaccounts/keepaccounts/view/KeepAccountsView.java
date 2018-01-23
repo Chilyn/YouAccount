@@ -46,6 +46,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
     private NumberFormat mNumberFormat;
     /**账单类型选择弹窗*/
     private BillTypeDialogView mBillTypeDialogView;
+    private ProgressDialogView mProgressDialogView;
 
     public KeepAccountsView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -63,6 +64,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         mTvKeepAccounts = findView(R.id.tv_keep_accounts);
         mTvThisWeekTotal = findView(R.id.tv_this_week_total);
         mBillTypeDialogView = new BillTypeDialogView(mContext, mBillTypeSelectedListener);
+        mProgressDialogView = new ProgressDialogView(mContext, getString(R.string.querying));
     }
 
     @Override
@@ -103,6 +105,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
             AccountsBean bean = new AccountsBean(1, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
+            mProgressDialogView.showProgressDialog();
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
             ToastUtil.showShortToast(getString(R.string.data_invalid));
@@ -139,16 +142,23 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
 
             KeepAccountsView view = getReference();
             switch (msg.what) {
+                case RefreshViewType.SHOW_PROGRESS_DIALOG:
+                    view.mProgressDialogView.showProgressDialog();
+                    break;
+
                 case RefreshViewType.INSERT_ACCOUNTS_SUCCESS:
                     view.onInsertAccountsSuccess();
+                    view.mProgressDialogView.dismissProgressDialog();
                     break;
 
                 case RefreshViewType.INSERT_ACCOUNTS_FAIL:
-                    ToastUtil.showShortToast(view.getString(R.string.record_success));
+                    ToastUtil.showShortToast(view.getString(R.string.record_fail));
+                    view.mProgressDialogView.dismissProgressDialog();
                     break;
 
                 case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
                     view.onQueryAccountsSuccess((List<AccountsBean>) msg.obj);
+                    view.mProgressDialogView.dismissProgressDialog();
                     break;
 
                 case RefreshViewType.SHOW_TOTAL_ACCOUNTS:
@@ -161,6 +171,10 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
 
                 case RefreshViewType.DELETE_ACCOUNT_FAIL:
                     ToastUtil.showShortToast(view.getString(R.string.delete_fail));
+                    break;
+
+                case RefreshViewType.FORCE_CLOSE_SOFT_KEYBOARD:
+                    SoftKeyboardUtil.forceCloseSoftKeyboard(view.mEtMoney);
                     break;
             }
         }

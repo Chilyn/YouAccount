@@ -69,6 +69,7 @@ public class KeepAccountsFragment extends BaseFragment {
             Date now = new Date();
             mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
                     new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+            mKeepAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
         }
     }
 
@@ -80,6 +81,7 @@ public class KeepAccountsFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             startActivity(new Intent(getActivity(), QueryAccountsActivity.class));
+            mKeepAccountsView.refreshViews(RefreshViewType.FORCE_CLOSE_SOFT_KEYBOARD, null);
         }
     };
 

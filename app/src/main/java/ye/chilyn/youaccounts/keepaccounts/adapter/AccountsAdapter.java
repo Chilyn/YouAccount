@@ -12,9 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.CommonAdapter;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
+import ye.chilyn.youaccounts.util.DateUtil;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -22,7 +24,11 @@ import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 
 public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter.ViewHolder> {
 
+    private static final String TODAY = AccountsApplication.getAppContext().getString(R.string.today);
+    private static final String YESTERDAY = AccountsApplication.getAppContext().getString(R.string.yesterday);
     private DecimalFormat mNumberFormat;
+    private SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("MM-dd HH:mm");
+    private SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm");
 
     public AccountsAdapter(Context context) {
         super(context, R.layout.list_item_accounts);
@@ -38,7 +44,7 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
     @Override
     protected void onBindViewHolder(ViewHolder holder, AccountsBean item, int position) {
         holder.mTvBillType.setText(item.getBillType());
-        holder.mTvTime.setText(item.getTime());
+        holder.mTvTime.setText(createTimeString(item.getTimeMill()));
         BigDecimal decimal = new BigDecimal(Float.toString(item.getMoney()));
         holder.mTvMoney.setText(mNumberFormat.format(decimal.doubleValue()));
         if (position == (getCount() - 1)) {
@@ -46,6 +52,18 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
         } else {
             holder.mTvDivider.setVisibility(View.VISIBLE);
         }
+    }
+
+    private String createTimeString(long timeMill) {
+        StringBuilder timeStr = new StringBuilder();
+        if (DateUtil.isToday(timeMill)) {
+            timeStr.append(TODAY).append(" ").append(mTimeFormat.format(new Date(timeMill)));
+        } else if (DateUtil.isYesterday(timeMill)) {
+            timeStr.append(YESTERDAY).append(" ").append(mTimeFormat.format(new Date(timeMill)));
+        } else {
+            timeStr.append(mDateTimeFormat.format(new Date(timeMill)));
+        }
+        return timeStr.toString();
     }
 
     @Override
