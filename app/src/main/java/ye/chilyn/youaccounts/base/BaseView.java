@@ -7,6 +7,7 @@ import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 
 /**
  * Created by Alex on 2018/1/15.
+ * MVC或MVP的View层基类
  */
 
 public abstract class BaseView implements IBaseView {
@@ -26,6 +27,11 @@ public abstract class BaseView implements IBaseView {
         this.mHandleModelListener = listener;
     }
 
+    /**
+     * 调用操作Model层的回调接口
+     * @param type
+     * @param data
+     */
     protected void callHandleModel(int type, Object data) {
         if (mHandleModelListener != null) {
             mHandleModelListener.onHandleModel(type, data);

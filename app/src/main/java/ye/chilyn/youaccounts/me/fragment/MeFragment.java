@@ -14,6 +14,9 @@ import java.util.List;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
 
+/**
+ * 我的Fragment
+ */
 public class MeFragment extends BaseFragment {
 
     @Nullable

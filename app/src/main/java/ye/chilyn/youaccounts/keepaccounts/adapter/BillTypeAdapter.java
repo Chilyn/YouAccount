@@ -12,6 +12,7 @@ import ye.chilyn.youaccounts.base.CommonAdapter;
 
 /**
  * Created by Alex on 2018/1/18.
+ * 账目类型的Adapter
  */
 
 public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewHolder> {
@@ -21,6 +22,9 @@ public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewH
         createBillTypeData();
     }
 
+    /**
+     * 创建账单类型列表数据
+     */
     private void createBillTypeData() {
         String[] billTypes = mContext.getResources().getStringArray(R.array.bill_type);
         for (int i = 0; i < billTypes.length; i++) {

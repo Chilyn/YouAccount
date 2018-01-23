@@ -12,6 +12,7 @@ import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
 /**
  * Created by Alex on 2018/1/18.
+ * 账目数据计算的Model
  */
 
 public class AccountsCalculateModel extends BaseModel {
@@ -47,6 +48,10 @@ public class AccountsCalculateModel extends BaseModel {
         }
     }
 
+    /**
+     * 计算账目总额
+     * @param data
+     */
     private void calculateTotalAccounts(List<AccountsBean> data) {
         BigDecimal total = new BigDecimal(Float.toString(0.0f));
         for (AccountsBean bean : data) {

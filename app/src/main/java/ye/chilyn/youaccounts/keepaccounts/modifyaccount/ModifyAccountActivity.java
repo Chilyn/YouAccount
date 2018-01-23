@@ -24,6 +24,9 @@ import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
+/**
+ * 修改账目的Activity
+ */
 public class ModifyAccountActivity extends BaseActivity implements View.OnClickListener {
 
     private IBaseModel mKeepAccountsSqlModel;
@@ -84,6 +87,9 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    /**
+     * 修改账目
+     */
     private void modifyAccount() {
         String moneyStr = mEtMoney.getText().toString();
         try {
@@ -135,6 +141,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
             switch (msg.what) {
                 case RefreshViewType.UPDATE_ACCOUNT_SUCCESS:
                     ToastUtil.showShortToast(activity.getString(R.string.modify_success));
+                    //修改成功通知各页面刷新数据
                     EventBus.getDefault().post(EventType.QUERY_ACCOUNTS);
                     activity.finish();
                     break;

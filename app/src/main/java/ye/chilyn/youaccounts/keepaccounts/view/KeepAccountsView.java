@@ -35,6 +35,7 @@ import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
  * Created by Alex on 2018/1/15.
+ * 记账页面你的View层
  */
 
 public class KeepAccountsView extends BaseAccountsView implements View.OnClickListener {
@@ -188,6 +189,10 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
                 new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
+    /**
+     * 显示账目总金额
+     * @param totalMoney
+     */
     private void showTotalAccounts(Float totalMoney) {
         mTvThisWeekTotal.setText(mNumberFormat.format(totalMoney));
     }

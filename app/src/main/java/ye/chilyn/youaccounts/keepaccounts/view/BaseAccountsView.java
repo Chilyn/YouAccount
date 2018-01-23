@@ -32,10 +32,12 @@ import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
  * Created by Alex on 2018/1/15.
+ * 账目相关View层的基类
  */
 
 public abstract class BaseAccountsView extends BaseView {
 
+    /**显示账目的列表*/
     private ListView mLvAccounts;
     private AccountsAdapter mAdapterAccounts;
     /**修改或删除弹窗*/
@@ -66,6 +68,7 @@ public abstract class BaseAccountsView extends BaseView {
     private DeleteOrModifyDialogView.ClickCallBack mDeleteOrModifyCallback = new DeleteOrModifyDialogView.ClickCallBack() {
         @Override
         public void onModify() {
+            //跳转修改页面
             Intent intent = new Intent(mContext, ModifyAccountActivity.class);
             intent.putExtra(ExtraKey.ACCOUNTS_BEAN, mAdapterAccounts.getItem(mLongClickPosition));
             mContext.startActivity(intent);
@@ -86,10 +89,18 @@ public abstract class BaseAccountsView extends BaseView {
         }
     };
 
+    /**
+     * 查询账目成功的相关操作
+     * @param data
+     */
     protected void onQueryAccountsSuccess(List<AccountsBean> data) {
         mAdapterAccounts.setListData(data);
     }
 
+    /**
+     * 删除账目成功相关操作
+     * @param bean
+     */
     protected abstract void onDeleteAccountSuccess(AccountsBean bean);
     public abstract void onEvent(Integer eventType);
 

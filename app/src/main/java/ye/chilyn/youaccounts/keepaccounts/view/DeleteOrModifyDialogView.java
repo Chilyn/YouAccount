@@ -11,6 +11,7 @@ import ye.chilyn.youaccounts.util.DialogUtil;
 
 /**
  * Created by Alex on 2018/1/18.
+ * 修改删除账单弹窗的View层
  */
 
 public class DeleteOrModifyDialogView implements View.OnClickListener {
@@ -72,7 +73,9 @@ public class DeleteOrModifyDialogView implements View.OnClickListener {
     }
 
     public interface ClickCallBack {
+        /**用户点击修改账单*/
         void onModify();
+        /**用户点击删除账单*/
         void onDelete();
     }
 }

@@ -10,6 +10,7 @@ import android.content.Context;
 public class AccountsApplication extends Application {
 
     private static Context mContext;
+    /**是否可以写文件标识*/
     private static boolean mCanCreateFile = false;
 
     @Override
@@ -22,6 +23,10 @@ public class AccountsApplication extends Application {
         return mContext;
     }
 
+    /**
+     * 是否可以做写文件操作
+     * @return
+     */
     public static boolean canCreateFile() {
         return mCanCreateFile;
     }

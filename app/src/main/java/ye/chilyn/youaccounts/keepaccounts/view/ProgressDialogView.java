@@ -7,6 +7,7 @@ import ye.chilyn.youaccounts.util.DialogUtil;
 
 /**
  * Created by Alex on 2018/1/23.
+ * 进度条弹窗View层
  */
 
 public class ProgressDialogView {

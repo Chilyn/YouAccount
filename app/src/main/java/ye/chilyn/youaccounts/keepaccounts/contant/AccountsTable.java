@@ -2,6 +2,7 @@ package ye.chilyn.youaccounts.keepaccounts.contant;
 
 /**
  * Created by Alex on 2018/1/16.
+ * 账目表相关常量
  */
 
 public interface AccountsTable {

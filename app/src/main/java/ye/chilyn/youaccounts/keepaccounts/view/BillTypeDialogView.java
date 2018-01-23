@@ -13,6 +13,7 @@ import ye.chilyn.youaccounts.util.DialogUtil;
 
 /**
  * Created by Alex on 2018/1/18.
+ * 账目类型弹窗的View层
  */
 
 public class BillTypeDialogView {

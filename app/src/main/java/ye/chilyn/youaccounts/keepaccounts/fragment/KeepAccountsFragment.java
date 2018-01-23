@@ -29,13 +29,18 @@ import ye.chilyn.youaccounts.view.TitleBarView;
 
 /**
  * Created by Alex on 2018/1/15.
+ * 记账Fragment
  */
 
 public class KeepAccountsFragment extends BaseFragment {
 
+    /**记账view层*/
     private IBaseView mKeepAccountsView;
+    /**数据库操作Model*/
     private IBaseModel mKeepAccountsSqlModel;
+    /**账目计算Model*/
     private IBaseModel mAccountsCalculateModel;
+    /**标题栏*/
     private TitleBarView mTitleBarView;
 
     @Nullable
@@ -80,7 +85,9 @@ public class KeepAccountsFragment extends BaseFragment {
     private View.OnClickListener mRightOptionViewListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //跳转至查询页面
             startActivity(new Intent(getActivity(), QueryAccountsActivity.class));
+            //强制关闭键盘
             mKeepAccountsView.refreshViews(RefreshViewType.FORCE_CLOSE_SOFT_KEYBOARD, null);
         }
     };
@@ -127,7 +134,7 @@ public class KeepAccountsFragment extends BaseFragment {
 
     public void onEvent(Integer eventType) {
         switch (eventType) {
-            case EventType.WRITE_FILE_PERMISSION_GOTTEN:
+            case EventType.WRITE_FILE_PERMISSION_GOTTEN://获取写外部存储权限后查询账目
             case EventType.QUERY_ACCOUNTS:
                 Date now = new Date();
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,

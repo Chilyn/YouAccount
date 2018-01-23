@@ -12,6 +12,7 @@ import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 
 /**
  * Created by Alex on 2018/1/15.
+ * 账目相关数据库操作的Model
  */
 
 public class KeepAccountsSqlModel extends BaseModel {

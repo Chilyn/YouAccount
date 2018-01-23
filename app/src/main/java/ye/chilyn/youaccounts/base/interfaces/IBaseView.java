@@ -2,6 +2,7 @@ package ye.chilyn.youaccounts.base.interfaces;
 
 /**
  * Created by Alex on 2017/4/26.
+ * MVC或MVP的View层基类接口
  */
 
 public interface IBaseView {

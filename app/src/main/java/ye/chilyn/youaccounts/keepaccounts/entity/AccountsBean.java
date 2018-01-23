@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Alex on 2018/1/16.
+ * 账目实体类
  */
 
 public class AccountsBean implements Serializable{

@@ -33,11 +33,14 @@ import ye.chilyn.youaccounts.widget.pickers.DateTimePicker;
 
 /**
  * Created by Alex on 2018/1/22.
+ * 账目查询页面的View层
  */
 
 public class QueryAccountsView extends BaseAccountsView implements View.OnClickListener {
 
+    /**年月模式*/
     private static final int YEAR_MONTH = DateTimePicker.YEAR_MONTH;
+    /**年月日模式*/
     private static final int YEAR_MONTH_DAY = DateTimePicker.YEAR_MONTH_DAY;
     private static final int START_TIME = 0, END_TIME = 1;
     private static final int DATE1 = 0, DATE2 = 1;
@@ -126,6 +129,9 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
     }
 
+    /**
+     * 修改查询模式
+     */
     private void changeQueryMode() {
         if (mCurrentChooseMode == YEAR_MONTH) {
             mCurrentChooseMode = YEAR_MONTH_DAY;
@@ -147,6 +153,10 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
     }
 
+    /**
+     * 显示日期选择弹窗
+     * @param title
+     */
     private void showPicker(String title) {
         Calendar calendar = Calendar.getInstance();
         int endYear = calendar.get(Calendar.YEAR);
@@ -233,11 +243,15 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
     };
 
+    /**
+     * 查询账目
+     */
     private void queryAccounts() {
         if (mCurrentChooseMode == YEAR_MONTH) {
             Date chooseDate;
             try {
                 chooseDate = mMonthFormat.parse(mTvMonth.getText().toString());
+                //显示查询范围
                 if (DateUtil.isThisMonth(chooseDate)) {
                     mTvAccountsRange.setText(getString(R.string.this_month));
                 } else {
@@ -268,6 +282,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                 date2.setTime(temp.getTime());
             }
 
+            //如果两个日期不相等并且范围超过6个月则提示
             if (!DateUtil.isTheSameDate(date1, date2) && DateUtil.isOverSixMonth(date1, date2)) {
                 mProgressDialogView.dismissProgressDialog();
                 showOverSixMonthDialog();
@@ -340,6 +355,10 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
     }
 
+    /**
+     * 显示账目总额
+     * @param totalMoney
+     */
     private void showTotalAccounts(Float totalMoney) {
         mTvTotalMoney.setText(mNumberFormat.format(totalMoney));
     }

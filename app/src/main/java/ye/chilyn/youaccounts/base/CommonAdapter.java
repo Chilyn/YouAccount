@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by Alex on 2018/1/15.
+ * 封装的Adapter抽象类，进行一些初始化工作
  */
 
 public abstract class CommonAdapter<T, V extends CommonAdapter.ViewHolder> extends BaseAdapter {
@@ -54,8 +55,11 @@ public abstract class CommonAdapter<T, V extends CommonAdapter.ViewHolder> exten
         return convertView;
     }
 
+    /**创建ViewHolder*/
     protected abstract V onCreateViewHolder(View view, int viewType);
+    /**绑定数据*/
     protected abstract void onBindViewHolder(V holder, T item, int position);
+    /**设置数据*/
     public abstract void setListData(List<T> data);
 
     public abstract class ViewHolder {

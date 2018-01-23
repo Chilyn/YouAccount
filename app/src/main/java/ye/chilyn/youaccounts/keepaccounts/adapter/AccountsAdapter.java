@@ -20,12 +20,14 @@ import ye.chilyn.youaccounts.util.DateUtil;
 
 /**
  * Created by Alex on 2018/1/15.
+ * 账目数据的Adapter
  */
 
 public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter.ViewHolder> {
 
     private static final String TODAY = AccountsApplication.getAppContext().getString(R.string.today);
     private static final String YESTERDAY = AccountsApplication.getAppContext().getString(R.string.yesterday);
+    /**金额格式化类*/
     private DecimalFormat mNumberFormat;
     private SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("MM-dd HH:mm");
     private SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm");
@@ -54,6 +56,11 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
         }
     }
 
+    /**
+     * 根据时间long值创建相关格式的时间字符
+     * @param timeMill
+     * @return
+     */
     private String createTimeString(long timeMill) {
         StringBuilder timeStr = new StringBuilder();
         if (DateUtil.isToday(timeMill)) {

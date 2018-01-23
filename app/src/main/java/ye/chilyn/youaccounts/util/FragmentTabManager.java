@@ -7,6 +7,10 @@ import android.view.View;
 
 import java.util.List;
 
+/**
+ * Fragment切换的管理类
+ */
+
 public class FragmentTabManager implements View.OnClickListener{
     private List<Fragment> mFragments; // 一个tab页面对应一个Fragment
     private List<View> mTabs; // 一个tab页面对应的tab集合

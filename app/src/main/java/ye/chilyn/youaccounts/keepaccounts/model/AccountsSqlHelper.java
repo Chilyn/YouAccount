@@ -16,6 +16,7 @@ import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 
 /**
  * Created by Alex on 2018/1/16.
+ * 账目数据库操作的Helper类
  */
 
 public class AccountsSqlHelper extends SQLiteOpenHelper {
@@ -48,6 +49,11 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
+    /**
+     * 插入账目数据
+     * @param bean
+     * @return
+     */
     public boolean insertAccounts(AccountsBean bean) {
         ContentValues values = new ContentValues();
         values.put(AccountsTable.USER_ID, bean.getUserId());
@@ -65,6 +71,13 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * 查询账目数据
+     * @param userId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
     public List<AccountsBean> queryAccounts(int userId, long startTime, long endTime) {
         Cursor cursor = openDatabase().query(AccountsTable.TABLE_NAME, null,
                 AccountsTable.SQL_QUERY_ACCOUNTS_WHERE,
@@ -93,6 +106,11 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         return listAccountsBean;
     }
 
+    /**
+     * 删除账目数据
+     * @param bean
+     * @return
+     */
     public boolean deleteAccount(AccountsBean bean) {
         int deleteRows = openDatabase().delete(AccountsTable.TABLE_NAME, AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getTimeMill() + ""});
         if (deleteRows == 0) {
@@ -102,6 +120,11 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * 更新账目数据
+     * @param bean
+     * @return
+     */
     public boolean updateAccount(AccountsBean bean) {
         ContentValues values = new ContentValues();
         values.put(AccountsTable.MONEY, bean.getMoney());
@@ -116,6 +139,10 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * 打开数据库
+     * @return
+     */
     private synchronized SQLiteDatabase openDatabase() {
         if (mDbOpenCount == 0) {
             mDb = getWritableDatabase();
@@ -125,6 +152,9 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         return mDb;
     }
 
+    /**
+     * 关闭数据库
+     */
     private synchronized void closeDatabase() {
         mDbOpenCount--;
         if (mDbOpenCount == 0) {

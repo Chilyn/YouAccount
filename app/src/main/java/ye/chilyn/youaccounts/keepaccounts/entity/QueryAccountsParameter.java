@@ -2,6 +2,7 @@ package ye.chilyn.youaccounts.keepaccounts.entity;
 
 /**
  * Created by Alex on 2018/1/17.
+ * 查询账目的参数实体类
  */
 
 public class QueryAccountsParameter {

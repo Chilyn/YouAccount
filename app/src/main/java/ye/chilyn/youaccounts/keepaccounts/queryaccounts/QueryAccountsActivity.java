@@ -17,6 +17,9 @@ import ye.chilyn.youaccounts.keepaccounts.queryaccounts.view.QueryAccountsView;
 import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
+/**
+ * 查询账目的Activity
+ */
 public class QueryAccountsActivity extends BaseActivity {
 
     private TitleBarView mTitleBarView;

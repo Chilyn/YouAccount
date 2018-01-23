@@ -20,6 +20,9 @@ import ye.chilyn.youaccounts.keepaccounts.fragment.KeepAccountsFragment;
 import ye.chilyn.youaccounts.me.fragment.MeFragment;
 import ye.chilyn.youaccounts.util.FragmentTabManager;
 
+/**
+ * 主页面Activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private FragmentTabManager mTabManager;
@@ -73,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_EXTERNAL_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //创建app相关存储目录
                     AppFilePath.createAppDirectories();
                     AccountsApplication.setCanCreateFile(true);
+                    //通知获取写入外部存储权限成功
                     EventBus.getDefault().post(EventType.WRITE_FILE_PERMISSION_GOTTEN);
                 } else {
                     finish();
