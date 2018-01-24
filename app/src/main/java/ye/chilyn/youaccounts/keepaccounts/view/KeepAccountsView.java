@@ -78,14 +78,14 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
     @Override
     public void setViewListener() {
         super.setViewListener();
-        mTvBillType.setOnClickListener(this);
+        findView(R.id.ll_bill_type).setOnClickListener(this);
         mTvKeepAccounts.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_bill_type:
+            case R.id.ll_bill_type:
                 mBillTypeDialogView.showDialog();
                 break;
 

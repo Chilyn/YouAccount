@@ -146,7 +146,7 @@
                 android:gravity="center"
                 android:textColor="@android:color/white"
                 android:text="查询"
-                android:background="@drawable/selector_btn_query"/>
+                android:background="@drawable/selector_btn_background"/>
         </RelativeLayout>
     </LinearLayout>
 
