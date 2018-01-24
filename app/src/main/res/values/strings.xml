@@ -38,6 +38,7 @@
     <string name="querying">正在查询</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
+    <string name="inout_money">输入金额</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

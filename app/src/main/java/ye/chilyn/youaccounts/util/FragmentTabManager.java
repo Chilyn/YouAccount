@@ -17,6 +17,7 @@ public class FragmentTabManager implements View.OnClickListener{
     private FragmentActivity mFragmentActivity; // Fragment所属的Activity
     private int mFragmentContentId; // Activity中所要被替换的区域的id
     private int mCurrentTab; // 当前Tab页面索引
+    private OnTabClickListener mTabClickListener;
 
     public FragmentTabManager(FragmentActivity fragmentActivity, List<Fragment> fragments, int fragmentContentId, List<View> tabs) {
         this.mFragments = fragments;
@@ -60,6 +61,10 @@ public class FragmentTabManager implements View.OnClickListener{
                 mTabs.get(i).setSelected(false);
             }
         }
+
+        if (mTabClickListener != null) {
+            mTabClickListener.onClick(view);
+        }
     }
 
     /**
@@ -97,5 +102,13 @@ public class FragmentTabManager implements View.OnClickListener{
 
     public Fragment getCurrentFragment(){
         return mFragments.get(mCurrentTab);
+    }
+
+    public void setOnTabClickListener(OnTabClickListener listener) {
+        mTabClickListener = listener;
+    }
+
+    public interface OnTabClickListener {
+        void onClick(View tab);
     }
 }

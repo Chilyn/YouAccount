@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/divider_gray"/>
+        android:background="@color/divider_dark_gray"/>
 
     <TextView
         android:id="@+id/tv_delete_account"

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#AA808080</color>
-    <color name="colorPrimaryDark">#AA808080</color>
-    <color name="divider_gray">#AA808080</color>
-    <color name="background_gray">#44808080</color>
-    <color name="list_divider_gray">#55808080</color>
+    <color name="colorPrimary">#28a1f7</color>
+    <color name="colorPrimaryDark">#0983dd</color>
+    <color name="colorAccent">#28a1f7</color>
+    <color name="divider_dark_gray">#e7e7e7</color>
+    <color name="divider_light_gray">#eaeaea</color>
+    <color name="background_gray">#f5f5f5</color>
+    <color name="text_gray">#5d5d5d</color>
+    <color name="text_hint_gray">#969696</color>
 </resources>

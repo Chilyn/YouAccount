@@ -2,16 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
     <FrameLayout
         android:id="@+id/fl_fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_tabs"></FrameLayout>
+        android:layout_above="@+id/divider"></FrameLayout>
+
+    <TextView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@+id/ll_tabs"
+        android:background="@color/divider_light_gray"/>
 
     <LinearLayout
-        android:id="@id/ll_tabs"
+        android:id="@+id/ll_tabs"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -23,7 +31,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@color/selector_tabs_color"
             android:text="@string/keep_accounts"/>
+
+        <TextView
+            android:layout_width="1px"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/divider_light_gray"/>
 
         <TextView
             android:id="@+id/tv_tab2"
@@ -31,6 +46,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@color/selector_tabs_color"
             android:text="@string/me"/>
     </LinearLayout>
 </RelativeLayout>

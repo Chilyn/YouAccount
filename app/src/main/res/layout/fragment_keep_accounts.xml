@@ -33,6 +33,9 @@
                 android:maxLines="1"
                 android:inputType="numberDecimal"
                 android:imeOptions="actionDone"
+                android:hint="@string/inout_money"
+                android:textColorHint="@color/text_hint_gray"
+                android:textSize="15sp"
                 android:background="@null"/>
         </LinearLayout>
 
@@ -69,7 +72,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider_gray"/>
+        android:background="@color/divider_dark_gray"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -96,7 +99,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider_gray"/>
+        android:background="@color/divider_dark_gray"/>
 
     <ListView
         android:id="@+id/lv"
