@@ -388,6 +388,15 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private long[] getQueryRangeTimeMill() {
         long startTime = 0;
         long endTime = 0;
+        //无论是什么查询模式下，如果账目范围显示本月则直接查询本月范围的数据
+        if (getString(R.string.this_month).equals(mTvAccountsRange.getText().toString())) {
+            Date date = new Date();
+            startTime = DateUtil.getMonthStartTime(date);
+            endTime = DateUtil.getMonthEndTime(date);
+            return new long[]{startTime, endTime};
+        }
+
+        //按月查询模式
         if (mCurrentChooseMode == YEAR_MONTH) {
             try {
                 Date date = mMonthFormat.parse(mTvMonth.getText().toString());
@@ -399,21 +408,25 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
             }
         }
 
+        //按日期查询模式
         if (mCurrentChooseMode == YEAR_MONTH_DAY) {
+            Date date1 = null, date2;
             try {
-                Date date1 = mDateFormat.parse(mTvDate1.getText().toString());
-                Date date2 = mDateFormat.parse(mTvDate2.getText().toString());
-                if (date1.getTime() <= date2.getTime()) {
-                    startTime = date1.getTime();
-                    endTime = date2.getTime();
-                } else {
-                    startTime = date2.getTime();
-                    endTime = date1.getTime();
-                }
+                date1 = mDateFormat.parse(mTvDate1.getText().toString());
+                date2 = mDateFormat.parse(mTvDate2.getText().toString());
             } catch (ParseException e) {
-                startTime = 0;
-                endTime = 0;
+                date2 = date1;
             }
+
+            if (date1.getTime() > date2.getTime()) {
+                //如果第二个日期在第一个日期前面，将两个日期调换
+                Date temp = new Date(date1.getTime());
+                date1.setTime(date2.getTime());
+                date2.setTime(temp.getTime());
+            }
+
+            startTime = DateUtil.getDateStartTime(date1);
+            endTime = DateUtil.getDateEndTime(date2);
         }
 
         return new long[]{startTime, endTime};
