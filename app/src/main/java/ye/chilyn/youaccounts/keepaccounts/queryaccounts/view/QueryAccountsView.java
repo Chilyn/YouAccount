@@ -47,6 +47,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private static final int NONE = -1;
     private TextView mTvChooseMonthOrDate;
     private RelativeLayout mRlMonth, mRlDate;
+    private RelativeLayout mRlDate1, mRlDate2;
     private TextView mTvAccountsRange, mTvMonth, mTvDate1, mTvTo, mTvDate2;
     private TextView mTvQuery;
     private TextView mTvTotalMoney;
@@ -75,8 +76,10 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         mRlDate = findView(R.id.rl_date);
         mTvAccountsRange = findView(R.id.tv_accounts_range);
         mTvMonth = findView(R.id.tv_month);
+        mRlDate1 = findView(R.id.rl_date1);
         mTvDate1 = findView(R.id.tv_date1);
         mTvTo = findView(R.id.tv_to);
+        mRlDate2 = findView(R.id.rl_date2);
         mTvDate2 = findView(R.id.tv_date2);
         mTvQuery = findView(R.id.tv_query);
         mTvTotalMoney = findView(R.id.tv_total_money);
@@ -87,6 +90,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     public void initData() {
         super.initData();
         mTvMonth.setText(mMonthFormat.format(new Date()));
+        mRlDate1.setSelected(true);
         mNumberFormat = NumberFormat.getCurrencyInstance();
         mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
     }
@@ -96,8 +100,8 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         super.setViewListener();
         mTvChooseMonthOrDate.setOnClickListener(this);
         mTvMonth.setOnClickListener(this);
-        mTvDate1.setOnClickListener(this);
-        mTvDate2.setOnClickListener(this);
+        mRlDate1.setOnClickListener(this);
+        mRlDate2.setOnClickListener(this);
         mTvQuery.setOnClickListener(this);
     }
 
@@ -112,13 +116,17 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                 showPicker(getString(R.string.choose_time));
                 break;
 
-            case R.id.tv_date1:
+            case R.id.rl_date1:
                 mCurrentSelectingDate = DATE1;
+                mRlDate1.setSelected(true);
+                mRlDate2.setSelected(false);
                 showPicker(getString(R.string.choose_start_date));
                 break;
 
-            case R.id.tv_date2:
+            case R.id.rl_date2:
                 mCurrentSelectingDate = DATE2;
+                mRlDate1.setSelected(false);
+                mRlDate2.setSelected(true);
                 showPicker(getString(R.string.choose_end_date));
                 break;
 

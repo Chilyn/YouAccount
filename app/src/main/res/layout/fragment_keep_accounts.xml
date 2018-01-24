@@ -35,7 +35,7 @@
                 android:imeOptions="actionDone"
                 android:hint="@string/inout_money"
                 android:textColorHint="@color/text_hint_gray"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:background="@null"/>
         </LinearLayout>
 
