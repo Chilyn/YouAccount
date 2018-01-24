@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">YouAccounts</string>
     <string name="db_name">YouAccounts.db</string>
-    <string name="external_dir">YouAccounts</string>
+    <string name="external_dir">.YouAccounts</string>
     <string name="db_dir">db</string>
     <string name="keep_accounts">记账</string>
     <string name="me">我的</string>

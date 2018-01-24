@@ -22,11 +22,17 @@ public class TitleBarView implements View.OnClickListener{
     /**左功能键*/
     private TextView mLeftOptionView;
 
+    /**左分割线*/
+    private TextView mLeftDivider;
+
     /**标题*/
     private TextView mTvTitle;
 
     /**右功能键*/
     private TextView mRightOptionView;
+
+    /**右分割线*/
+    private TextView mRightDivider;
 
     /**标题栏所在的Activity*/
     private Activity mActivity;
@@ -45,7 +51,9 @@ public class TitleBarView implements View.OnClickListener{
 
     private void initViews() {
         mLeftOptionView = findView(R.id.left_option);
+        mLeftDivider = findView(R.id.left_divider);
         mRightOptionView = findView(R.id.right_option);
+        mRightDivider = findView(R.id.right_divider);
         mTvTitle = findView(R.id.tv_title);
     }
 
@@ -92,6 +100,7 @@ public class TitleBarView implements View.OnClickListener{
      */
     public void setLeftOptionViewVisibility(boolean isVisible) {
         mLeftOptionView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        mLeftDivider.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -100,6 +109,7 @@ public class TitleBarView implements View.OnClickListener{
      */
     public void setRightOptionViewVisibility(boolean isVisible) {
         mRightOptionView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+        mRightDivider.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -107,7 +117,9 @@ public class TitleBarView implements View.OnClickListener{
      */
     public void setOptionViewInvisible() {
         mLeftOptionView.setVisibility(View.GONE);
+        mLeftDivider.setVisibility(View.GONE);
         mRightOptionView.setVisibility(View.GONE);
+        mRightDivider.setVisibility(View.GONE);
     }
 
     /**
@@ -115,7 +127,9 @@ public class TitleBarView implements View.OnClickListener{
      */
     public void setOptionViewVisible() {
         mLeftOptionView.setVisibility(View.VISIBLE);
+        mLeftDivider.setVisibility(View.VISIBLE);
         mRightOptionView.setVisibility(View.VISIBLE);
+        mRightDivider.setVisibility(View.VISIBLE);
     }
 
     /**

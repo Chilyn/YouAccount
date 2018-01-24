@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 // 没有写的权限，去申请写的权限，会弹出对话框
                 ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
             } else {
+                //创建app相关存储目录
+                AppFilePath.createAppDirectories();
                 AccountsApplication.setCanCreateFile(true);
             }
         } catch (Exception e) {
