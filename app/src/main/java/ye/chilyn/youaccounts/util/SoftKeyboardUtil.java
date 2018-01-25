@@ -21,4 +21,13 @@ public class SoftKeyboardUtil {
         InputMethodManager imm = (InputMethodManager) AccountsApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0); //强制隐藏键盘
     }
+
+    /**
+     * 弹出键盘
+     * @param view
+     */
+    public static void showSoftKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) AccountsApplication.getAppContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+    }
 }

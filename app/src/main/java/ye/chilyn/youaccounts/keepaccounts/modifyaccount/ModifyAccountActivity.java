@@ -97,10 +97,11 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
             mModifyBean.setMoney(money);
             mModifyBean.setBillType(mTvBillType.getText().toString());
             mKeepAccountsSqlModel.handleModelEvent(HandleModelType.UPDATE_ACCOUNTS, mModifyBean);
-            SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
             ToastUtil.showShortToast(AccountsApplication.getAppContext().getString(R.string.data_invalid));
+        } finally {
+            SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
         }
     }
 
@@ -151,6 +152,12 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
     }
 
     @Override

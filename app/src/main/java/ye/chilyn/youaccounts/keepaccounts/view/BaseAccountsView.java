@@ -1,34 +1,20 @@
 package ye.chilyn.youaccounts.keepaccounts.view;
 
 import android.content.Intent;
-import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.ypy.eventbus.EventBus;
-
-import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseView;
-import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.contant.HandleModelType;
-import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
 import ye.chilyn.youaccounts.keepaccounts.contant.ExtraKey;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
-import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.keepaccounts.modifyaccount.ModifyAccountActivity;
-import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
-import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -85,6 +71,7 @@ public abstract class BaseAccountsView extends BaseView {
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             mLongClickPosition = position;
             mDeleteOrModifyDialogView.showDialog();
+            SoftKeyboardUtil.forceCloseSoftKeyboard(mLvAccounts);
             return false;
         }
     };
