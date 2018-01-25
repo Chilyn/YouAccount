@@ -22,16 +22,23 @@
         <EditText
             android:id="@+id/et_money"
             android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="left|center_vertical"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
             android:maxLines="1"
             android:inputType="numberDecimal"
             android:imeOptions="actionDone"
             android:hint="@string/inout_money"
             android:textColorHint="@color/text_hint_gray"
             android:textSize="14sp"
-            android:background="@null"/>
+            android:background="@drawable/shape_modify_widget_background"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,12 +52,44 @@
             android:layout_height="wrap_content"
             android:text="@string/bill_type"/>
 
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_bill_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""/>-->
+
+        <RelativeLayout
+            android:id="@+id/ll_bill_type"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/shape_modify_widget_background">
+
+            <TextView
+                android:id="@+id/tv_bill_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/eat"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:textSize="8sp"
+                android:textColor="@color/text_hint_gray"
+                android:text="@string/triangle"/>
+        </RelativeLayout>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,14 +111,21 @@
     </LinearLayout>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
+
+    <TextView
         android:id="@+id/tv_modify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:layout_marginTop="5dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/selector_btn_background"
+        android:textColor="@android:color/white"
         android:text="@string/modify"/>
 </LinearLayout>

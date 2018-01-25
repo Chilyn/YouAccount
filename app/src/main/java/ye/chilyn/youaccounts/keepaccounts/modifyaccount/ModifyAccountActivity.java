@@ -70,7 +70,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
 
     private void setListener() {
         mTvModify.setOnClickListener(this);
-        mTvBillType.setOnClickListener(this);
+        findView(R.id.ll_bill_type).setOnClickListener(this);
     }
 
 
@@ -81,7 +81,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
                 modifyAccount();
                 break;
 
-            case R.id.tv_bill_type:
+            case R.id.ll_bill_type:
                 mBillTypeDialogView.showDialog();
                 break;
         }
