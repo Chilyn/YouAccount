@@ -1,10 +1,7 @@
 package ye.chilyn.youaccounts.view;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import ye.chilyn.youaccounts.R;

@@ -40,6 +40,9 @@
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
     <string name="inout_money">输入金额</string>
+    <string name="modify_password">修改密码</string>
+    <string name="exit">退出</string>
+    <string name="modify_nick_name">修改昵称</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>
