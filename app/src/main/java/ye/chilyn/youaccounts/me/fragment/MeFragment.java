@@ -1,20 +1,20 @@
 package ye.chilyn.youaccounts.me.fragment;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.TextView;
 
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
+import ye.chilyn.youaccounts.login.LoginActivity;
+import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
 /**
@@ -26,6 +26,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TitleBarView mTitleBarView;
     private ImageView mIvProfilePhoto;
     private LinearLayout mLlModifyPassword, mLlModifyNickname, mLlExit;
+
+    //-------------------退出登录弹窗相关------------------------//
+    private Dialog mDialogExit;
+    private View mExitDialogView;
+    private TextView mTvConfirm;
+    //-------------------退出登录弹窗相关------------------------//
 
     @Nullable
     @Override
@@ -49,6 +55,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mLlModifyPassword = findView(R.id.ll_modify_password);
         mLlModifyNickname = findView(R.id.ll_modify_nickname);
         mLlExit = findView(R.id.ll_exit);
+        mExitDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_confirm_exit, null);
+        mTvConfirm = (TextView) mExitDialogView.findViewById(R.id.tv_confirm);
+        mDialogExit = DialogUtil.createDialog(getActivity(), R.id.tv_cancel, mExitDialogView, 250, 101);
     }
 
     private void initData() {
@@ -60,6 +69,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mLlModifyPassword.setOnClickListener(this);
         mLlModifyNickname.setOnClickListener(this);
         mLlExit.setOnClickListener(this);
+        mTvConfirm.setOnClickListener(this);
     }
 
     @Override
@@ -75,17 +85,22 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.ll_exit:
+                mDialogExit.show();
+                break;
+
+            case R.id.tv_confirm:
+                mDialogExit.dismiss();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
                 break;
         }
     }
 
     @Override
     protected void destroyViews() {
-
     }
 
     @Override
     protected void releaseModels() {
-
     }
 }

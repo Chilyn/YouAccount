@@ -24,7 +24,14 @@
         <activity
             android:name=".keepaccounts.modifyaccount.ModifyAccountActivity"
             android:windowSoftInputMode="adjustPan|stateVisible" />
-        <activity android:name=".keepaccounts.queryaccounts.QueryAccountsActivity"></activity>
+        <activity android:name=".keepaccounts.queryaccounts.QueryAccountsActivity" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+
+        </activity>
+        <activity android:name=".register.RegisterActivity" />
+        <activity android:name=".WelcomeActivity"></activity>
     </application>
 
 </manifest>
