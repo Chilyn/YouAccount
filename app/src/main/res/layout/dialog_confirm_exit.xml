@@ -31,7 +31,7 @@
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:text="@string/cancel"
-            android:background="@drawable/selector_btn_cancel_confirm"/>
+            android:background="@drawable/selector_btn_cancel"/>
 
         <TextView
             android:layout_width="1px"
@@ -47,6 +47,6 @@
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:text="@string/confirm"
-            android:background="@drawable/selector_btn_cancel_confirm"/>
+            android:background="@drawable/selector_btn_confirm"/>
     </LinearLayout>
 </LinearLayout>
