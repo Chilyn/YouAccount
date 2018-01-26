@@ -34,7 +34,7 @@
                 android:maxLines="1"
                 android:inputType="numberDecimal"
                 android:imeOptions="actionDone"
-                android:hint="@string/inout_money"
+                android:hint="@string/input_money"
                 android:textColorHint="@color/text_hint_gray"
                 android:textSize="14sp"
                 android:background="@null"/>

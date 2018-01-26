@@ -93,7 +93,7 @@
             android:maxLines="1"
             android:inputType="textPassword"
             android:imeOptions="actionDone"
-            android:hint="@string/input_password"
+            android:hint="@string/please_input_password"
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:textColorHint="@color/text_hint_gray"

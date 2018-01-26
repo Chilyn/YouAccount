@@ -1,7 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_register"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
-</RelativeLayout>
+    <include layout="@layout/layout_title_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:text="@string/input_id"/>
+
+        <EditText
+            android:id="@+id/et_id"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="text"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:imeOptions="actionDone"
+            android:hint="@string/eight_character"
+            android:textColorHint="@color/text_hint_gray"
+            android:textSize="14sp"
+            android:background="@drawable/shape_modify_widget_background"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:text="@string/nickname"/>
+
+        <EditText
+            android:id="@+id/et_money"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
+            android:hint="@string/eight_character"
+            android:textColorHint="@color/text_hint_gray"
+            android:textSize="14sp"
+            android:background="@drawable/shape_modify_widget_background"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:text="@string/input_password"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
+            android:hint="@string/eight_character"
+            android:textColorHint="@color/text_hint_gray"
+            android:textSize="14sp"
+            android:background="@drawable/shape_modify_widget_background"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:gravity="right|center_vertical"
+            android:text="@string/confirm_password"/>
+
+        <EditText
+            android:id="@+id/et_confirm_password"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="left|center_vertical"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
+            android:hint="@string/eight_character"
+            android:textColorHint="@color/text_hint_gray"
+            android:textSize="14sp"
+            android:background="@drawable/shape_modify_widget_background"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
+
+    <TextView
+        android:id="@+id/tv_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/selector_btn_background"
+        android:textColor="@android:color/white"
+        android:text="@string/confirm_register"/>
+</LinearLayout>

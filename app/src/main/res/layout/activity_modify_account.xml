@@ -29,7 +29,7 @@
             android:maxLines="1"
             android:inputType="numberDecimal"
             android:imeOptions="actionDone"
-            android:hint="@string/inout_money"
+            android:hint="@string/input_money"
             android:textColorHint="@color/text_hint_gray"
             android:textSize="14sp"
             android:background="@drawable/shape_modify_widget_background"/>
@@ -51,12 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bill_type"/>
-
-        <!--<TextView
-            android:id="@+id/tv_bill_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>-->
 
         <RelativeLayout
             android:id="@+id/ll_bill_type"

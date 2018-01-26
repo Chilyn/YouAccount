@@ -19,6 +19,7 @@ import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.CommonTextWatcher;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
+import ye.chilyn.youaccounts.register.RegisterActivity;
 
 /**
  * Created by Alex on 2018/1/26.
@@ -119,6 +120,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.tv_register:
+                startActivity(new Intent(this, RegisterActivity.class));
                 break;
 
             case R.id.tv_forgot_password:

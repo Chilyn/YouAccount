@@ -44,6 +44,9 @@ public class WelcomeActivity extends BaseActivity {
         }
     };
 
+    /**
+     * 跳转登录页面或者主页面
+     */
     private void loginOrToMain() {
         Intent intent;
         if (mIsLogined) {
