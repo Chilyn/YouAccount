@@ -139,6 +139,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_below="@id/divider2"
+        android:textColor="@color/colorPrimary"
         android:text="@string/register_new_account"/>
 
     <TextView
@@ -149,6 +150,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_below="@id/divider2"
+        android:textColor="@color/colorPrimary"
         android:text="@string/forgot_password"/>
 
     <TextView

@@ -1,8 +1,8 @@
 package ye.chilyn.youaccounts.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.CommonTextWatcher;
@@ -30,7 +31,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView mTvClearAccount, mTvClearPassword;
     private TextView mTvRegister, mTvForgotPassword;
     private TextView mTvLogin;
-    // TODO: 2018/1/26  
+    // TODO: 2018/1/26
     private IBaseModel mUserSqlModel;
 
     @Override
@@ -124,6 +125,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.tv_login:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
         }
     }

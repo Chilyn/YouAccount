@@ -11,7 +11,6 @@ import com.ypy.eventbus.EventBus;
 
 import java.util.Date;
 
-import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
@@ -70,12 +69,10 @@ public class KeepAccountsFragment extends BaseFragment {
 
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
         mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
-        if (AccountsApplication.canCreateFile()) {
-            Date now = new Date();
-            mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
-            mKeepAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
-        }
+        Date now = new Date();
+        mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
+                new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+        mKeepAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 
     private void setViewListener() {
@@ -134,7 +131,6 @@ public class KeepAccountsFragment extends BaseFragment {
 
     public void onEvent(Integer eventType) {
         switch (eventType) {
-            case EventType.WRITE_FILE_PERMISSION_GOTTEN://获取写外部存储权限后查询账目
             case EventType.QUERY_ACCOUNTS:
                 Date now = new Date();
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
