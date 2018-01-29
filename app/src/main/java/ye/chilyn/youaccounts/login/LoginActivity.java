@@ -2,6 +2,7 @@ package ye.chilyn.youaccounts.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -18,8 +19,16 @@ import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.CommonTextWatcher;
+import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
+import ye.chilyn.youaccounts.contant.HandleModelType;
+import ye.chilyn.youaccounts.contant.RefreshViewType;
+import ye.chilyn.youaccounts.entity.UserBean;
+import ye.chilyn.youaccounts.login.model.LoginModel;
 import ye.chilyn.youaccounts.register.RegisterActivity;
+import ye.chilyn.youaccounts.util.MD5Util;
+import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
+import ye.chilyn.youaccounts.util.ToastUtil;
 
 /**
  * Created by Alex on 2018/1/26.
@@ -32,8 +41,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView mTvClearAccount, mTvClearPassword;
     private TextView mTvRegister, mTvForgotPassword;
     private TextView mTvLogin;
-    // TODO: 2018/1/26
-    private IBaseModel mUserSqlModel;
+    private IBaseModel mLoginModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +65,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initData() {
+        mLoginModel = new LoginModel(mRefreshViewListener);
     }
 
     private void setListener() {
@@ -97,7 +106,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (EditorInfo.IME_ACTION_DONE == actionId) {
-
+                SoftKeyboardUtil.forceCloseSoftKeyboard(mEtPassword);
+                login();
                 return true;
             }
             return false;
@@ -127,12 +137,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.tv_login:
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
+                SoftKeyboardUtil.forceCloseSoftKeyboard(mEtPassword);
+                login();
                 break;
         }
     }
 
+    /**
+     * 显示或隐藏密码
+     */
     private void showOrHidePassword() {
         if (mIvPasswordVisibility.isSelected()) {
             mIvPasswordVisibility.setSelected(false);
@@ -145,11 +158,81 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
+    /**
+     * 登录操作
+     */
+    private void login() {
+        String nickname = mEtAccount.getText().toString().trim();
+        String password = mEtPassword.getText().toString().trim();
+        if (TextUtils.isEmpty(nickname)) {
+            ToastUtil.showShortToast(getString(R.string.account_can_not_be_empty));
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            ToastUtil.showShortToast(getString(R.string.password_can_not_be_empty));
+            return;
+        }
+
+        password = MD5Util.getStringMD5(MD5Util.getStringMD5(password));
+        UserBean bean = new UserBean();
+        bean.setNickname(nickname);
+        bean.setPassword(password);
+        mLoginModel.handleModelEvent(HandleModelType.USER_LOGIN, bean);
+    }
+
+    private RefreshViewListener mRefreshViewListener = new RefreshViewListener();
+
+    private class RefreshViewListener implements IBaseModel.OnRefreshViewListener {
+
+        @Override
+        public void onRefreshView(int refreshType, Object data) {
+            mHandler.sendMessage(mHandler.obtainMessage(refreshType, data));
+        }
+    }
+
+    private ViewHandler mHandler = new ViewHandler(this);
+
+    private static class ViewHandler extends BaseStaticInnerHandler<LoginActivity> {
+
+        public ViewHandler(LoginActivity activity) {
+            super(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (isReferenceRecycled()) {
+                removeCallbacksAndMessages(null);
+                return;
+            }
+
+            LoginActivity activity = getReference();
+            switch (msg.what) {
+                case RefreshViewType.USER_NOT_EXIST:
+                    ToastUtil.showShortToast(activity.getString(R.string.user_not_exist));
+                    break;
+
+                case RefreshViewType.LOGIN_SUCCESS:
+                    ToastUtil.showShortToast(activity.getString(R.string.login_success));
+                    activity.startActivity(new Intent(activity, MainActivity.class));
+                    activity.finish();
+                    break;
+
+                case RefreshViewType.LOGIN_FAIL:
+                    ToastUtil.showShortToast(activity.getString(R.string.password_is_wrong));
+                    break;
+            }
+        }
+    }
+
     @Override
     protected void destroyViews() {
     }
 
     @Override
     protected void releaseModels() {
+        mLoginModel.onDestroy();
+        mLoginModel = null;
     }
 }

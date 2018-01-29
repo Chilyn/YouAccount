@@ -32,4 +32,10 @@ public interface RefreshViewType {
     int REGISTER_USER_SUCCESS = 111;
     /**注册失败*/
     int REGISTER_USER_FAIL = 112;
+    /**用户不存在*/
+    int USER_NOT_EXIST = 113;
+    /**登录成功*/
+    int LOGIN_SUCCESS = 114;
+    /**登录失败*/
+    int LOGIN_FAIL = 115;
 }

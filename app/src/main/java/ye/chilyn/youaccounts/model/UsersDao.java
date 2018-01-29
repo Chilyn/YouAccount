@@ -17,8 +17,13 @@ public class UsersDao {
     public UsersDao() {
     }
 
+    /**
+     * 用户是否存在
+     * @param bean
+     * @return
+     */
     public boolean isUserExisted(UserBean bean) {
-        Cursor cursor = mSqlHelper.getWritableDatabase().query(UsersTable.TABLE_NAME, null,
+        Cursor cursor = mSqlHelper.openDatabase().query(UsersTable.TABLE_NAME, null,
                 UsersTable.SQL_USER_EXISTED_WHERE,
                 new String[]{bean.getNickname()}, null, null, null);
         if (cursor.moveToNext()) {
@@ -30,8 +35,13 @@ public class UsersDao {
         return false;
     }
 
+    /**
+     * 匹配用户，对比用户的昵称密码
+     * @param bean
+     * @return
+     */
     public boolean matchUser(UserBean bean) {
-        Cursor cursor = mSqlHelper.getWritableDatabase().query(UsersTable.TABLE_NAME, null,
+        Cursor cursor = mSqlHelper.openDatabase().query(UsersTable.TABLE_NAME, null,
                 UsersTable.SQL_MATCH_USER_WHERE,
                 new String[]{bean.getNickname(), bean.getPassword()}, null, null, null);
         if (cursor.moveToNext()) {
@@ -43,11 +53,35 @@ public class UsersDao {
         return false;
     }
 
+    /**
+     * 通过昵称查找用户信息
+     * @param nickname
+     * @return
+     */
+    public int queryUserId(String nickname) {
+        Cursor cursor = mSqlHelper.openDatabase().query(UsersTable.TABLE_NAME, null,
+                UsersTable.SQL_QUERY_USER_WHERE,
+                new String[]{nickname}, null, null, null);
+        int uid = -1;
+        if (cursor.moveToNext()) {
+            uid = Integer.valueOf(cursor.getString(cursor.getColumnIndex(UsersTable.USER_ID)));
+        }
+
+        cursor.close();
+        mSqlHelper.closeDatabase();
+        return uid;
+    }
+
+    /**
+     * 插入用户数据
+     * @param bean
+     * @return
+     */
     public boolean insertUsers(UserBean bean) {
         ContentValues values = new ContentValues();
         values.put(UsersTable.NICKNAME, bean.getNickname());
         values.put(UsersTable.PASSWORD, bean.getPassword());
-        long errCode = mSqlHelper.getWritableDatabase().insert(UsersTable.TABLE_NAME, null, values);
+        long errCode = mSqlHelper.openDatabase().insert(UsersTable.TABLE_NAME, null, values);
         mSqlHelper.closeDatabase();
         if (errCode == -1) {
             return false;

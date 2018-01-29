@@ -17,7 +17,7 @@ public class YouAccountsSqlHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = AppFilePath.DB_FILE_PATH +
             AccountsApplication.getAppContext().getString(R.string.db_name);
-    private static final int VERSION = 2;
+    private static final int VERSION = 1;
     private int mDbOpenCount = 0;
     private SQLiteDatabase mDb;
 
@@ -37,14 +37,12 @@ public class YouAccountsSqlHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(AccountsTable.SQL_DROP_TABLE);
         db.execSQL(AccountsTable.SQL_CREATE_TABLE);
+        db.execSQL(UsersTable.SQL_DROP_TABLE);
+        db.execSQL(UsersTable.SQL_CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 1) {
-            db.execSQL(UsersTable.SQL_DROP_TABLE);
-            db.execSQL(UsersTable.SQL_CREATE_TABLE);
-        }
     }
 
     /**

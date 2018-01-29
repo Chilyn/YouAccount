@@ -18,4 +18,6 @@ public interface HandleModelType {
     int CALCULATE_TOTAL_ACCOUNTS = 4;
     /**注册新用户*/
     int REGISTER_USER = 5;
+    /**用户登录*/
+    int USER_LOGIN = 6;
 }

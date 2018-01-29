@@ -69,6 +69,11 @@
     <string name="password_not_match">密码与确认密码不匹配</string>
     <string name="register_success">注册成功,请使用此昵称登录：</string>
     <string name="register_fail">注册失败</string>
+    <string name="account_can_not_be_empty">账号不能为空</string>
+    <string name="password_can_not_be_empty">密码不能为空</string>
+    <string name="user_not_exist">用户不存在</string>
+    <string name="login_success">登录成功</string>
+    <string name="password_is_wrong">密码不正确</string>
     1
     <string-array name="bill_type">
         <item>吃饭</item>
