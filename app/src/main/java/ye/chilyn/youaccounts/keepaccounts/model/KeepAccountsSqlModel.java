@@ -9,6 +9,7 @@ import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
+import ye.chilyn.youaccounts.model.AccountsDao;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -18,7 +19,7 @@ import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 public class KeepAccountsSqlModel extends BaseModel {
 
     private ExecutorService mSqlTaskExecutor = Executors.newSingleThreadExecutor();
-    private AccountsSqlHelper mSqlHelper = AccountsSqlHelper.getInstance();
+    private AccountsDao mAccountsDao = new AccountsDao();
 
     public KeepAccountsSqlModel(OnRefreshViewListener listener) {
         super(listener);
@@ -62,7 +63,7 @@ public class KeepAccountsSqlModel extends BaseModel {
     }
 
     private void insertAccounts(AccountsBean bean) {
-        boolean isSuccess = mSqlHelper.insertAccounts(bean);
+        boolean isSuccess = mAccountsDao.insertAccounts(bean);
         if (isSuccess) {
             callRefreshView(RefreshViewType.INSERT_ACCOUNTS_SUCCESS, null);
         } else {
@@ -71,12 +72,12 @@ public class KeepAccountsSqlModel extends BaseModel {
     }
 
     private void queryAccounts(QueryAccountsParameter param) {
-        List<AccountsBean> listAccountsBean = mSqlHelper.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
+        List<AccountsBean> listAccountsBean = mAccountsDao.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
         callRefreshView(RefreshViewType.QUERY_ACCOUNTS_SUCCESS, listAccountsBean);
     }
 
     private void deleteAccounts(AccountsBean bean) {
-        if (mSqlHelper.deleteAccount(bean)) {
+        if (mAccountsDao.deleteAccount(bean)) {
             callRefreshView(RefreshViewType.DELETE_ACCOUNT_SUCCESS, bean);
         } else {
             callRefreshView(RefreshViewType.DELETE_ACCOUNT_FAIL, null);
@@ -84,7 +85,7 @@ public class KeepAccountsSqlModel extends BaseModel {
     }
 
     private void updateAccounts(AccountsBean bean) {
-        if (mSqlHelper.updateAccount(bean)) {
+        if (mAccountsDao.updateAccount(bean)) {
             callRefreshView(RefreshViewType.UPDATE_ACCOUNT_SUCCESS, null);
         } else {
             callRefreshView(RefreshViewType.UPDATE_ACCOUNT_FAIL, null);

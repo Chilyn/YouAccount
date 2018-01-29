@@ -1,16 +1,11 @@
-package ye.chilyn.youaccounts.keepaccounts.model;
+package ye.chilyn.youaccounts.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ye.chilyn.youaccounts.AccountsApplication;
-import ye.chilyn.youaccounts.R;
-import ye.chilyn.youaccounts.contant.AppFilePath;
 import ye.chilyn.youaccounts.keepaccounts.contant.AccountsTable;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 
@@ -19,34 +14,11 @@ import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
  * 账目数据库操作的Helper类
  */
 
-public class AccountsSqlHelper extends SQLiteOpenHelper {
+public class AccountsDao {
 
-    private static final String DB_NAME = AppFilePath.DB_FILE_PATH +
-            AccountsApplication.getAppContext().getString(R.string.db_name);
-    private static final int VERSION = 1;
-    private int mDbOpenCount = 0;
-    private SQLiteDatabase mDb;
+    private YouAccountsSqlHelper mSqlHelper = YouAccountsSqlHelper.getInstance();
 
-    private static class InstanceHolder {
-        private static final AccountsSqlHelper mInstance = new AccountsSqlHelper();
-    }
-
-    public static AccountsSqlHelper getInstance() {
-        return InstanceHolder.mInstance;
-    }
-
-    private AccountsSqlHelper() {
-        super(AccountsApplication.getAppContext(), DB_NAME, null, VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(AccountsTable.SQL_DROP_TABLE);
-        db.execSQL(AccountsTable.SQL_CREATE_TABLE);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public AccountsDao() {
     }
 
     /**
@@ -61,9 +33,8 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         values.put(AccountsTable.BILL_TYPE, bean.getBillType());
         values.put(AccountsTable.PAYMENT_TIME_MILL, bean.getTimeMill());
         values.put(AccountsTable.PAYMENT_TIME, bean.getTime());
-        long errCode = openDatabase().insert(AccountsTable.TABLE_NAME, null, values);
-
-        closeDatabase();
+        long errCode = mSqlHelper.openDatabase().insert(AccountsTable.TABLE_NAME, null, values);
+        mSqlHelper.closeDatabase();
         if (errCode == -1) {
             return false;
         }
@@ -79,7 +50,7 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
      * @return
      */
     public List<AccountsBean> queryAccounts(int userId, long startTime, long endTime) {
-        Cursor cursor = openDatabase().query(AccountsTable.TABLE_NAME, null,
+        Cursor cursor = mSqlHelper.openDatabase().query(AccountsTable.TABLE_NAME, null,
                 AccountsTable.SQL_QUERY_ACCOUNTS_WHERE,
                 new String[]{userId + "", startTime + "", endTime + ""},
                 null, null,
@@ -102,7 +73,7 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        closeDatabase();
+        mSqlHelper.closeDatabase();
         return listAccountsBean;
     }
 
@@ -112,7 +83,9 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
      * @return
      */
     public boolean deleteAccount(AccountsBean bean) {
-        int deleteRows = openDatabase().delete(AccountsTable.TABLE_NAME, AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getTimeMill() + ""});
+        int deleteRows = mSqlHelper.openDatabase().delete(AccountsTable.TABLE_NAME,
+                AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getTimeMill() + ""});
+        mSqlHelper.closeDatabase();
         if (deleteRows == 0) {
             return false;
         }
@@ -129,36 +102,14 @@ public class AccountsSqlHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(AccountsTable.MONEY, bean.getMoney());
         values.put(AccountsTable.BILL_TYPE, bean.getBillType());
-        int affectedRows = openDatabase().update(AccountsTable.TABLE_NAME, values,
+        int affectedRows = mSqlHelper.openDatabase().update(AccountsTable.TABLE_NAME, values,
                 AccountsTable.SQL_UPDATE_ACCOUNT_WHERE,
                 new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});
+        mSqlHelper.closeDatabase();
         if (affectedRows > 0) {
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * 打开数据库
-     * @return
-     */
-    private synchronized SQLiteDatabase openDatabase() {
-        if (mDbOpenCount == 0) {
-            mDb = getWritableDatabase();
-        }
-
-        mDbOpenCount++;
-        return mDb;
-    }
-
-    /**
-     * 关闭数据库
-     */
-    private synchronized void closeDatabase() {
-        mDbOpenCount--;
-        if (mDbOpenCount == 0) {
-            mDb.close();
-        }
     }
 }
