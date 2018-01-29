@@ -137,9 +137,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (mIvPasswordVisibility.isSelected()) {
             mIvPasswordVisibility.setSelected(false);
             mEtPassword.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            mEtPassword.setSelection(mEtPassword.getText().length());
         } else {
             mIvPasswordVisibility.setSelected(true);
             mEtPassword.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            mEtPassword.setSelection(mEtPassword.getText().length());
         }
     }
 

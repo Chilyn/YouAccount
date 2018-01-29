@@ -16,4 +16,6 @@ public interface HandleModelType {
     int DELETE_ACCOUNTS = 3;
     /**计算账目数据*/
     int CALCULATE_TOTAL_ACCOUNTS = 4;
+    /**注册新用户*/
+    int REGISTER_USER = 5;
 }

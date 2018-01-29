@@ -19,43 +19,6 @@
             android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:gravity="right|center_vertical"
-            android:text="@string/input_id"/>
-
-        <EditText
-            android:id="@+id/et_id"
-            android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="left|center_vertical"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:maxLength="20"
-            android:inputType="text"
-            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            android:imeOptions="actionNext"
-            android:hint="@string/twenty_number_letter_combined"
-            android:textColorHint="@color/text_hint_gray"
-            android:textSize="14sp"
-            android:background="@drawable/shape_modify_widget_background"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider_dark_gray"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:gravity="right|center_vertical"
             android:text="@string/nickname"/>
 
         <EditText
@@ -93,21 +56,36 @@
             android:gravity="right|center_vertical"
             android:text="@string/input_password"/>
 
-        <EditText
-            android:id="@+id/et_password"
+        <RelativeLayout
             android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="left|center_vertical"
-            android:maxLines="1"
-            android:maxLength="15"
-            android:inputType="textPassword"
-            android:imeOptions="actionNext"
-            android:hint="@string/eight_to_fifteen_character"
-            android:textColorHint="@color/text_hint_gray"
-            android:textSize="14sp"
-            android:background="@drawable/shape_modify_widget_background"/>
+            android:layout_height="30dp">
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="40dp"
+                android:gravity="left|center_vertical"
+                android:maxLines="1"
+                android:maxLength="15"
+                android:inputType="textPassword"
+                android:imeOptions="actionNext"
+                android:hint="@string/eight_to_fifteen_character"
+                android:textColorHint="@color/text_hint_gray"
+                android:textSize="14sp"
+                android:background="@drawable/shape_modify_widget_background"/>
+
+            <ImageView
+                android:id="@+id/iv_password_visibility"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="5dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/selector_password_visibility"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView
@@ -128,21 +106,36 @@
             android:gravity="right|center_vertical"
             android:text="@string/confirm_password"/>
 
-        <EditText
-            android:id="@+id/et_confirm_password"
+        <RelativeLayout
             android:layout_width="200dp"
-            android:layout_height="30dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="left|center_vertical"
-            android:maxLines="1"
-            android:maxLength="15"
-            android:inputType="textPassword"
-            android:imeOptions="actionDone"
-            android:hint="@string/eight_to_fifteen_character"
-            android:textColorHint="@color/text_hint_gray"
-            android:textSize="14sp"
-            android:background="@drawable/shape_modify_widget_background"/>
+            android:layout_height="30dp">
+
+            <EditText
+                android:id="@+id/et_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="40dp"
+                android:gravity="left|center_vertical"
+                android:maxLines="1"
+                android:maxLength="15"
+                android:inputType="textPassword"
+                android:imeOptions="actionDone"
+                android:hint="@string/eight_to_fifteen_character"
+                android:textColorHint="@color/text_hint_gray"
+                android:textSize="14sp"
+                android:background="@drawable/shape_modify_widget_background"/>
+
+            <ImageView
+                android:id="@+id/iv_confirm_password_visibility"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="5dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/selector_password_visibility"/>
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView

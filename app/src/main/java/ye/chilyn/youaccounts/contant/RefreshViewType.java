@@ -26,4 +26,10 @@ public interface RefreshViewType {
     int UPDATE_ACCOUNT_FAIL = 108;
     /**强制关闭键盘*/
     int FORCE_CLOSE_SOFT_KEYBOARD = 109;
+    /**用户之前已注册*/
+    int USER_HAS_REGISTERED_BEFORE = 110;
+    /**注册成功*/
+    int REGISTER_USER_SUCCESS = 111;
+    /**注册失败*/
+    int REGISTER_USER_FAIL = 112;
 }

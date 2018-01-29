@@ -65,6 +65,10 @@
     <string name="twenty_number_letter_combined">1~20个数字或字母组合</string>
     <string name="twenty_character">1~20个字符</string>
     <string name="register_can_not_be_empty">注册数据不能为空</string>
+    <string name="password_must_over_eight_character">密码不能少于8个字符</string>
+    <string name="password_not_match">密码与确认密码不匹配</string>
+    <string name="register_success">注册成功,请使用此昵称登录：</string>
+    <string name="register_fail">注册失败</string>
     1
     <string-array name="bill_type">
         <item>吃饭</item>
