@@ -1,22 +1,16 @@
 package ye.chilyn.youaccounts;
 
-import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
-
-import com.ypy.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ye.chilyn.youaccounts.contant.AppFilePath;
-import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.keepaccounts.fragment.KeepAccountsFragment;
 import ye.chilyn.youaccounts.me.fragment.MeFragment;
 import ye.chilyn.youaccounts.util.FragmentTabManager;
@@ -74,4 +68,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //按回退键变成home键效果
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 }
