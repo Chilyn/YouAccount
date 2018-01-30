@@ -2,7 +2,6 @@ package ye.chilyn.youaccounts.keepaccounts.model;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.contant.HandleModelType;
@@ -10,6 +9,7 @@ import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.model.AccountsDao;
+import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
 /**
  * Created by Alex on 2018/1/15.
@@ -18,7 +18,7 @@ import ye.chilyn.youaccounts.model.AccountsDao;
 
 public class KeepAccountsSqlModel extends BaseModel {
 
-    private ExecutorService mSqlTaskExecutor = Executors.newSingleThreadExecutor();
+    private ExecutorService mSqlTaskExecutor = CacheExecutorHelper.getInstance().getCacheExecutor();
     private AccountsDao mAccountsDao = new AccountsDao();
 
     public KeepAccountsSqlModel(OnRefreshViewListener listener) {
