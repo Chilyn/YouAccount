@@ -11,6 +11,7 @@ import com.ypy.eventbus.EventBus;
 
 import java.util.Date;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
@@ -41,6 +42,7 @@ public class KeepAccountsFragment extends BaseFragment {
     private IBaseModel mAccountsCalculateModel;
     /**标题栏*/
     private TitleBarView mTitleBarView;
+    private int mUserId;
 
     @Nullable
     @Override
@@ -67,11 +69,12 @@ public class KeepAccountsFragment extends BaseFragment {
         mTitleBarView.setTitle(getString(R.string.keep_accounts));
         mTitleBarView.setRightOptionViewText(getString(R.string.query));
 
+        mUserId = AccountsApplication.getLoginUserInfo().getUserId();
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
         mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
         Date now = new Date();
         mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
         mKeepAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 
@@ -134,7 +137,7 @@ public class KeepAccountsFragment extends BaseFragment {
             case EventType.QUERY_ACCOUNTS:
                 Date now = new Date();
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                        new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                        new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
                 break;
         }
     }

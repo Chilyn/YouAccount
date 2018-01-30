@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import java.util.Date;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
@@ -26,6 +27,7 @@ public class QueryAccountsActivity extends BaseActivity {
     private IBaseModel mKeepAccountsSqlModel;
     private IBaseModel mAccountsCalculateModel;
     private IBaseView mQueryAccountsView;
+    private int mUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,12 @@ public class QueryAccountsActivity extends BaseActivity {
 
     private void initData() {
         mTitleBarView.setTitle(getString(R.string.query_accounts));
+        mUserId = AccountsApplication.getLoginUserInfo().getUserId();
         mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
         mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
         Date now = new Date();
         mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(1, DateUtil.getMonthStartTime(now), DateUtil.getMonthEndTime(now)));
+                new QueryAccountsParameter(mUserId, DateUtil.getMonthStartTime(now), DateUtil.getMonthEndTime(now)));
         mQueryAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 

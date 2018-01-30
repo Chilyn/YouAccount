@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseView;
 import ye.chilyn.youaccounts.contant.HandleModelType;
@@ -29,6 +30,7 @@ public abstract class BaseAccountsView extends BaseView {
     /**修改或删除弹窗*/
     private DeleteOrModifyDialogView mDeleteOrModifyDialogView;
     private int mLongClickPosition = -1;
+    protected int mUserId;
 
     public BaseAccountsView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -42,6 +44,7 @@ public abstract class BaseAccountsView extends BaseView {
 
     @Override
     public void initData() {
+        mUserId = AccountsApplication.getLoginUserInfo().getUserId();
         mAdapterAccounts = new AccountsAdapter(mContext);
         mLvAccounts.setAdapter(mAdapterAccounts);
     }

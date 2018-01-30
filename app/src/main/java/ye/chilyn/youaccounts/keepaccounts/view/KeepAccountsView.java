@@ -103,7 +103,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         try {
             float money = Float.valueOf(moneyStr);
             Date date = new Date();
-            AccountsBean bean = new AccountsBean(1, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
+            AccountsBean bean = new AccountsBean(mUserId, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
             mProgressDialogView.showProgressDialog();
@@ -186,7 +186,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         mEtMoney.setText(null);
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     /**
@@ -202,7 +202,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         ToastUtil.showShortToast(getString(R.string.delete_success));
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     @Override
@@ -210,7 +210,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         if (eventType == EventType.QUERY_ACCOUNTS_AFTER_DELETE) {
             Date now = new Date();
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(1, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                    new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
         }
     }
 

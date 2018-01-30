@@ -84,7 +84,7 @@ public class AccountsDao {
      */
     public boolean deleteAccount(AccountsBean bean) {
         int deleteRows = mSqlHelper.openDatabase().delete(AccountsTable.TABLE_NAME,
-                AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getTimeMill() + ""});
+                AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});
         mSqlHelper.closeDatabase();
         if (deleteRows == 0) {
             return false;

@@ -267,7 +267,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                 }
 
                 callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                        new QueryAccountsParameter(1, DateUtil.getMonthStartTime(chooseDate), DateUtil.getMonthEndTime(chooseDate)));
+                        new QueryAccountsParameter(mUserId, DateUtil.getMonthStartTime(chooseDate), DateUtil.getMonthEndTime(chooseDate)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -311,7 +311,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
             }
 
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(1, DateUtil.getDateStartTime(date1), DateUtil.getDateEndTime(date2)));
+                    new QueryAccountsParameter(mUserId, DateUtil.getDateStartTime(date1), DateUtil.getDateEndTime(date2)));
             return;
         }
     }
@@ -376,7 +376,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         ToastUtil.showShortToast(getString(R.string.delete_success));
         long[] queryRangeTimeMill = getQueryRangeTimeMill();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(1, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
+                new QueryAccountsParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
         EventBus.getDefault().post(EventType.QUERY_ACCOUNTS_AFTER_DELETE);
     }
 
@@ -385,7 +385,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         if (eventType == EventType.QUERY_ACCOUNTS) {
             long[] queryRangeTimeMill = getQueryRangeTimeMill();
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(1, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
+                    new QueryAccountsParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
         }
     }
 
