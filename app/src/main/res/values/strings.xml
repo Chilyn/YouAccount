@@ -90,6 +90,7 @@
         <item>购物</item>
         <item>充值</item>
         <item>娱乐</item>
+        <item>车票</item>
         <item>其他</item>1
     </string-array>
 </resources>
