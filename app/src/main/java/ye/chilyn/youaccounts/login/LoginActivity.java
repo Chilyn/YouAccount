@@ -23,10 +23,12 @@ import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
+import ye.chilyn.youaccounts.contant.SharePreferenceKey;
 import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.login.model.LoginModel;
 import ye.chilyn.youaccounts.register.RegisterActivity;
 import ye.chilyn.youaccounts.util.MD5Util;
+import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 
@@ -49,8 +51,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_login);
         initView();
-        initData();
         setListener();
+        initData();
     }
 
     private void initView() {
@@ -66,6 +68,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initData() {
         mLoginModel = new LoginModel(mRefreshViewListener);
+        String nickname = SharePreferencesUtils.getStringValue(SharePreferenceKey.NICKNAME);
+        mEtAccount.setText(nickname);
+        mEtAccount.setSelection(mEtAccount.getText().length());
     }
 
     private void setListener() {
