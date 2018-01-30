@@ -71,6 +71,7 @@
     <string name="register_success">注册成功,请使用此昵称登录：</string>
     <string name="register_fail">注册失败</string>
     <string name="account_can_not_be_empty">账号不能为空</string>
+    <string name="nickname_can_not_be_empty">昵称不能为空</string>
     <string name="password_can_not_be_empty">密码不能为空</string>
     <string name="user_not_exist">用户不存在</string>
     <string name="login_success">登录成功</string>
@@ -79,8 +80,10 @@
     <string name="new_password">新密码：</string>
     <string name="confirm_modify">确认修改</string>
     <string name="old_password_not_correct">旧密码不正确</string>
-    <string name="password_has_been_modified">修改密码成功</string>
+    <string name="password_has_been_modified">修改密码成功，请重新登录</string>
+    <string name="nickname_has_been_modified">修改昵称成功</string>
     <string name="modify_password_fail">密码修改失败</string>
+    <string name="modify_nickname_fail">昵称修改失败</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

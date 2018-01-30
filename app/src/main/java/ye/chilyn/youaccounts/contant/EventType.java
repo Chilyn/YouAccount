@@ -12,4 +12,8 @@ public interface EventType {
     int QUERY_ACCOUNTS = 1002;
     /**删除账单后查询账目*/
     int QUERY_ACCOUNTS_AFTER_DELETE = 1003;
+    /**修改昵称成功*/
+    int MODIFY_NICKNAME_SUCCESS = 1004;
+    /**修改密码成功*/
+    int MODIFY_PASSWORD_SUCCESS = 1005;
 }

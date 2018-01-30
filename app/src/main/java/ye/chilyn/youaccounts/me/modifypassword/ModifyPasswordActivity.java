@@ -1,5 +1,7 @@
 package ye.chilyn.youaccounts.me.modifypassword;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,16 +14,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ypy.eventbus.EventBus;
+
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
+import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.contant.SharePreferenceKey;
 import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.me.model.ModifyModel;
+import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.MD5Util;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
@@ -181,7 +187,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
             ModifyPasswordActivity activity = getReference();
             switch (msg.what) {
                 case RefreshViewType.MODIFY_PASSWORD_SUCCESS:
-                    activity.onModifyPasswordSuccess((UserBean) msg.obj);
+                    activity.showModifySuccessDialog();
                     break;
 
                 case RefreshViewType.MODIFY_PASSWORD_FAIL:
@@ -191,12 +197,21 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         }
     }
 
-    private void onModifyPasswordSuccess(UserBean bean) {
-        SharePreferencesUtils.save(SharePreferenceKey.PASSWORD, bean.getPassword());
-        AccountsApplication.setLoginUserInfo(bean.copy());
-        ToastUtil.showShortToast(getString(R.string.password_has_been_modified));
-        finish();
+    private void showModifySuccessDialog() {
+        AlertDialog dialog = DialogUtil.createCommonAlertDialog(this, getString(R.string.password_has_been_modified),
+                null, getString(R.string.confirm), null, mConfirmListener);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
+
+    private DialogInterface.OnClickListener mConfirmListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            EventBus.getDefault().post(EventType.MODIFY_PASSWORD_SUCCESS);
+            finish();
+        }
+    };
 
     @Override
     protected void onPause() {

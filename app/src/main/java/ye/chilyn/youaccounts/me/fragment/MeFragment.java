@@ -11,11 +11,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ypy.eventbus.EventBus;
+
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
+import ye.chilyn.youaccounts.contant.EventType;
 import ye.chilyn.youaccounts.contant.SharePreferenceKey;
 import ye.chilyn.youaccounts.login.LoginActivity;
+import ye.chilyn.youaccounts.me.modifynickname.ModifyNicknameActivity;
 import ye.chilyn.youaccounts.me.modifypassword.ModifyPasswordActivity;
 import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
@@ -50,6 +54,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         initViews();
         initData();
         setListener();
+        EventBus.getDefault().register(this);
     }
 
     private void initViews() {
@@ -91,6 +96,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.ll_modify_nickname:
+                startActivity(new Intent(getActivity(), ModifyNicknameActivity.class));
                 break;
 
             case R.id.ll_exit:
@@ -114,6 +120,24 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         //跳转登录页面
         startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();
+    }
+
+    public void onEvent(Integer eventType) {
+        switch (eventType) {
+            case EventType.MODIFY_NICKNAME_SUCCESS:
+                mTvNickname.setText(AccountsApplication.getLoginUserInfo().getNickname());
+                break;
+
+            case EventType.MODIFY_PASSWORD_SUCCESS:
+                exitLogin();
+                break;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
     }
 
     @Override
