@@ -11,4 +11,6 @@ public interface SharePreferenceKey {
     String USER_ID = "user_id";
     /**用户昵称*/
     String NICKNAME = "nickname";
+    /**用户密码*/
+    String PASSWORD = "password";
 }

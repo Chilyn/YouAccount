@@ -20,4 +20,8 @@ public interface HandleModelType {
     int REGISTER_USER = 5;
     /**用户登录*/
     int USER_LOGIN = 6;
+    /**修改用户密码*/
+    int MODIFY_USER_PASSWORD = 7;
+    /**修改用户昵称*/
+    int MODIFY_USER_NICKNAME = 8;
 }

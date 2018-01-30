@@ -1,13 +1,13 @@
 package ye.chilyn.youaccounts.register.model;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.contant.HandleModelType;
 import ye.chilyn.youaccounts.contant.RefreshViewType;
 import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.model.UsersDao;
+import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
 /**
  * Created by Alex on 2018/1/29.
@@ -15,7 +15,7 @@ import ye.chilyn.youaccounts.model.UsersDao;
 
 public class RegisterModel extends BaseModel {
 
-    private ExecutorService mSqlTaskExecutor = Executors.newSingleThreadExecutor();
+    private ExecutorService mSqlTaskExecutor = CacheExecutorHelper.getInstance().getCacheExecutor();
     private UsersDao mUsersDao = new UsersDao();
 
     public RegisterModel(OnRefreshViewListener listener) {

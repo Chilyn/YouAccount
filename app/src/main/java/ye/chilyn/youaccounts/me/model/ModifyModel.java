@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.login.model;
+package ye.chilyn.youaccounts.me.model;
 
 import java.util.concurrent.ExecutorService;
 
@@ -13,12 +13,12 @@ import ye.chilyn.youaccounts.util.CacheExecutorHelper;
  * Created by Alex on 2018/1/29.
  */
 
-public class LoginModel extends BaseModel {
+public class ModifyModel extends BaseModel {
 
     private ExecutorService mSqlTaskExecutor = CacheExecutorHelper.getInstance().getCacheExecutor();
     private UsersDao mUsersDao = new UsersDao();
 
-    public LoginModel(OnRefreshViewListener listener) {
+    public ModifyModel(OnRefreshViewListener listener) {
         super(listener);
     }
 
@@ -40,27 +40,33 @@ public class LoginModel extends BaseModel {
         @Override
         public void run() {
             switch (mEventType) {
-                case HandleModelType.USER_LOGIN:
-                    login((UserBean) mData);
+                case HandleModelType.MODIFY_USER_PASSWORD:
+                    modifyUserPassword((UserBean) mData);
                     break;
+
+                case HandleModelType.MODIFY_USER_NICKNAME:
+                    modifyUserNickname((UserBean) mData);
+                    break;
+
             }
         }
     }
 
-    private void login(UserBean bean) {
-        if (!mUsersDao.isUserExisted(bean)) {
-            callRefreshView(RefreshViewType.USER_NOT_EXIST, null);
-            return;
-        }
-
-        boolean isSuccess = mUsersDao.matchUser(bean);
+    private void modifyUserPassword(UserBean bean) {
+        boolean isSuccess = mUsersDao.updateUserPassword(bean);
         if (isSuccess) {
-            //根据插入的用户昵称查找出用户自增长ID
-            int uid = mUsersDao.queryUserId(bean.getNickname());
-            bean.setUserId(uid);
-            callRefreshView(RefreshViewType.LOGIN_SUCCESS, bean);
+            callRefreshView(RefreshViewType.MODIFY_PASSWORD_SUCCESS, bean);
         } else {
-            callRefreshView(RefreshViewType.LOGIN_FAIL, null);
+            callRefreshView(RefreshViewType.MODIFY_PASSWORD_FAIL, null);
+        }
+    }
+
+    private void modifyUserNickname(UserBean bean) {
+        boolean isSuccess = mUsersDao.updateUserNickname(bean);
+        if (isSuccess) {
+            callRefreshView(RefreshViewType.MODIFY_NICKNAME_SUCCESS, bean);
+        } else {
+            callRefreshView(RefreshViewType.MODIFY_NICKNAME_FAIL, null);
         }
     }
 }

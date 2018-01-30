@@ -89,4 +89,42 @@ public class UsersDao {
 
         return true;
     }
+
+    /**
+     * 修改用户密码
+     * @param bean
+     * @return
+     */
+    public boolean updateUserPassword(UserBean bean) {
+        ContentValues values = new ContentValues();
+        values.put(UsersTable.PASSWORD, bean.getPassword());
+        int affectedRows = mSqlHelper.openDatabase().update(UsersTable.TABLE_NAME, values,
+                UsersTable.SQL_UPDATE_USER_WHERE,
+                new String[]{bean.getUserId() + ""});
+        mSqlHelper.closeDatabase();
+        if (affectedRows > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 修改用户昵称
+     * @param bean
+     * @return
+     */
+    public boolean updateUserNickname(UserBean bean) {
+        ContentValues values = new ContentValues();
+        values.put(UsersTable.NICKNAME, bean.getNickname());
+        int affectedRows = mSqlHelper.openDatabase().update(UsersTable.TABLE_NAME, values,
+                UsersTable.SQL_UPDATE_USER_WHERE,
+                new String[]{bean.getUserId() + ""});
+        mSqlHelper.closeDatabase();
+        if (affectedRows > 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

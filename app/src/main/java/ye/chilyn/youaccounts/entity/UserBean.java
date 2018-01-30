@@ -42,4 +42,8 @@ public class UserBean {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public UserBean copy() {
+        return new UserBean(userId, nickname, password);
+    }
 }

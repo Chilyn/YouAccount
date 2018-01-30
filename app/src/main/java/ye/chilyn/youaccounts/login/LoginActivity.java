@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
@@ -219,9 +220,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     break;
 
                 case RefreshViewType.LOGIN_SUCCESS:
-                    ToastUtil.showShortToast(activity.getString(R.string.login_success));
-                    activity.startActivity(new Intent(activity, MainActivity.class));
-                    activity.finish();
+                    activity.onLoginSuccess((UserBean) msg.obj);
                     break;
 
                 case RefreshViewType.LOGIN_FAIL:
@@ -229,6 +228,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     break;
             }
         }
+    }
+
+    private void onLoginSuccess(UserBean bean) {
+        //保存登录用户信息到SharePreference
+        SharePreferencesUtils.save(SharePreferenceKey.IS_LOGINED, true);
+        SharePreferencesUtils.save(SharePreferenceKey.USER_ID, bean.getUserId());
+        SharePreferencesUtils.save(SharePreferenceKey.NICKNAME, bean.getNickname());
+        SharePreferencesUtils.save(SharePreferenceKey.PASSWORD, bean.getPassword());
+        //保存登录账户全局变量
+        AccountsApplication.setLoginUserInfo(bean.copy());
+        //显示登录成功
+        ToastUtil.showShortToast(getString(R.string.login_success));
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override

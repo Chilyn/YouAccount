@@ -21,4 +21,5 @@ public interface UsersTable {
     String SQL_USER_EXISTED_WHERE = NICKNAME + "=?";
     String SQL_MATCH_USER_WHERE = NICKNAME + "=? AND " + PASSWORD + "=?";
     String SQL_QUERY_USER_WHERE = NICKNAME + "=?";
+    String SQL_UPDATE_USER_WHERE = USER_ID + "=?";
 }

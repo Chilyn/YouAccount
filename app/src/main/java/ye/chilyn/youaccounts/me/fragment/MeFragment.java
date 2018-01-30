@@ -11,10 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
+import ye.chilyn.youaccounts.contant.SharePreferenceKey;
 import ye.chilyn.youaccounts.login.LoginActivity;
+import ye.chilyn.youaccounts.me.modifypassword.ModifyPasswordActivity;
 import ye.chilyn.youaccounts.util.DialogUtil;
+import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
 /**
@@ -25,6 +29,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     /**标题栏*/
     private TitleBarView mTitleBarView;
     private ImageView mIvProfilePhoto;
+    private TextView mTvNickname;
     private LinearLayout mLlModifyPassword, mLlModifyNickname, mLlExit;
 
     //-------------------退出登录弹窗相关------------------------//
@@ -52,6 +57,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTitleBarView.setLeftOptionViewVisibility(false);
         mTitleBarView.setRightOptionViewVisibility(false);
         mIvProfilePhoto = findView(R.id.iv_profile_photo);
+        mTvNickname = findView(R.id.tv_nick_name);
         mLlModifyPassword = findView(R.id.ll_modify_password);
         mLlModifyNickname = findView(R.id.ll_modify_nickname);
         mLlExit = findView(R.id.ll_exit);
@@ -62,6 +68,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void initData() {
         mTitleBarView.setTitle(getString(R.string.me));
+        String nickname = SharePreferencesUtils.getStringValue(SharePreferenceKey.NICKNAME);
+        mTvNickname.setText(nickname);
     }
 
     private void setListener() {
@@ -79,6 +87,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.ll_modify_password:
+                startActivity(new Intent(getActivity(), ModifyPasswordActivity.class));
                 break;
 
             case R.id.ll_modify_nickname:
@@ -89,11 +98,22 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case R.id.tv_confirm:
-                mDialogExit.dismiss();
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                getActivity().finish();
+                exitLogin();
                 break;
         }
+    }
+
+    /**
+     * 退出登录
+     */
+    private void exitLogin() {
+        mDialogExit.dismiss();
+        //清空登录信息
+        SharePreferencesUtils.save(SharePreferenceKey.IS_LOGINED, false);
+        AccountsApplication.setLoginUserInfo(null);
+        //跳转登录页面
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
     }
 
     @Override

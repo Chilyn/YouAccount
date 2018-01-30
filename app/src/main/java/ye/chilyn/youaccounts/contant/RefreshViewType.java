@@ -38,4 +38,12 @@ public interface RefreshViewType {
     int LOGIN_SUCCESS = 114;
     /**登录失败*/
     int LOGIN_FAIL = 115;
+    /**修改用户密码失败*/
+    int MODIFY_PASSWORD_SUCCESS = 116;
+    /**修改用户密码失败*/
+    int MODIFY_PASSWORD_FAIL = 117;
+    /**修改用户昵称成功*/
+    int MODIFY_NICKNAME_SUCCESS = 118;
+    /**修改用户昵称失败*/
+    int MODIFY_NICKNAME_FAIL = 119;
 }
