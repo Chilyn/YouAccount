@@ -382,7 +382,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
 
     @Override
     public void onEvent(Integer eventType) {
-        if (eventType == EventType.QUERY_ACCOUNTS) {
+        if (eventType == EventType.QUERY_ACCOUNTS_AFTER_UPDATE) {
             long[] queryRangeTimeMill = getQueryRangeTimeMill();
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
                     new QueryAccountsParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));

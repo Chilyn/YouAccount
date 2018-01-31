@@ -135,7 +135,7 @@ public class KeepAccountsFragment extends BaseFragment {
     public void onEvent(Integer eventType) {
         switch (eventType) {
             case EventType.QUERY_ACCOUNTS_AFTER_DELETE:
-            case EventType.QUERY_ACCOUNTS:
+            case EventType.QUERY_ACCOUNTS_AFTER_UPDATE:
                 Date now = new Date();
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
                         new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));

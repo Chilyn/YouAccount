@@ -143,7 +143,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
                 case RefreshViewType.UPDATE_ACCOUNT_SUCCESS:
                     ToastUtil.showShortToast(activity.getString(R.string.modify_success));
                     //修改成功通知各页面刷新数据
-                    EventBus.getDefault().post(EventType.QUERY_ACCOUNTS);
+                    EventBus.getDefault().post(EventType.QUERY_ACCOUNTS_AFTER_UPDATE);
                     activity.finish();
                     break;
 

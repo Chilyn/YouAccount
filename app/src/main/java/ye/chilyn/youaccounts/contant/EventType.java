@@ -6,14 +6,12 @@ package ye.chilyn.youaccounts.contant;
  */
 
 public interface EventType {
-    /**写入外部存储权限获取成功*/
-    int WRITE_FILE_PERMISSION_GOTTEN = 1001;
-    /**查询账目*/
-    int QUERY_ACCOUNTS = 1002;
+    /**更新账单后查询账目*/
+    int QUERY_ACCOUNTS_AFTER_UPDATE = 1001;
     /**删除账单后查询账目*/
-    int QUERY_ACCOUNTS_AFTER_DELETE = 1003;
+    int QUERY_ACCOUNTS_AFTER_DELETE = 1002;
     /**修改昵称成功*/
-    int MODIFY_NICKNAME_SUCCESS = 1004;
+    int MODIFY_NICKNAME_SUCCESS = 1003;
     /**修改密码成功*/
-    int MODIFY_PASSWORD_SUCCESS = 1005;
+    int MODIFY_PASSWORD_SUCCESS = 1004;
 }
