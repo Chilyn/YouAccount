@@ -19,7 +19,7 @@ import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
-import ye.chilyn.youaccounts.base.CommonTextWatcher;
+import ye.chilyn.youaccounts.base.common.CommonTextWatcher;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.contant.HandleModelType;

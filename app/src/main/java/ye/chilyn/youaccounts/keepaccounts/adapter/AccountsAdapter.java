@@ -7,14 +7,13 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
-import ye.chilyn.youaccounts.base.CommonAdapter;
+import ye.chilyn.youaccounts.base.common.CommonAdapter;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.util.DateUtil;
 

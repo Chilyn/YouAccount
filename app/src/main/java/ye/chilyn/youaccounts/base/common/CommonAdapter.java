@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.base;
+package ye.chilyn.youaccounts.base.common;
 
 import android.content.Context;
 import android.view.LayoutInflater;

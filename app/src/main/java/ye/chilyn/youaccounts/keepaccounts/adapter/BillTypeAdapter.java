@@ -4,11 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ye.chilyn.youaccounts.R;
-import ye.chilyn.youaccounts.base.CommonAdapter;
+import ye.chilyn.youaccounts.base.common.CommonAdapter;
 
 /**
  * Created by Alex on 2018/1/18.
