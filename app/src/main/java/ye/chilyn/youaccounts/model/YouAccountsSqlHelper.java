@@ -16,7 +16,9 @@ import ye.chilyn.youaccounts.keepaccounts.contant.AccountsTable;
 public class YouAccountsSqlHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = AppFilePath.DB_FILE_PATH +
-            AccountsApplication.getAppContext().getString(R.string.db_name);
+            AccountsApplication.getAppContext().getString(R.string.app_name) +
+            AccountsApplication.getAppContext().getString(R.string.dot) +
+            AccountsApplication.getAppContext().getString(R.string.db);
     private static final int VERSION = 1;
     private int mDbOpenCount = 0;
     private SQLiteDatabase mDb;
