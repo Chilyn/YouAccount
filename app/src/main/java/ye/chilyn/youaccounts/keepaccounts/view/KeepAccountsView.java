@@ -54,7 +54,6 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         initViews();
         initData();
         setViewListener();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -207,17 +206,11 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
 
     @Override
     public void onEvent(Integer eventType) {
-        if (eventType == EventType.QUERY_ACCOUNTS_AFTER_DELETE) {
-            Date now = new Date();
-            callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
-        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

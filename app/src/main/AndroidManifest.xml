@@ -12,7 +12,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WelcomeActivity">
+        <activity
+            android:name=".WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,14 +27,24 @@
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".keepaccounts.modifyaccount.ModifyAccountActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
             android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".keepaccounts.queryaccounts.QueryAccountsActivity" />
-        <activity android:name=".register.RegisterActivity" />
-        <activity android:name=".me.modifypassword.ModifyPasswordActivity" />
-        <activity android:name=".me.modifynickname.ModifyNicknameActivity"></activity>
+        <activity
+            android:name=".keepaccounts.queryaccounts.QueryAccountsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".register.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".me.modifypassword.ModifyPasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".me.modifynickname.ModifyNicknameActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
