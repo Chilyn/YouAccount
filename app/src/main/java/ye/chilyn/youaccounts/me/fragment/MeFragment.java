@@ -2,6 +2,8 @@ package ye.chilyn.youaccounts.me.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -35,6 +37,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private ImageView mIvProfilePhoto;
     private TextView mTvNickname;
     private LinearLayout mLlModifyPassword, mLlModifyNickname, mLlExit;
+    private TextView mTvVersion;
 
     //-------------------退出登录弹窗相关------------------------//
     private Dialog mDialogExit;
@@ -65,6 +68,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTvNickname = findView(R.id.tv_nick_name);
         mLlModifyPassword = findView(R.id.ll_modify_password);
         mLlModifyNickname = findView(R.id.ll_modify_nickname);
+        mTvVersion = findView(R.id.tv_version);
         mLlExit = findView(R.id.ll_exit);
         mExitDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_confirm_exit, null);
         mTvConfirm = (TextView) mExitDialogView.findViewById(R.id.tv_confirm);
@@ -75,7 +79,21 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTitleBarView.setTitle(getString(R.string.me));
         String nickname = SharePreferencesUtils.getStringValue(SharePreferenceKey.NICKNAME);
         mTvNickname.setText(nickname);
+        mTvVersion.setText(getVersionName());
     }
+
+    private String getVersionName() {
+        try {
+            PackageManager pm = AccountsApplication.getAppContext().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(AccountsApplication.getAppContext().getPackageName(),
+                    PackageManager.GET_CONFIGURATIONS);
+            return pi.versionName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     private void setListener() {
         mIvProfilePhoto.setOnClickListener(this);

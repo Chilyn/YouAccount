@@ -94,6 +94,7 @@
     <string name="table_bill_type">bill_type</string>
     <string name="table_payment_time_mill">payment_time_mill</string>
     <string name="table_payment_time">payment_time</string>
+    <string name="version">版本号</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>
