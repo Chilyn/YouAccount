@@ -210,7 +210,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
 
         mPicker = new DateTimePicker(mContext, mCurrentChooseMode, DateTimePicker.NONE);
-        mPicker.setDateRangeStart(2017, 1, 1);
+        mPicker.setDateRangeStart(2018, 1, 1);
         mPicker.setDateRangeEnd(endYear, endMonth, endDay);
         mPicker.setWeightEnable(true);
         mPicker.setWheelModeEnable(true);
