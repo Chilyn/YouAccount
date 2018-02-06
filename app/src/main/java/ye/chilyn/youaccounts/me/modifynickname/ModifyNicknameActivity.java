@@ -1,7 +1,6 @@
 package ye.chilyn.youaccounts.me.modifynickname;
 
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -19,10 +18,10 @@ import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
-import ye.chilyn.youaccounts.contant.EventType;
-import ye.chilyn.youaccounts.contant.HandleModelType;
-import ye.chilyn.youaccounts.contant.RefreshViewType;
-import ye.chilyn.youaccounts.contant.SharePreferenceKey;
+import ye.chilyn.youaccounts.constant.EventType;
+import ye.chilyn.youaccounts.constant.HandleModelType;
+import ye.chilyn.youaccounts.constant.RefreshViewType;
+import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.me.model.ModifyModel;
 import ye.chilyn.youaccounts.util.MD5Util;

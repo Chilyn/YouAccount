@@ -11,8 +11,8 @@ import android.support.v4.app.ActivityCompat;
 import android.view.WindowManager;
 
 import ye.chilyn.youaccounts.base.BaseActivity;
-import ye.chilyn.youaccounts.contant.AppFilePath;
-import ye.chilyn.youaccounts.contant.SharePreferenceKey;
+import ye.chilyn.youaccounts.constant.AppFilePath;
+import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.login.LoginActivity;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 

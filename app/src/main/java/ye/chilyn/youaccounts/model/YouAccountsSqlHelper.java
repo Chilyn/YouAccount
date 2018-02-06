@@ -5,9 +5,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
-import ye.chilyn.youaccounts.contant.AppFilePath;
-import ye.chilyn.youaccounts.contant.UsersTable;
-import ye.chilyn.youaccounts.keepaccounts.contant.AccountsTable;
+import ye.chilyn.youaccounts.constant.AppFilePath;
+import ye.chilyn.youaccounts.constant.UsersTable;
+import ye.chilyn.youaccounts.keepaccounts.constant.AccountsTable;
 
 /**
  * Created by Alex on 2018/1/29.

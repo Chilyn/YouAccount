@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.contant;
+package ye.chilyn.youaccounts.constant;
 
 import android.os.Environment;
 

@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.contant;
+package ye.chilyn.youaccounts.keepaccounts.constant;
 
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;

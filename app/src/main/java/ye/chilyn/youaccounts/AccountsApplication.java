@@ -3,7 +3,7 @@ package ye.chilyn.youaccounts;
 import android.app.Application;
 import android.content.Context;
 
-import ye.chilyn.youaccounts.contant.SharePreferenceKey;
+import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 

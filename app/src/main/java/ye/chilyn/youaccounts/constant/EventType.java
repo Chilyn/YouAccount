@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.contant;
+package ye.chilyn.youaccounts.constant;
 
 /**
  * Created by Alex on 2018/1/17.

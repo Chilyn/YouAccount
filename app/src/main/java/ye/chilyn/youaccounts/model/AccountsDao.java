@@ -6,7 +6,7 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-import ye.chilyn.youaccounts.keepaccounts.contant.AccountsTable;
+import ye.chilyn.youaccounts.keepaccounts.constant.AccountsTable;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 
 /**

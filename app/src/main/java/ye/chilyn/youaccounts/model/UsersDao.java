@@ -3,7 +3,7 @@ package ye.chilyn.youaccounts.model;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import ye.chilyn.youaccounts.contant.UsersTable;
+import ye.chilyn.youaccounts.constant.UsersTable;
 import ye.chilyn.youaccounts.entity.UserBean;
 
 /**

@@ -3,8 +3,8 @@ package ye.chilyn.youaccounts.me.model;
 import java.util.concurrent.ExecutorService;
 
 import ye.chilyn.youaccounts.base.BaseModel;
-import ye.chilyn.youaccounts.contant.HandleModelType;
-import ye.chilyn.youaccounts.contant.RefreshViewType;
+import ye.chilyn.youaccounts.constant.HandleModelType;
+import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.model.UsersDao;
 import ye.chilyn.youaccounts.util.CacheExecutorHelper;

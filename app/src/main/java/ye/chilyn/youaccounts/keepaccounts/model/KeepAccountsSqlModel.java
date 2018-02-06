@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import ye.chilyn.youaccounts.base.BaseModel;
-import ye.chilyn.youaccounts.contant.HandleModelType;
-import ye.chilyn.youaccounts.contant.RefreshViewType;
+import ye.chilyn.youaccounts.constant.HandleModelType;
+import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
 import ye.chilyn.youaccounts.model.AccountsDao;
