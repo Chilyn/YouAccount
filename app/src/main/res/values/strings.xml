@@ -73,6 +73,7 @@
     <string name="nickname_can_not_be_empty">昵称不能为空</string>
     <string name="password_can_not_be_empty">密码不能为空</string>
     <string name="user_not_exist">用户不存在</string>
+    <string name="user_already_existed">用户已存在</string>
     <string name="login_success">登录成功</string>
     <string name="password_is_wrong">密码不正确</string>
     <string name="old_password">旧密码：</string>

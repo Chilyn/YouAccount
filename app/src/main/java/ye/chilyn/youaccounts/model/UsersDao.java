@@ -23,16 +23,17 @@ public class UsersDao {
      * @return
      */
     public boolean isUserExisted(UserBean bean) {
+        boolean isUserExisted = false;
         Cursor cursor = mSqlHelper.openDatabase().query(UsersTable.TABLE_NAME, null,
                 UsersTable.SQL_USER_EXISTED_WHERE,
                 new String[]{bean.getNickname()}, null, null, null);
         if (cursor.moveToNext()) {
-            return true;
+            isUserExisted = true;
         }
 
         cursor.close();
         mSqlHelper.closeDatabase();
-        return false;
+        return isUserExisted;
     }
 
     /**
@@ -41,16 +42,17 @@ public class UsersDao {
      * @return
      */
     public boolean matchUser(UserBean bean) {
+        boolean isMatched = false;
         Cursor cursor = mSqlHelper.openDatabase().query(UsersTable.TABLE_NAME, null,
                 UsersTable.SQL_MATCH_USER_WHERE,
                 new String[]{bean.getNickname(), bean.getPassword()}, null, null, null);
         if (cursor.moveToNext()) {
-            return true;
+            isMatched = true;
         }
 
         cursor.close();
         mSqlHelper.closeDatabase();
-        return false;
+        return isMatched;
     }
 
     /**

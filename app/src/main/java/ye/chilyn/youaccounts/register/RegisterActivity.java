@@ -173,6 +173,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 case RefreshViewType.REGISTER_USER_FAIL:
                     ToastUtil.showShortToast(activity.getString(R.string.register_fail));
                     break;
+
+                case RefreshViewType.USER_HAS_REGISTERED_BEFORE:
+                    ToastUtil.showShortToast(activity.getString(R.string.user_already_existed));
+                    break;
             }
         }
     }
