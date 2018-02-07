@@ -7,13 +7,24 @@ android {
         applicationId "ye.chilyn.youaccounts"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    // YouAccounts_版本名称_编译时间.apk
+                    def fileName = "YouAccounts_${defaultConfig.versionName}_${releaseTime()}.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
         }
     }
 }
@@ -22,4 +33,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile files('libs/EventBus2.4.jar')
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
