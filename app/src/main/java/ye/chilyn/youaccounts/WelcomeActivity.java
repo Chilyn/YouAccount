@@ -8,15 +8,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.view.WindowManager;
 
-import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.constant.AppFilePath;
 import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.login.LoginActivity;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 
-public class WelcomeActivity extends BaseActivity {
+public class WelcomeActivity extends Activity {
 
     private static final int LOGIN_OR_TO_MAIN = 0;
     private boolean mIsLogined = false;
@@ -28,9 +26,6 @@ public class WelcomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //取消状态栏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
         mIsLogined = SharePreferencesUtils.getBooleanValue(SharePreferenceKey.IS_LOGINED);
         verifyStoragePermissions(this);
@@ -94,13 +89,5 @@ public class WelcomeActivity extends BaseActivity {
                 }
                 break;
         }
-    }
-
-    @Override
-    protected void destroyViews() {
-    }
-
-    @Override
-    protected void releaseModels() {
     }
 }

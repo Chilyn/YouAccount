@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".WelcomeActivity"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
