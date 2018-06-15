@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "27.0.1"
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "ye.chilyn.youaccounts"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 4
         versionName "1.0.3"
     }
@@ -16,23 +16,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-        applicationVariants.all { variant ->
-            variant.outputs.each { output ->
-                def outputFile = output.outputFile
-                if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                    // YouAccounts_版本名称_编译时间.apk
-                    def fileName = "YouAccounts_${defaultConfig.versionName}_${releaseTime()}.apk"
-                    output.outputFile = new File(outputFile.parent, fileName)
+        applicationVariants.all {
+            variant ->
+                variant.outputs.all {
+                    output ->
+                        def outputFile = output.outputFile
+                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                            // YouAccounts_版本名称_编译时间.apk
+                            def fileName = "YouAccounts_${defaultConfig.versionName}_${releaseTime()}.apk"
+                            outputFileName = fileName
+                        }
                 }
-            }
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile files('libs/EventBus2.4.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
 }
 
 def releaseTime() {
