@@ -8,7 +8,7 @@ import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
-import ye.chilyn.youaccounts.model.AccountsDao;
+import ye.chilyn.youaccounts.sql.AccountsDao;
 import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
 /**

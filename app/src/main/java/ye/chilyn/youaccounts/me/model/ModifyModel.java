@@ -6,7 +6,7 @@ import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.entity.UserBean;
-import ye.chilyn.youaccounts.model.UsersDao;
+import ye.chilyn.youaccounts.sql.UsersDao;
 import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
 /**

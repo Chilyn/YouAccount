@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.model;
+package ye.chilyn.youaccounts.sql;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

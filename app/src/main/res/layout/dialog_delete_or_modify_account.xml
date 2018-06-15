@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:textSize="16sp"
-        android:text="修改账单"
+        android:text="@string/modify_account"
+        android:textColor="@android:color/black"
         android:background="@drawable/selector_list_item_color"/>
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:textSize="16sp"
-        android:text="删除账单"
+        android:text="@string/delete_account"
+        android:textColor="@android:color/black"
         android:background="@drawable/selector_list_item_color"/>
 </LinearLayout>

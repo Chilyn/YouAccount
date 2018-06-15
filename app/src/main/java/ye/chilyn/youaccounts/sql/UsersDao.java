@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.model;
+package ye.chilyn.youaccounts.sql;
 
 import android.content.ContentValues;
 import android.database.Cursor;
