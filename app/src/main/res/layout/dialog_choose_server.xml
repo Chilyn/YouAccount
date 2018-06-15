@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="250dp"
+    android:layout_height="100dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tv_local_server"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/backup_to_local_server"
+        android:textColor="@android:color/black"
+        android:background="@drawable/selector_list_item_color"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_dark_gray"/>
+
+    <TextView
+        android:id="@+id/tv_remote_server"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/backup_to_remote_server"
+        android:textColor="@android:color/black"
+        android:background="@drawable/selector_list_item_color"/>
+</LinearLayout>

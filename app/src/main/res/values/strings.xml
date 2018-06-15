@@ -96,6 +96,11 @@
     <string name="table_payment_time_mill">payment_time_mill</string>
     <string name="table_payment_time">payment_time</string>
     <string name="version">版本号</string>
+    <string name="backup">备份</string>
+    <string name="delete_account">删除账单</string>
+    <string name="backup_to_local_server">备份至本地服务器</string>
+    <string name="backup_to_remote_server">备份至远程服务器</string>
+    <string name="connecting_server">正在连接服务器</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

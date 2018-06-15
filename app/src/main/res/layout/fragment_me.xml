@@ -70,6 +70,27 @@
             android:text="@string/modify_nick_name"/>
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider_light_gray"/>
+
+    <LinearLayout
+        android:id="@+id/ll_backup_data"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:background="@drawable/selector_list_item_color"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="@string/backup"/>
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

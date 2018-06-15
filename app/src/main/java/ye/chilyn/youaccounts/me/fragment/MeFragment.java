@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +19,18 @@ import com.ypy.eventbus.EventBus;
 import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
+import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
+import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
+import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 import ye.chilyn.youaccounts.constant.EventType;
+import ye.chilyn.youaccounts.constant.HandleModelType;
+import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.login.LoginActivity;
+import ye.chilyn.youaccounts.me.model.UploadModel;
 import ye.chilyn.youaccounts.me.modifynickname.ModifyNicknameActivity;
 import ye.chilyn.youaccounts.me.modifypassword.ModifyPasswordActivity;
+import ye.chilyn.youaccounts.me.view.BackupView;
 import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 import ye.chilyn.youaccounts.view.TitleBarView;
@@ -39,9 +47,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private LinearLayout mLlModifyPassword, mLlModifyNickname, mLlExit;
     private TextView mTvVersion;
 
+    //-------------------备份数据相关------------------------//
+    private LinearLayout mLlBackupData;
+    private IBaseView mBackupView;
+    private IBaseModel mUploadModel;
+    //-------------------备份数据相关------------------------//
+
     //-------------------退出登录弹窗相关------------------------//
     private Dialog mDialogExit;
-    private View mExitDialogView;
     private TextView mTvConfirm;
     //-------------------退出登录弹窗相关------------------------//
 
@@ -68,11 +81,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTvNickname = findView(R.id.tv_nick_name);
         mLlModifyPassword = findView(R.id.ll_modify_password);
         mLlModifyNickname = findView(R.id.ll_modify_nickname);
+        mLlBackupData = findView(R.id.ll_backup_data);
+        mBackupView = new BackupView(mLlBackupData, mHandleModelListener);
         mTvVersion = findView(R.id.tv_version);
+
         mLlExit = findView(R.id.ll_exit);
-        mExitDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_confirm_exit, null);
-        mTvConfirm = (TextView) mExitDialogView.findViewById(R.id.tv_confirm);
-        mDialogExit = DialogUtil.createDialog(getActivity(), R.id.tv_cancel, mExitDialogView, 250, 101);
+        View exitDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_confirm_exit, null);
+        mTvConfirm = exitDialogView.findViewById(R.id.tv_confirm);
+        mDialogExit = DialogUtil.createDialog(getActivity(), R.id.tv_cancel, exitDialogView, 250, 101);
     }
 
     private void initData() {
@@ -80,6 +96,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         String nickname = SharePreferencesUtils.getStringValue(SharePreferenceKey.NICKNAME);
         mTvNickname.setText(nickname);
         mTvVersion.setText(getVersionName());
+        mUploadModel = new UploadModel(mRefreshViewListener);
     }
 
     private String getVersionName() {
@@ -99,6 +116,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mIvProfilePhoto.setOnClickListener(this);
         mLlModifyPassword.setOnClickListener(this);
         mLlModifyNickname.setOnClickListener(this);
+        mLlBackupData.setOnClickListener(this);
         mLlExit.setOnClickListener(this);
         mTvConfirm.setOnClickListener(this);
     }
@@ -115,6 +133,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
             case R.id.ll_modify_nickname:
                 startActivity(new Intent(getActivity(), ModifyNicknameActivity.class));
+                break;
+
+            case R.id.ll_backup_data:
+                mBackupView.refreshViews(RefreshViewType.SHOW_CHOOSE_SERVER_DIALOG, null);
                 break;
 
             case R.id.ll_exit:
@@ -152,6 +174,56 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
+    private HandleModelListener mHandleModelListener = new HandleModelListener();
+
+    private class HandleModelListener implements IBaseView.OnHandleModelListener {
+
+        @Override
+        public void onHandleModel(int type, Object data) {
+            switch (type) {
+                case HandleModelType.UPLOAD_TO_LOCAL_SERVER:
+                case HandleModelType.UPLOAD_TO_REMOTE_SERVER:
+                case HandleModelType.CANCEL_UPLOAD:
+                    mUploadModel.handleModelEvent(type, data);
+                    break;
+            }
+        }
+    }
+
+    private IBaseModel.OnRefreshViewListener mRefreshViewListener = new IBaseModel.OnRefreshViewListener() {
+        @Override
+        public void onRefreshView(int refreshType, Object data) {
+            mHandler.sendMessage(mHandler.obtainMessage(refreshType, data));
+        }
+    };
+
+    private ViewHandler mHandler = new ViewHandler(this);
+
+    private static class ViewHandler extends BaseStaticInnerHandler<MeFragment> {
+
+        public ViewHandler(MeFragment fragment) {
+            super(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (isReferenceRecycled()) {
+                removeCallbacksAndMessages(null);
+                return;
+            }
+
+            MeFragment fragment = getReference();
+            switch (msg.what) {
+                case RefreshViewType.UPLOAD_FAILED:
+                case RefreshViewType.UPLOAD_SUCCESS:
+                case RefreshViewType.REFRESH_UPLOAD_INFO:
+                    fragment.mBackupView.refreshViews(msg.what, msg.obj);
+                    break;
+            }
+        }
+    }
+
     @Override
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
@@ -160,9 +232,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void destroyViews() {
+        mBackupView.onDestroy();
     }
 
     @Override
     protected void releaseModels() {
+        mUploadModel.onDestroy();
     }
 }

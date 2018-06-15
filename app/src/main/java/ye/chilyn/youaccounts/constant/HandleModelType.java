@@ -24,4 +24,10 @@ public interface HandleModelType {
     int MODIFY_USER_PASSWORD = 7;
     /**修改用户昵称*/
     int MODIFY_USER_NICKNAME = 8;
+    /**上传至本地服务器*/
+    int UPLOAD_TO_LOCAL_SERVER = 9;
+    /**上传至远程服务器*/
+    int UPLOAD_TO_REMOTE_SERVER = 10;
+    /**取消上传*/
+    int CANCEL_UPLOAD = 11;
 }

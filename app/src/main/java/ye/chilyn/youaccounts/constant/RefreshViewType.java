@@ -46,4 +46,12 @@ public interface RefreshViewType {
     int MODIFY_NICKNAME_SUCCESS = 118;
     /**修改用户昵称失败*/
     int MODIFY_NICKNAME_FAIL = 119;
+    /**刷新上传信息*/
+    int REFRESH_UPLOAD_INFO = 120;
+    /**上传成功*/
+    int UPLOAD_SUCCESS = 121;
+    /**上传失败*/
+    int UPLOAD_FAILED = 122;
+    /**显示选择服务器的弹窗*/
+    int SHOW_CHOOSE_SERVER_DIALOG = 123;
 }
