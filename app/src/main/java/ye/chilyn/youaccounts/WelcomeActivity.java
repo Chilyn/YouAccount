@@ -17,6 +17,7 @@ import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 public class WelcomeActivity extends Activity {
 
     private static final int LOGIN_OR_TO_MAIN = 0;
+    private static final long WAITING_MILLIS = 500L;
     private boolean mIsLogined = false;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSIONS_STORAGE = {
@@ -68,7 +69,7 @@ public class WelcomeActivity extends Activity {
             } else {
                 //创建app相关存储目录
                 AppFilePath.createAppDirectories();
-                mHandler.sendEmptyMessageDelayed(LOGIN_OR_TO_MAIN, 2000);
+                mHandler.sendEmptyMessageDelayed(LOGIN_OR_TO_MAIN, WAITING_MILLIS);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +84,7 @@ public class WelcomeActivity extends Activity {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //创建app相关存储目录
                     AppFilePath.createAppDirectories();
-                    mHandler.sendEmptyMessageDelayed(LOGIN_OR_TO_MAIN, 2000);
+                    mHandler.sendEmptyMessageDelayed(LOGIN_OR_TO_MAIN, WAITING_MILLIS);
                 } else {
                     finish();
                 }
