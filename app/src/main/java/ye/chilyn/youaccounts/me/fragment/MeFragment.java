@@ -1,6 +1,5 @@
 package ye.chilyn.youaccounts.me.fragment;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -26,12 +25,11 @@ import ye.chilyn.youaccounts.constant.EventType;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.constant.SharePreferenceKey;
-import ye.chilyn.youaccounts.login.LoginActivity;
 import ye.chilyn.youaccounts.me.model.UploadModel;
 import ye.chilyn.youaccounts.me.modifynickname.ModifyNicknameActivity;
 import ye.chilyn.youaccounts.me.modifypassword.ModifyPasswordActivity;
 import ye.chilyn.youaccounts.me.view.BackupView;
-import ye.chilyn.youaccounts.util.DialogUtil;
+import ye.chilyn.youaccounts.me.view.ExitDialog;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
@@ -44,7 +42,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TitleBarView mTitleBarView;
     private ImageView mIvProfilePhoto;
     private TextView mTvNickname;
-    private LinearLayout mLlModifyPassword, mLlModifyNickname, mLlExit;
+    private LinearLayout mLlModifyPassword, mLlModifyNickname;
     private TextView mTvVersion;
 
     //-------------------备份数据相关------------------------//
@@ -54,8 +52,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     //-------------------备份数据相关------------------------//
 
     //-------------------退出登录弹窗相关------------------------//
-    private Dialog mDialogExit;
-    private TextView mTvConfirm;
+    private LinearLayout mLlExit;
+    private ExitDialog mDialogExit;
     //-------------------退出登录弹窗相关------------------------//
 
     @Nullable
@@ -84,11 +82,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mLlBackupData = findView(R.id.ll_backup_data);
         mBackupView = new BackupView(mLlBackupData, mHandleModelListener);
         mTvVersion = findView(R.id.tv_version);
-
         mLlExit = findView(R.id.ll_exit);
-        View exitDialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_confirm_exit, null);
-        mTvConfirm = exitDialogView.findViewById(R.id.tv_confirm);
-        mDialogExit = DialogUtil.createDialog(getActivity(), R.id.tv_cancel, exitDialogView, 250, 101);
+        mDialogExit = new ExitDialog(getActivity());
     }
 
     private void initData() {
@@ -118,7 +113,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mLlModifyNickname.setOnClickListener(this);
         mLlBackupData.setOnClickListener(this);
         mLlExit.setOnClickListener(this);
-        mTvConfirm.setOnClickListener(this);
     }
 
     @Override
@@ -142,25 +136,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.ll_exit:
                 mDialogExit.show();
                 break;
-
-            case R.id.tv_confirm:
-                exitLogin();
-                break;
         }
     }
 
-    /**
-     * 退出登录
-     */
-    private void exitLogin() {
-        mDialogExit.dismiss();
-        //清空登录信息
-        SharePreferencesUtils.save(SharePreferenceKey.IS_LOGINED, false);
-        AccountsApplication.setLoginUserInfo(null);
-        //跳转登录页面
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finish();
-    }
+
 
     public void onEvent(Integer eventType) {
         switch (eventType) {
@@ -169,7 +148,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
 
             case EventType.MODIFY_PASSWORD_SUCCESS:
-                exitLogin();
+                mDialogExit.exitLogin();
                 break;
         }
     }
