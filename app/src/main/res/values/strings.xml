@@ -84,23 +84,28 @@
     <string name="nickname_has_been_modified">修改昵称成功</string>
     <string name="modify_password_fail">密码修改失败</string>
     <string name="modify_nickname_fail">昵称修改失败</string>
+    <string name="version">版本号</string>
+    <string name="delete_account">删除账单</string>
+    <string name="backup">备份</string>
+    <string name="backup_to_local_server">备份至本地服务器</string>
+    <string name="backup_to_remote_server">备份至远程服务器</string>
+    <string name="connecting_server">正在连接服务器</string>
 
     <string name="table_name_users">users</string>
     <string name="table_user_id">user_id</string>
     <string name="table_nickname">nickname</string>
     <string name="table_password">password</string>
-
     <string name="table_name_accounts">accounts</string>
     <string name="table_money">money</string>
     <string name="table_bill_type">bill_type</string>
     <string name="table_payment_time_mill">payment_time_mill</string>
     <string name="table_payment_time">payment_time</string>
-    <string name="version">版本号</string>
-    <string name="backup">备份</string>
-    <string name="delete_account">删除账单</string>
-    <string name="backup_to_local_server">备份至本地服务器</string>
-    <string name="backup_to_remote_server">备份至远程服务器</string>
-    <string name="connecting_server">正在连接服务器</string>
+
+    <string name="host">45.77.169.213</string>
+    <string name="start_upload">start upload</string>
+    <string name="finished">finished</string>
+    <string name="ok">ok</string>
+    <string name="terminator">-------END-------</string>
 
     <string-array name="bill_type">
         <item>吃饭</item>

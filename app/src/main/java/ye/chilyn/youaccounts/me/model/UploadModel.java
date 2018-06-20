@@ -22,6 +22,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
@@ -34,19 +35,20 @@ import ye.chilyn.youaccounts.util.LG;
 public class UploadModel extends BaseModel{
 
     public static final String TAG = "UploadModel>>>";
-    private static final String HOST = "45.77.169.213";
+    private static final String HOST = AccountsApplication.getAppContext().getString(R.string.host);
     private static final int SERVER_PORT = 6666;
-    private static final String START_UPLOAD = "start upload";
-    private static final String FINISHED = "finished";
-    private static final String OK = "ok";
-    private static final String TERMINATOR = "-------END-------";
-    private static final int SEARCH_HOST_TIME = 51;
+    private static final String START_UPLOAD = AccountsApplication.getAppContext().getString(R.string.start_upload);
+    private static final String FINISHED = AccountsApplication.getAppContext().getString(R.string.finished);
+    private static final String OK = AccountsApplication.getAppContext().getString(R.string.ok);
+    private static final String TERMINATOR = AccountsApplication.getAppContext().getString(R.string.terminator);
+    private static final int SEARCH_HOST_THREAD_SIZE = 15;
+    private static final int SEARCH_HOST_TIME = 17;
+    private static final int SEARCH_CONNECT_TIMEOUT = 1000;
     private ExecutorService mSearchHostExecutor;
     private ExecutorService mUploadFileExecutor;
     private ScheduledExecutorService mTimerExecutor = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> mFuture;
-    private String mIPAddress;
-    private int mSearhHostFinishedCount = 0;
+    private int mSearhHostFinishedCount;
     private long mUploadingLength;
     private long mTotalLength;
 
@@ -81,13 +83,13 @@ public class UploadModel extends BaseModel{
      * 上传至本地服务器
      */
     public void uploadToLocalServer() {
-        mIPAddress = getDeviceIp();
-        if (TextUtils.isEmpty(mIPAddress)) {
+        String ipAddress = getDeviceIp();
+        if (TextUtils.isEmpty(ipAddress)) {
             return;
         }
 
         initSearchHostExecutor();
-        searchServerHost();
+        searchServerHost(ipAddress);
     }
 
     /**
@@ -130,15 +132,16 @@ public class UploadModel extends BaseModel{
      */
     private void initSearchHostExecutor() {
         shutdownSearchHost();
-        mSearchHostExecutor = Executors.newFixedThreadPool(5);
+        mSearchHostExecutor = Executors.newFixedThreadPool(SEARCH_HOST_THREAD_SIZE);
     }
 
     /**
      * 将IP最后一个.的网段1~255分成5份分别用5个线程去一个一个连接，其中有一个连接上后开始上传，关闭其他正在连接的线程
      */
-    private void searchServerHost() {
-        for (int i = 0; i < 5; i++) {
-            mSearchHostExecutor.execute(new SearchServerTask(i * SEARCH_HOST_TIME, 1));
+    private void searchServerHost(String ipPrefix) {
+        mSearhHostFinishedCount = 0;
+        for (int i = 0; i < SEARCH_HOST_THREAD_SIZE; i++) {
+            mSearchHostExecutor.execute(new SearchServerTask(ipPrefix, i * SEARCH_HOST_TIME, 1));
         }
     }
 
@@ -212,23 +215,34 @@ public class UploadModel extends BaseModel{
 
     private class SearchServerTask implements Runnable {
 
+        private String mIpPrefix;
         private int mIPOffset;
         private int mIPCount;
 
-        public SearchServerTask(int ipOffset, int ipCount) {
+        public SearchServerTask(String ipPrefix, int ipOffset, int ipCount) {
+            mIpPrefix = ipPrefix;
             this.mIPOffset = ipOffset;
             this.mIPCount = ipCount;
         }
 
         @Override
         public void run() {
-            Socket socket = null;
+            Socket socket = new Socket();
             try {
-                String ipAddress = mIPAddress + (mIPOffset + mIPCount);
-                log("connecting "+ ipAddress);
-                socket = new Socket();
+                String ipAddress = mIpPrefix + (mIPOffset + mIPCount);
                 SocketAddress address = new InetSocketAddress(ipAddress, SERVER_PORT);
-                socket.connect(address, 500);
+                if (isSearchHostShutdown()) {
+                    //如果之前已经有服务器连上了，直接退出
+                    return;
+                }
+
+                log("connecting "+ ipAddress);
+                socket.connect(address, SEARCH_CONNECT_TIMEOUT);
+                if (isSearchHostShutdown()) {
+                    //如果连上时，之前已经有服务器连上了，直接放弃此服务器ip
+                    return;
+                }
+
                 shutdownSearchHost();
                 log("stop searching server host");
                 initUploadFileExecutor();
@@ -237,8 +251,8 @@ public class UploadModel extends BaseModel{
                 closeSocket(socket);
                 mIPCount++;
                 if (mIPCount > SEARCH_HOST_TIME) {
-                    log("didn't find available server from " + mIPAddress + (mIPOffset + 1) + " to " +
-                            mIPAddress + (mIPOffset + SEARCH_HOST_TIME));
+                    log("didn't find available server from " + mIpPrefix + (mIPOffset + 1) + " to " +
+                            mIpPrefix + (mIPOffset + SEARCH_HOST_TIME));
 
                     addSearHostFinishedCount();
                     if (isSearHostFinished()) {
@@ -252,7 +266,7 @@ public class UploadModel extends BaseModel{
                     return;
                 }
 
-                mSearchHostExecutor.execute(new SearchServerTask(mIPOffset, mIPCount));
+                mSearchHostExecutor.execute(new SearchServerTask(mIpPrefix, mIPOffset, mIPCount));
             }
         }
 
@@ -278,8 +292,8 @@ public class UploadModel extends BaseModel{
 
         @Override
         public void run() {
-            InputStream is = null;
-            OutputStream os = null;
+            InputStream is;
+            OutputStream os;
             FileInputStream fis = null;
             try {
                 if (socket == null) {
@@ -335,7 +349,7 @@ public class UploadModel extends BaseModel{
                 log(e.getMessage());
                 callRefreshView(RefreshViewType.UPLOAD_FAILED, "上传失败, 错误信息：" + e.getMessage());
             } finally {
-                closeInputStream(fis, "FileOutputStream");
+                closeInputStream(fis, "FileInputStream");
                 closeSocket(socket);
             }
         }
