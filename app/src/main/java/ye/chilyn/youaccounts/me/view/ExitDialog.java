@@ -28,7 +28,7 @@ public class ExitDialog implements View.OnClickListener {
 
     private void initDialogViews() {
         mExitDialogView = LayoutInflater.from(mActivity).inflate(R.layout.dialog_confirm_exit, null);
-        mTvConfirm = mExitDialogView.findViewById(R.id.tv_confirm);
+        mTvConfirm = (TextView) mExitDialogView.findViewById(R.id.tv_confirm);
         mDialogExit = DialogUtil.createDialog(mActivity, R.id.tv_cancel, mExitDialogView, 250, 101);
         mTvConfirm.setOnClickListener(this);
     }

@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_welcome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:textColor="@color/text_hint_gray"
-        android:text="@string/skip"
-        android:visibility="gone"
-        android:background="@drawable/shape_btn_skip"/>
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        app:layout_marginBottomPercent="7.81%"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
@@ -42,4 +30,4 @@
             android:textColor="@color/colorPrimary"
             android:text="@string/welcome"/>
     </RelativeLayout>
-</RelativeLayout>
+</android.support.percent.PercentRelativeLayout>

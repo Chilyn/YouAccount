@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.keepaccounts.fragment.KeepAccountsFragment;
 import ye.chilyn.youaccounts.me.fragment.MeFragment;
 import ye.chilyn.youaccounts.util.FragmentTabManager;
@@ -18,7 +19,7 @@ import ye.chilyn.youaccounts.util.FragmentTabManager;
 /**
  * 主页面Activity
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private TextView mTvTabKeepAccount, mTvTabMe;
     private FragmentTabManager mTabManager;
@@ -81,5 +82,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void destroyViews() {
+    }
+
+    @Override
+    protected void releaseModels() {
     }
 }

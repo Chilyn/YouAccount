@@ -1,10 +1,14 @@
 package ye.chilyn.youaccounts.view;
 
 import android.app.Activity;
+import android.support.v4.widget.Space;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import ye.chilyn.youaccounts.AccountsApplication;
 import ye.chilyn.youaccounts.R;
+import ye.chilyn.youaccounts.util.DimensionUtils;
 
 /**
  * Created by Alex on 2017/12/1.
@@ -15,6 +19,11 @@ public class TitleBarView implements View.OnClickListener{
 
     /**标题栏根布局*/
     private View mTitleBarView;
+
+    /**
+     * 用于设置状态栏间隔的View
+     */
+    private Space mSpaceView;
 
     /**左功能键*/
     private TextView mLeftOptionView;
@@ -43,6 +52,7 @@ public class TitleBarView implements View.OnClickListener{
         this.mTitleBarView = titleBarView;
         this.mActivity = rootActivity;
         initViews();
+        setStatusBarSpace();
         setListeners();
     }
 
@@ -52,6 +62,15 @@ public class TitleBarView implements View.OnClickListener{
         mRightOptionView = findView(R.id.right_option);
         mRightDivider = findView(R.id.right_divider);
         mTvTitle = findView(R.id.tv_title);
+    }
+
+    private void setStatusBarSpace() {
+        mSpaceView = findView(R.id.space);
+        //设置状态栏间隔
+        int statusBarHeight = DimensionUtils.getStatusBarHeight(AccountsApplication.getAppContext());
+        ViewGroup.LayoutParams mLayoutParams = mSpaceView.getLayoutParams();
+        mLayoutParams.height = statusBarHeight;
+        mSpaceView.setLayoutParams(mLayoutParams);
     }
 
     private void setListeners() {

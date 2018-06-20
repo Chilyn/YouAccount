@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
+import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.constant.AppFilePath;
 import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.entity.UserBean;
@@ -16,7 +17,7 @@ import ye.chilyn.youaccounts.login.LoginActivity;
 import ye.chilyn.youaccounts.sql.UsersDao;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends BaseActivity {
 
     private static final int LOGIN_OR_TO_MAIN = 0;
     private static final long WAITING_MILLIS = 500L;
@@ -117,5 +118,13 @@ public class WelcomeActivity extends Activity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void destroyViews() {
+    }
+
+    @Override
+    protected void releaseModels() {
     }
 }
