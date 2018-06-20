@@ -80,10 +80,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mLlModifyPassword = findView(R.id.ll_modify_password);
         mLlModifyNickname = findView(R.id.ll_modify_nickname);
         mLlBackupData = findView(R.id.ll_backup_data);
-        mBackupView = new BackupView(mLlBackupData, mHandleModelListener);
         mTvVersion = findView(R.id.tv_version);
         mLlExit = findView(R.id.ll_exit);
-        mDialogExit = new ExitDialog(getActivity());
+        mHandler.sendEmptyMessage(RefreshViewType.INIT_ME_FRAGMENT_DIALOGS);
     }
 
     private void initData() {
@@ -139,8 +138,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-
-
     public void onEvent(Integer eventType) {
         switch (eventType) {
             case EventType.MODIFY_NICKNAME_SUCCESS:
@@ -194,6 +191,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
             MeFragment fragment = getReference();
             switch (msg.what) {
+                case RefreshViewType.INIT_ME_FRAGMENT_DIALOGS:
+                    fragment.initDialogViews();
+                    break;
+
                 case RefreshViewType.UPLOAD_FAILED:
                 case RefreshViewType.UPLOAD_SUCCESS:
                 case RefreshViewType.REFRESH_UPLOAD_INFO:
@@ -201,6 +202,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                     break;
             }
         }
+    }
+
+    private void initDialogViews() {
+        mBackupView = new BackupView(mLlBackupData, mHandleModelListener);
+        mDialogExit = new ExitDialog(getActivity());
     }
 
     @Override

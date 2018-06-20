@@ -54,4 +54,6 @@ public interface RefreshViewType {
     int UPLOAD_FAILED = 122;
     /**显示选择服务器的弹窗*/
     int SHOW_CHOOSE_SERVER_DIALOG = 123;
+    /**初始化我的模块弹窗*/
+    int INIT_ME_FRAGMENT_DIALOGS = 124;
 }
