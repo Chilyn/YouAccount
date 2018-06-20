@@ -11,7 +11,9 @@ import android.support.v4.app.ActivityCompat;
 
 import ye.chilyn.youaccounts.constant.AppFilePath;
 import ye.chilyn.youaccounts.constant.SharePreferenceKey;
+import ye.chilyn.youaccounts.entity.UserBean;
 import ye.chilyn.youaccounts.login.LoginActivity;
+import ye.chilyn.youaccounts.sql.UsersDao;
 import ye.chilyn.youaccounts.util.SharePreferencesUtils;
 
 public class WelcomeActivity extends Activity {
@@ -48,14 +50,39 @@ public class WelcomeActivity extends Activity {
      * 跳转登录页面或者主页面
      */
     private void loginOrToMain() {
-        Intent intent;
-        if (mIsLogined) {
-            intent = new Intent(this, MainActivity.class);
-        } else {
-            intent = new Intent(this, LoginActivity.class);
+        //登录状态为未登录，直接跳登录页面
+        if (!mIsLogined) {
+            toActivity(LoginActivity.class);
+            return;
         }
+
+        //登录状态为已登录，判断用户是否存在，不存在跳登录页面，否则直接进主页
+        if (!isUserExisted()) {
+            resetUserData();
+            toActivity(LoginActivity.class);
+        } else {
+            toActivity(MainActivity.class);
+        }
+    }
+
+    private void toActivity(Class<?> cls) {
+        Intent intent = new Intent(this, cls);
         startActivity(intent);
         finish();
+    }
+
+    private boolean isUserExisted() {
+        UsersDao usersDao = new UsersDao();
+        String nickname = SharePreferencesUtils.getStringValue(SharePreferenceKey.NICKNAME);
+        UserBean userBean = new UserBean(0, nickname, null);
+        return usersDao.isUserExisted(userBean);
+    }
+
+    private void resetUserData() {
+        SharePreferencesUtils.save(SharePreferenceKey.IS_LOGINED, false);
+        SharePreferencesUtils.save(SharePreferenceKey.USER_ID, -1);
+        SharePreferencesUtils.save(SharePreferenceKey.NICKNAME, "");
+        SharePreferencesUtils.save(SharePreferenceKey.PASSWORD, "");
     }
 
     public void verifyStoragePermissions(Activity activity) {
