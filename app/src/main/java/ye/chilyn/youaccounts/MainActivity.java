@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ye.chilyn.youaccounts.base.BaseActivity;
-import ye.chilyn.youaccounts.keepaccounts.fragment.KeepAccountsFragment;
+import ye.chilyn.youaccounts.keepaccount.fragment.KeepAccountFragment;
 import ye.chilyn.youaccounts.me.fragment.MeFragment;
 import ye.chilyn.youaccounts.util.FragmentTabManager;
 
@@ -36,7 +36,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initData() {
-        mFragments.add(new KeepAccountsFragment());
+        mFragments.add(new KeepAccountFragment());
         mFragments.add(new MeFragment());
         FragmentTabManager manager = new FragmentTabManager(this, mFragments, R.id.fl_fragments, mTabs);
     }

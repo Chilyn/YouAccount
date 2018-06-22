@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.ypy.eventbus.EventBus;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
@@ -137,7 +137,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         }
 
         //旧密码不正确
-        UserBean loginUserBean = AccountsApplication.getLoginUserInfo();
+        UserBean loginUserBean = AccountApplication.getLoginUserInfo();
         oldPassword = MD5Util.getStringMD5(MD5Util.getStringMD5(oldPassword));
         if (!loginUserBean.getPassword().equals(oldPassword)) {
             ToastUtil.showShortToast(getString(R.string.old_password_not_correct));

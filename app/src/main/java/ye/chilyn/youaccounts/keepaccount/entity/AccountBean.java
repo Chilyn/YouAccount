@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.entity;
+package ye.chilyn.youaccounts.keepaccount.entity;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 账目实体类
  */
 
-public class AccountsBean implements Serializable{
+public class AccountBean implements Serializable{
 
     private static final long serialVersionUID = -5550692612906926408L;
     private int userId;
@@ -16,10 +16,10 @@ public class AccountsBean implements Serializable{
     private long timeMill;
     private String time;
 
-    public AccountsBean() {
+    public AccountBean() {
     }
 
-    public AccountsBean(int userId, float money, String billType, long timeMill, String time) {
+    public AccountBean(int userId, float money, String billType, long timeMill, String time) {
         this.userId = userId;
         this.money = money;
         this.billType = billType;

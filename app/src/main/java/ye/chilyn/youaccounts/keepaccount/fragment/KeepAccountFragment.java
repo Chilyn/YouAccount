@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.fragment;
+package ye.chilyn.youaccounts.keepaccount.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import com.ypy.eventbus.EventBus;
 
 import java.util.Date;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
@@ -19,11 +19,11 @@ import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 import ye.chilyn.youaccounts.constant.EventType;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
-import ye.chilyn.youaccounts.keepaccounts.model.AccountsCalculateModel;
-import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
-import ye.chilyn.youaccounts.keepaccounts.queryaccounts.QueryAccountsActivity;
-import ye.chilyn.youaccounts.keepaccounts.view.KeepAccountsView;
+import ye.chilyn.youaccounts.keepaccount.entity.QueryAccountParameter;
+import ye.chilyn.youaccounts.keepaccount.model.AccountCalculateModel;
+import ye.chilyn.youaccounts.keepaccount.model.KeepAccountSqlModel;
+import ye.chilyn.youaccounts.keepaccount.queryaccount.QueryAccountActivity;
+import ye.chilyn.youaccounts.keepaccount.view.KeepAccountView;
 import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
@@ -32,7 +32,7 @@ import ye.chilyn.youaccounts.view.TitleBarView;
  * 记账Fragment
  */
 
-public class KeepAccountsFragment extends BaseFragment {
+public class KeepAccountFragment extends BaseFragment {
 
     /**记账view层*/
     private IBaseView mKeepAccountsView;
@@ -47,7 +47,7 @@ public class KeepAccountsFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_keep_accounts, container, false);
+        return inflater.inflate(R.layout.fragment_keep_account, container, false);
     }
 
     @Override
@@ -62,19 +62,19 @@ public class KeepAccountsFragment extends BaseFragment {
     private void initViews() {
         mTitleBarView = new TitleBarView(findView(R.id.title_bar), getActivity());
         mTitleBarView.setLeftOptionViewVisibility(false);
-        mKeepAccountsView = new KeepAccountsView(mRootView, mHandleModelListener);
+        mKeepAccountsView = new KeepAccountView(mRootView, mHandleModelListener);
     }
 
     private void initData() {
         mTitleBarView.setTitle(getString(R.string.keep_accounts));
         mTitleBarView.setRightOptionViewText(getString(R.string.query));
 
-        mUserId = AccountsApplication.getLoginUserInfo().getUserId();
-        mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
-        mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
+        mUserId = AccountApplication.getLoginUserInfo().getUserId();
+        mKeepAccountsSqlModel = new KeepAccountSqlModel(mRefreshViewListener);
+        mAccountsCalculateModel = new AccountCalculateModel(mRefreshViewListener);
         Date now = new Date();
         mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
         mKeepAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 
@@ -86,7 +86,7 @@ public class KeepAccountsFragment extends BaseFragment {
         @Override
         public void onClick(View v) {
             //跳转至查询页面
-            startActivity(new Intent(getActivity(), QueryAccountsActivity.class));
+            startActivity(new Intent(getActivity(), QueryAccountActivity.class));
             //强制关闭键盘
             mKeepAccountsView.refreshViews(RefreshViewType.FORCE_CLOSE_SOFT_KEYBOARD, null);
         }
@@ -138,7 +138,7 @@ public class KeepAccountsFragment extends BaseFragment {
             case EventType.QUERY_ACCOUNTS_AFTER_UPDATE:
                 Date now = new Date();
                 mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                        new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                        new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
                 break;
         }
     }

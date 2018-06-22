@@ -1,6 +1,6 @@
-package ye.chilyn.youaccounts.keepaccounts.constant;
+package ye.chilyn.youaccounts.keepaccount.constant;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 
 /**
@@ -8,14 +8,14 @@ import ye.chilyn.youaccounts.R;
  * 账目表相关常量
  */
 
-public interface AccountsTable {
-    String TABLE_NAME = AccountsApplication.getAppContext().getString(R.string.table_name_accounts);
-    String USER_ID = AccountsApplication.getAppContext().getString(R.string.table_user_id);
-    String MONEY = AccountsApplication.getAppContext().getString(R.string.table_money);
-    String BILL_TYPE = AccountsApplication.getAppContext().getString(R.string.table_bill_type);
-    String PAYMENT_TIME_MILL = AccountsApplication.getAppContext().getString(R.string.table_payment_time_mill);
-    String PAYMENT_TIME = AccountsApplication.getAppContext().getString(R.string.table_payment_time);
-    String TOTAL_PAYMENT = AccountsApplication.getAppContext().getString(R.string.table_total_payment);
+public interface AccountTable {
+    String TABLE_NAME = AccountApplication.getAppContext().getString(R.string.table_name_accounts);
+    String USER_ID = AccountApplication.getAppContext().getString(R.string.table_user_id);
+    String MONEY = AccountApplication.getAppContext().getString(R.string.table_money);
+    String BILL_TYPE = AccountApplication.getAppContext().getString(R.string.table_bill_type);
+    String PAYMENT_TIME_MILL = AccountApplication.getAppContext().getString(R.string.table_payment_time_mill);
+    String PAYMENT_TIME = AccountApplication.getAppContext().getString(R.string.table_payment_time);
+    String TOTAL_PAYMENT = AccountApplication.getAppContext().getString(R.string.table_total_payment);
 
     String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" +
             USER_ID + " INTEGER NOT NULL," +

@@ -11,7 +11,7 @@ import ye.chilyn.youaccounts.util.SharePreferencesUtils;
  * Created by Alex on 2018/1/16.
  */
 
-public class AccountsApplication extends Application {
+public class AccountApplication extends Application {
 
     private static Context mContext;
     private static UserBean mLoginUserBean;

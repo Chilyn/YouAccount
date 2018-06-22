@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.adapter;
+package ye.chilyn.youaccounts.keepaccount.adapter;
 
 import android.content.Context;
 import android.view.View;

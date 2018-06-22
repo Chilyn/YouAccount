@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.model;
+package ye.chilyn.youaccounts.keepaccount.model;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
 import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
 /**
@@ -15,11 +15,11 @@ import ye.chilyn.youaccounts.util.CacheExecutorHelper;
  * 账目数据计算的Model
  */
 
-public class AccountsCalculateModel extends BaseModel {
+public class AccountCalculateModel extends BaseModel {
 
     private ExecutorService mCalculateExecutor = CacheExecutorHelper.getInstance().getCacheExecutor();
 
-    public AccountsCalculateModel(OnRefreshViewListener listener) {
+    public AccountCalculateModel(OnRefreshViewListener listener) {
         super(listener);
     }
 
@@ -42,7 +42,7 @@ public class AccountsCalculateModel extends BaseModel {
         public void run() {
             switch (mEventType) {
                 case HandleModelType.CALCULATE_TOTAL_ACCOUNTS:
-                    calculateTotalAccounts((List<AccountsBean>) mData);
+                    calculateTotalAccounts((List<AccountBean>) mData);
                     break;
             }
         }
@@ -52,9 +52,9 @@ public class AccountsCalculateModel extends BaseModel {
      * 计算账目总额
      * @param data
      */
-    private void calculateTotalAccounts(List<AccountsBean> data) {
+    private void calculateTotalAccounts(List<AccountBean> data) {
         BigDecimal total = new BigDecimal(Float.toString(0.0f));
-        for (AccountsBean bean : data) {
+        for (AccountBean bean : data) {
             BigDecimal itemValue = new BigDecimal(Float.toString(bean.getMoney()));
             total = total.add(itemValue);
         }

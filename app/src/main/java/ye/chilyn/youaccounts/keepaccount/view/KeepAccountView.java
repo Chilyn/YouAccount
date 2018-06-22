@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.view;
+package ye.chilyn.youaccounts.keepaccount.view;
 
 import android.os.Message;
 import android.view.View;
@@ -15,8 +15,8 @@ import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
-import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
+import ye.chilyn.youaccounts.keepaccount.entity.QueryAccountParameter;
 import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
@@ -26,7 +26,7 @@ import ye.chilyn.youaccounts.util.ToastUtil;
  * 记账页面你的View层
  */
 
-public class KeepAccountsView extends BaseAccountsView implements View.OnClickListener {
+public class KeepAccountView extends BaseAccountView implements View.OnClickListener {
 
     private EditText mEtMoney;
     private TextView mTvBillType, mTvKeepAccounts;
@@ -37,7 +37,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
     private BillTypeDialogView mBillTypeDialogView;
     private ProgressDialogView mProgressDialogView;
 
-    public KeepAccountsView(View rootView, OnHandleModelListener listener) {
+    public KeepAccountView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
         initViews();
         initData();
@@ -90,7 +90,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         try {
             float money = Float.valueOf(moneyStr);
             Date date = new Date();
-            AccountsBean bean = new AccountsBean(mUserId, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
+            AccountBean bean = new AccountBean(mUserId, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
             mProgressDialogView.showProgressDialog();
@@ -114,9 +114,9 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
 
     private ViewHandler mHandler = new ViewHandler(this);
 
-    private static class ViewHandler extends BaseStaticInnerHandler<KeepAccountsView> {
+    private static class ViewHandler extends BaseStaticInnerHandler<KeepAccountView> {
 
-        public ViewHandler(KeepAccountsView keepAccountsView) {
+        public ViewHandler(KeepAccountView keepAccountsView) {
             super(keepAccountsView);
         }
 
@@ -128,7 +128,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
                 return;
             }
 
-            KeepAccountsView view = getReference();
+            KeepAccountView view = getReference();
             switch (msg.what) {
                 case RefreshViewType.SHOW_PROGRESS_DIALOG:
                     view.mProgressDialogView.showProgressDialog();
@@ -145,7 +145,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
                     break;
 
                 case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
-                    view.onQueryAccountsSuccess((List<AccountsBean>) msg.obj);
+                    view.onQueryAccountsSuccess((List<AccountBean>) msg.obj);
                     view.mProgressDialogView.dismissProgressDialog();
                     break;
 
@@ -173,7 +173,7 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
         mEtMoney.setText(null);
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     /**
@@ -185,11 +185,11 @@ public class KeepAccountsView extends BaseAccountsView implements View.OnClickLi
     }
 
     @Override
-    protected void onDeleteAccountSuccess(AccountsBean bean) {
+    protected void onDeleteAccountSuccess(AccountBean bean) {
         ToastUtil.showShortToast(getString(R.string.delete_success));
         Date now = new Date();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     @Override

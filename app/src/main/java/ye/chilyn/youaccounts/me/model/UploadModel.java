@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Environment;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -21,9 +20,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseModel;
+import ye.chilyn.youaccounts.constant.AppFilePath;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
 import ye.chilyn.youaccounts.util.LG;
@@ -35,12 +35,12 @@ import ye.chilyn.youaccounts.util.LG;
 public class UploadModel extends BaseModel{
 
     public static final String TAG = "UploadModel>>>";
-    private static final String HOST = AccountsApplication.getAppContext().getString(R.string.host);
+    private static final String HOST = AccountApplication.getAppContext().getString(R.string.host);
     private static final int SERVER_PORT = 6666;
-    private static final String START_UPLOAD = AccountsApplication.getAppContext().getString(R.string.start_upload);
-    private static final String FINISHED = AccountsApplication.getAppContext().getString(R.string.finished);
-    private static final String OK = AccountsApplication.getAppContext().getString(R.string.ok);
-    private static final String TERMINATOR = AccountsApplication.getAppContext().getString(R.string.terminator);
+    private static final String START_UPLOAD = AccountApplication.getAppContext().getString(R.string.start_upload);
+    private static final String FINISHED = AccountApplication.getAppContext().getString(R.string.finished);
+    private static final String OK = AccountApplication.getAppContext().getString(R.string.ok);
+    private static final String TERMINATOR = AccountApplication.getAppContext().getString(R.string.terminator);
     private static final int SEARCH_HOST_THREAD_SIZE = 15;
     private static final int SEARCH_HOST_TIME = 17;
     private static final int SEARCH_CONNECT_TIMEOUT = 1000;
@@ -97,7 +97,7 @@ public class UploadModel extends BaseModel{
      * @return
      */
     private String getDeviceIp(){
-        @SuppressLint("WifiManagerLeak") WifiManager wm = (WifiManager) AccountsApplication.getAppContext().getSystemService(Context.WIFI_SERVICE);
+        @SuppressLint("WifiManagerLeak") WifiManager wm = (WifiManager) AccountApplication.getAppContext().getSystemService(Context.WIFI_SERVICE);
         if(wm == null) {
             callRefreshView(RefreshViewType.UPLOAD_FAILED, "无WIFI设备信息");
             return "";
@@ -303,7 +303,7 @@ public class UploadModel extends BaseModel{
                     socket.connect(address, 15000);
                 }
 
-                File file = new File(getFilePath());
+                File file = new File(AppFilePath.DB_NAME);
                 is = socket.getInputStream();
                 os = socket.getOutputStream();
                 fis = new FileInputStream(file);
@@ -457,18 +457,7 @@ public class UploadModel extends BaseModel{
         }
     }
 
-    /**
-     * 获取文件目录
-     * @return
-     */
-    private String getFilePath() {
-        return Environment.getExternalStorageDirectory().getAbsolutePath() +
-                File.separator + ".YouAccounts" +
-                File.separator + "db" +
-                File.separator + "YouAccounts.db";
-    }
-
-    private void log(String msg) {
+    private synchronized void log(String msg) {
         LG.i(UploadModel.TAG + msg);
     }
 }

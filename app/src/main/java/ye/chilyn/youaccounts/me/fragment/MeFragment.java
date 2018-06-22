@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.ypy.eventbus.EventBus;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseFragment;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
@@ -92,8 +92,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private String getVersionName() {
         try {
-            PackageManager pm = AccountsApplication.getAppContext().getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(AccountsApplication.getAppContext().getPackageName(),
+            PackageManager pm = AccountApplication.getAppContext().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(AccountApplication.getAppContext().getPackageName(),
                     PackageManager.GET_CONFIGURATIONS);
             return pi.versionName;
         } catch (Exception e) {
@@ -138,7 +138,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void onEvent(Integer eventType) {
         switch (eventType) {
             case EventType.MODIFY_NICKNAME_SUCCESS:
-                mTvNickname.setText(AccountsApplication.getLoginUserInfo().getNickname());
+                mTvNickname.setText(AccountApplication.getLoginUserInfo().getNickname());
                 break;
 
             case EventType.MODIFY_PASSWORD_SUCCESS:

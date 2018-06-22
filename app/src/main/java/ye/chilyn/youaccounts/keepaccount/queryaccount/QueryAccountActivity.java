@@ -1,27 +1,27 @@
-package ye.chilyn.youaccounts.keepaccounts.queryaccounts;
+package ye.chilyn.youaccounts.keepaccount.queryaccount;
 
 import android.os.Bundle;
 
 import java.util.Date;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.base.interfaces.IBaseView;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
-import ye.chilyn.youaccounts.keepaccounts.model.AccountsCalculateModel;
-import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
-import ye.chilyn.youaccounts.keepaccounts.queryaccounts.view.QueryAccountsView;
+import ye.chilyn.youaccounts.keepaccount.entity.QueryAccountParameter;
+import ye.chilyn.youaccounts.keepaccount.model.AccountCalculateModel;
+import ye.chilyn.youaccounts.keepaccount.model.KeepAccountSqlModel;
+import ye.chilyn.youaccounts.keepaccount.queryaccount.view.QueryAccountView;
 import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.view.TitleBarView;
 
 /**
  * 查询账目的Activity
  */
-public class QueryAccountsActivity extends BaseActivity {
+public class QueryAccountActivity extends BaseActivity {
 
     private TitleBarView mTitleBarView;
     private IBaseModel mKeepAccountsSqlModel;
@@ -32,7 +32,7 @@ public class QueryAccountsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_query_accounts);
+        setContentView(R.layout.activity_query_account);
         initView();
         initData();
     }
@@ -40,17 +40,17 @@ public class QueryAccountsActivity extends BaseActivity {
     private void initView() {
         mTitleBarView = new TitleBarView(findView(R.id.title_bar), this);
         mTitleBarView.setRightOptionViewVisibility(false);
-        mQueryAccountsView = new QueryAccountsView(findView(R.id.ll_root), mHandleModelListener);
+        mQueryAccountsView = new QueryAccountView(findView(R.id.ll_root), mHandleModelListener);
     }
 
     private void initData() {
         mTitleBarView.setTitle(getString(R.string.query_accounts));
-        mUserId = AccountsApplication.getLoginUserInfo().getUserId();
-        mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
-        mAccountsCalculateModel = new AccountsCalculateModel(mRefreshViewListener);
+        mUserId = AccountApplication.getLoginUserInfo().getUserId();
+        mKeepAccountsSqlModel = new KeepAccountSqlModel(mRefreshViewListener);
+        mAccountsCalculateModel = new AccountCalculateModel(mRefreshViewListener);
         Date now = new Date();
         mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(mUserId, DateUtil.getMonthStartTime(now), DateUtil.getMonthEndTime(now)));
+                new QueryAccountParameter(mUserId, DateUtil.getMonthStartTime(now), DateUtil.getMonthEndTime(now)));
         mQueryAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 

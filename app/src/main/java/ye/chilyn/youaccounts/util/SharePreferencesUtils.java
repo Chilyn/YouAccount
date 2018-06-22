@@ -3,7 +3,7 @@ package ye.chilyn.youaccounts.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 
 /**
@@ -11,7 +11,7 @@ import ye.chilyn.youaccounts.R;
  */
 public class SharePreferencesUtils {
 
-    private static final String NAME = AccountsApplication.getAppContext().getString(R.string.app_name);
+    private static final String NAME = AccountApplication.getAppContext().getString(R.string.app_name);
     private static Context mContext;
 
     public static void init(Context context) {

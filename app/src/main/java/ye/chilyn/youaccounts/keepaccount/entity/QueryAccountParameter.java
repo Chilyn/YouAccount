@@ -1,16 +1,16 @@
-package ye.chilyn.youaccounts.keepaccounts.entity;
+package ye.chilyn.youaccounts.keepaccount.entity;
 
 /**
  * Created by Alex on 2018/1/17.
  * 查询账目的参数实体类
  */
 
-public class QueryAccountsParameter {
+public class QueryAccountParameter {
     private int userId;
     private long startTime;
     private long endTime;
 
-    public QueryAccountsParameter(int userId, long startTime, long endTime) {
+    public QueryAccountParameter(int userId, long startTime, long endTime) {
         this.userId = userId;
         this.startTime = startTime;
         this.endTime = endTime;

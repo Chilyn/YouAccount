@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".AccountsApplication"
+        android:name=".AccountApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,7 +29,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".keepaccounts.modifyaccount.ModifyAccountActivity"
+            android:name=".keepaccount.modifyaccount.ModifyAccountActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity
@@ -38,7 +38,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".keepaccounts.queryaccounts.QueryAccountsActivity"
+            android:name=".keepaccount.queryaccount.QueryAccountActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".register.RegisterActivity"

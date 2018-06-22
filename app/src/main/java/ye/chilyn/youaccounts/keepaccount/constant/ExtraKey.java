@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.constant;
+package ye.chilyn.youaccounts.keepaccount.constant;
 
 /**
  * Created by Alex on 2018/1/19.
@@ -6,5 +6,5 @@ package ye.chilyn.youaccounts.keepaccounts.constant;
  */
 
 public interface ExtraKey {
-    String ACCOUNTS_BEAN = "AccountsBean";
+    String ACCOUNT_BEAN = "AccountBean";
 }

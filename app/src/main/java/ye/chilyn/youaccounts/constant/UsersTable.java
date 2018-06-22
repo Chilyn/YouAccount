@@ -1,6 +1,6 @@
 package ye.chilyn.youaccounts.constant;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 
 /**
@@ -9,10 +9,10 @@ import ye.chilyn.youaccounts.R;
  */
 
 public interface UsersTable {
-    String TABLE_NAME = AccountsApplication.getAppContext().getString(R.string.table_name_users);
-    String USER_ID = AccountsApplication.getAppContext().getString(R.string.table_user_id);
-    String NICKNAME = AccountsApplication.getAppContext().getString(R.string.table_nickname);
-    String PASSWORD = AccountsApplication.getAppContext().getString(R.string.table_password);
+    String TABLE_NAME = AccountApplication.getAppContext().getString(R.string.table_name_users);
+    String USER_ID = AccountApplication.getAppContext().getString(R.string.table_user_id);
+    String NICKNAME = AccountApplication.getAppContext().getString(R.string.table_nickname);
+    String PASSWORD = AccountApplication.getAppContext().getString(R.string.table_password);
 
     String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "(" +
             USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +

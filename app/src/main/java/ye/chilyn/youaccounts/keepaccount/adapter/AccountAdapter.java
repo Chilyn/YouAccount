@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.adapter;
+package ye.chilyn.youaccounts.keepaccount.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -11,10 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.common.CommonAdapter;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
 import ye.chilyn.youaccounts.util.DateUtil;
 
 /**
@@ -22,17 +22,17 @@ import ye.chilyn.youaccounts.util.DateUtil;
  * 账目数据的Adapter
  */
 
-public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter.ViewHolder> {
+public class AccountAdapter extends CommonAdapter<AccountBean, AccountAdapter.ViewHolder> {
 
-    private static final String TODAY = AccountsApplication.getAppContext().getString(R.string.today);
-    private static final String YESTERDAY = AccountsApplication.getAppContext().getString(R.string.yesterday);
+    private static final String TODAY = AccountApplication.getAppContext().getString(R.string.today);
+    private static final String YESTERDAY = AccountApplication.getAppContext().getString(R.string.yesterday);
     /**金额格式化类*/
     private DecimalFormat mNumberFormat;
     private SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("MM-dd HH:mm");
     private SimpleDateFormat mTimeFormat = new SimpleDateFormat("HH:mm");
 
-    public AccountsAdapter(Context context) {
-        super(context, R.layout.list_item_accounts);
+    public AccountAdapter(Context context) {
+        super(context, R.layout.list_item_account);
         mNumberFormat = new DecimalFormat(",##0.00");
         mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
     }
@@ -43,7 +43,7 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
     }
 
     @Override
-    protected void onBindViewHolder(ViewHolder holder, AccountsBean item, int position) {
+    protected void onBindViewHolder(ViewHolder holder, AccountBean item, int position) {
         holder.mTvBillType.setText(item.getBillType());
         holder.mTvTime.setText(createTimeString(item.getTimeMill()));
         BigDecimal decimal = new BigDecimal(Float.toString(item.getMoney()));
@@ -73,7 +73,7 @@ public class AccountsAdapter extends CommonAdapter<AccountsBean, AccountsAdapter
     }
 
     @Override
-    public void setListData(List<AccountsBean> data) {
+    public void setListData(List<AccountBean> data) {
         if (data == null) {
             return;
         }

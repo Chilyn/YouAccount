@@ -1,8 +1,7 @@
-package ye.chilyn.youaccounts.keepaccounts.queryaccounts.view;
+package ye.chilyn.youaccounts.keepaccount.queryaccount.view;
 
 import android.app.AlertDialog;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,10 +21,10 @@ import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccounts.constant.EventType;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
-import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
-import ye.chilyn.youaccounts.keepaccounts.view.BaseAccountsView;
-import ye.chilyn.youaccounts.keepaccounts.view.ProgressDialogView;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
+import ye.chilyn.youaccounts.keepaccount.entity.QueryAccountParameter;
+import ye.chilyn.youaccounts.keepaccount.view.BaseAccountView;
+import ye.chilyn.youaccounts.keepaccount.view.ProgressDialogView;
 import ye.chilyn.youaccounts.util.DateUtil;
 import ye.chilyn.youaccounts.util.DialogUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
@@ -36,7 +35,7 @@ import ye.chilyn.youaccounts.widget.pickers.DateTimePicker;
  * 账目查询页面的View层
  */
 
-public class QueryAccountsView extends BaseAccountsView implements View.OnClickListener {
+public class QueryAccountView extends BaseAccountView implements View.OnClickListener {
 
     /**年月模式*/
     private static final int YEAR_MONTH = DateTimePicker.YEAR_MONTH;
@@ -59,7 +58,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private AlertDialog mDialogOverSixMonth;
     private ProgressDialogView mProgressDialogView;
 
-    public QueryAccountsView(View rootView, OnHandleModelListener listener) {
+    public QueryAccountView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
         initViews();
         initData();
@@ -283,7 +282,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                 }
 
                 callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                        new QueryAccountsParameter(mUserId, DateUtil.getMonthStartTime(chooseDate), DateUtil.getMonthEndTime(chooseDate)));
+                        new QueryAccountParameter(mUserId, DateUtil.getMonthStartTime(chooseDate), DateUtil.getMonthEndTime(chooseDate)));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -327,7 +326,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
             }
 
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(mUserId, DateUtil.getDateStartTime(date1), DateUtil.getDateEndTime(date2)));
+                    new QueryAccountParameter(mUserId, DateUtil.getDateStartTime(date1), DateUtil.getDateEndTime(date2)));
             return;
         }
     }
@@ -339,9 +338,9 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
 
     private ViewHandler mHandler = new ViewHandler(this);
 
-    private static class ViewHandler extends BaseStaticInnerHandler<QueryAccountsView> {
+    private static class ViewHandler extends BaseStaticInnerHandler<QueryAccountView> {
 
-        public ViewHandler(QueryAccountsView view) {
+        public ViewHandler(QueryAccountView view) {
             super(view);
         }
 
@@ -353,19 +352,19 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                 return;
             }
 
-            QueryAccountsView view = getReference();
+            QueryAccountView view = getReference();
             switch (msg.what) {
                 case RefreshViewType.SHOW_PROGRESS_DIALOG:
                     view.mProgressDialogView.showProgressDialog();
                     break;
 
                 case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
-                    view.onQueryAccountsSuccess((List<AccountsBean>) msg.obj);
+                    view.onQueryAccountsSuccess((List<AccountBean>) msg.obj);
                     view.mProgressDialogView.dismissProgressDialog();
                     break;
 
                 case RefreshViewType.DELETE_ACCOUNT_SUCCESS:
-                    view.onDeleteAccountSuccess((AccountsBean) msg.obj);
+                    view.onDeleteAccountSuccess((AccountBean) msg.obj);
                     break;
 
                 case RefreshViewType.DELETE_ACCOUNT_FAIL:
@@ -388,11 +387,11 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     }
 
     @Override
-    protected void onDeleteAccountSuccess(AccountsBean bean) {
+    protected void onDeleteAccountSuccess(AccountBean bean) {
         ToastUtil.showShortToast(getString(R.string.delete_success));
         long[] queryRangeTimeMill = getQueryRangeTimeMill();
         callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountsParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
+                new QueryAccountParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
         EventBus.getDefault().post(EventType.QUERY_ACCOUNTS_AFTER_DELETE);
     }
 
@@ -401,7 +400,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         if (eventType == EventType.QUERY_ACCOUNTS_AFTER_UPDATE) {
             long[] queryRangeTimeMill = getQueryRangeTimeMill();
             callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                    new QueryAccountsParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
+                    new QueryAccountParameter(mUserId, queryRangeTimeMill[START_TIME], queryRangeTimeMill[END_TIME]));
         }
     }
 

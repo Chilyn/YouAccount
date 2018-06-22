@@ -12,7 +12,7 @@ import ye.chilyn.youaccounts.entity.UserBean;
 
 public class UsersDao {
 
-    private YouAccountsSqlHelper mSqlHelper = YouAccountsSqlHelper.getInstance();
+    private YouAccountSqlHelper mSqlHelper = YouAccountSqlHelper.getInstance();
 
     public UsersDao() {
     }

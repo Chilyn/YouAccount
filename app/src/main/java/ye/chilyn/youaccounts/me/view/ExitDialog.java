@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.constant.SharePreferenceKey;
 import ye.chilyn.youaccounts.login.LoginActivity;
@@ -49,7 +49,7 @@ public class ExitDialog implements View.OnClickListener {
         mDialogExit.dismiss();
         //清空登录信息
         SharePreferencesUtils.save(SharePreferenceKey.IS_LOGINED, false);
-        AccountsApplication.setLoginUserInfo(null);
+        AccountApplication.setLoginUserInfo(null);
         //跳转登录页面
         mActivity.startActivity(new Intent(mActivity, LoginActivity.class));
         mActivity.finish();

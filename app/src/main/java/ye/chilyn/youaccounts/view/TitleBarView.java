@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.util.DimensionUtils;
 
@@ -59,7 +59,7 @@ public class TitleBarView implements View.OnClickListener{
     private void setStatusBarSpace() {
         mSpaceView = findView(R.id.space);
         //设置状态栏间隔
-        int statusBarHeight = DimensionUtils.getStatusBarHeight(AccountsApplication.getAppContext());
+        int statusBarHeight = DimensionUtils.getStatusBarHeight(AccountApplication.getAppContext());
         ViewGroup.LayoutParams mLayoutParams = mSpaceView.getLayoutParams();
         mLayoutParams.height = statusBarHeight;
         mSpaceView.setLayoutParams(mLayoutParams);

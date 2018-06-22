@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.view;
+package ye.chilyn.youaccounts.keepaccount.view;
 
 import android.content.Intent;
 import android.view.View;
@@ -7,14 +7,14 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseView;
 import ye.chilyn.youaccounts.constant.HandleModelType;
-import ye.chilyn.youaccounts.keepaccounts.adapter.AccountsAdapter;
-import ye.chilyn.youaccounts.keepaccounts.constant.ExtraKey;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
-import ye.chilyn.youaccounts.keepaccounts.modifyaccount.ModifyAccountActivity;
+import ye.chilyn.youaccounts.keepaccount.adapter.AccountAdapter;
+import ye.chilyn.youaccounts.keepaccount.constant.ExtraKey;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
+import ye.chilyn.youaccounts.keepaccount.modifyaccount.ModifyAccountActivity;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 
 /**
@@ -22,17 +22,17 @@ import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
  * 账目相关View层的基类
  */
 
-public abstract class BaseAccountsView extends BaseView {
+public abstract class BaseAccountView extends BaseView {
 
     /**显示账目的列表*/
     private ListView mLvAccounts;
-    private AccountsAdapter mAdapterAccounts;
+    private AccountAdapter mAdapterAccounts;
     /**修改或删除弹窗*/
     private DeleteOrModifyDialogView mDeleteOrModifyDialogView;
     private int mLongClickPosition = -1;
     protected int mUserId;
 
-    public BaseAccountsView(View rootView, OnHandleModelListener listener) {
+    public BaseAccountView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
     }
 
@@ -44,8 +44,8 @@ public abstract class BaseAccountsView extends BaseView {
 
     @Override
     public void initData() {
-        mUserId = AccountsApplication.getLoginUserInfo().getUserId();
-        mAdapterAccounts = new AccountsAdapter(mContext);
+        mUserId = AccountApplication.getLoginUserInfo().getUserId();
+        mAdapterAccounts = new AccountAdapter(mContext);
         mLvAccounts.setAdapter(mAdapterAccounts);
     }
 
@@ -59,7 +59,7 @@ public abstract class BaseAccountsView extends BaseView {
         public void onModify() {
             //跳转修改页面
             Intent intent = new Intent(mContext, ModifyAccountActivity.class);
-            intent.putExtra(ExtraKey.ACCOUNTS_BEAN, mAdapterAccounts.getItem(mLongClickPosition));
+            intent.putExtra(ExtraKey.ACCOUNT_BEAN, mAdapterAccounts.getItem(mLongClickPosition));
             mContext.startActivity(intent);
         }
 
@@ -83,7 +83,7 @@ public abstract class BaseAccountsView extends BaseView {
      * 查询账目成功的相关操作
      * @param data
      */
-    protected void onQueryAccountsSuccess(List<AccountsBean> data) {
+    protected void onQueryAccountsSuccess(List<AccountBean> data) {
         mAdapterAccounts.setListData(data);
     }
 
@@ -91,7 +91,7 @@ public abstract class BaseAccountsView extends BaseView {
      * 删除账目成功相关操作
      * @param bean
      */
-    protected abstract void onDeleteAccountSuccess(AccountsBean bean);
+    protected abstract void onDeleteAccountSuccess(AccountBean bean);
     public abstract void onEvent(Integer eventType);
 
     protected String getString(int id) {

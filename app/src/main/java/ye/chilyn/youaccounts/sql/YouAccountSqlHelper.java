@@ -3,42 +3,37 @@ package ye.chilyn.youaccounts.sql;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import ye.chilyn.youaccounts.AccountsApplication;
-import ye.chilyn.youaccounts.R;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.constant.AppFilePath;
 import ye.chilyn.youaccounts.constant.UsersTable;
-import ye.chilyn.youaccounts.keepaccounts.constant.AccountsTable;
+import ye.chilyn.youaccounts.keepaccount.constant.AccountTable;
 
 /**
  * Created by Alex on 2018/1/29.
  */
 
-public class YouAccountsSqlHelper extends SQLiteOpenHelper {
+public class YouAccountSqlHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = AppFilePath.DB_FILE_PATH +
-            AccountsApplication.getAppContext().getString(R.string.app_name) +
-            AccountsApplication.getAppContext().getString(R.string.dot) +
-            AccountsApplication.getAppContext().getString(R.string.db);
     private static final int VERSION = 1;
     private int mDbOpenCount = 0;
     private SQLiteDatabase mDb;
 
     private static class InstanceHolder {
-        private static final YouAccountsSqlHelper mInstance = new YouAccountsSqlHelper();
+        private static final YouAccountSqlHelper mInstance = new YouAccountSqlHelper();
     }
 
-    public static YouAccountsSqlHelper getInstance() {
+    public static YouAccountSqlHelper getInstance() {
         return InstanceHolder.mInstance;
     }
 
-    private YouAccountsSqlHelper() {
-        super(AccountsApplication.getAppContext(), DB_NAME, null, VERSION);
+    private YouAccountSqlHelper() {
+        super(AccountApplication.getAppContext(), AppFilePath.DB_NAME, null, VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(AccountsTable.SQL_DROP_TABLE);
-        db.execSQL(AccountsTable.SQL_CREATE_TABLE);
+        db.execSQL(AccountTable.SQL_DROP_TABLE);
+        db.execSQL(AccountTable.SQL_CREATE_TABLE);
         db.execSQL(UsersTable.SQL_DROP_TABLE);
         db.execSQL(UsersTable.SQL_CREATE_TABLE);
     }

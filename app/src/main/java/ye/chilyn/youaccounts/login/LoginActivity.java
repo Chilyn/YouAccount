@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.MainActivity;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
@@ -237,7 +237,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         SharePreferencesUtils.save(SharePreferenceKey.NICKNAME, bean.getNickname());
         SharePreferencesUtils.save(SharePreferenceKey.PASSWORD, bean.getPassword());
         //保存登录账户全局变量
-        AccountsApplication.setLoginUserInfo(bean.copy());
+        AccountApplication.setLoginUserInfo(bean.copy());
         //显示登录成功
         ToastUtil.showShortToast(getString(R.string.login_success));
         startActivity(new Intent(this, MainActivity.class));

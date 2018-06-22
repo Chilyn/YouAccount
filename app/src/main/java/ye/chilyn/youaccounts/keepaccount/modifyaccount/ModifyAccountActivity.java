@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.modifyaccount;
+package ye.chilyn.youaccounts.keepaccount.modifyaccount;
 
 import android.os.Message;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.ypy.eventbus.EventBus;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
@@ -16,10 +16,10 @@ import ye.chilyn.youaccounts.base.interfaces.IBaseModel;
 import ye.chilyn.youaccounts.constant.EventType;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.constant.ExtraKey;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
-import ye.chilyn.youaccounts.keepaccounts.model.KeepAccountsSqlModel;
-import ye.chilyn.youaccounts.keepaccounts.view.BillTypeDialogView;
+import ye.chilyn.youaccounts.keepaccount.constant.ExtraKey;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
+import ye.chilyn.youaccounts.keepaccount.model.KeepAccountSqlModel;
+import ye.chilyn.youaccounts.keepaccount.view.BillTypeDialogView;
 import ye.chilyn.youaccounts.util.SoftKeyboardUtil;
 import ye.chilyn.youaccounts.util.ToastUtil;
 import ye.chilyn.youaccounts.view.TitleBarView;
@@ -33,7 +33,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
     private EditText mEtMoney;
     private TextView mTvBillType, mTvTime;
     private TextView mTvModify;
-    private AccountsBean mModifyBean;
+    private AccountBean mModifyBean;
     private BillTypeDialogView mBillTypeDialogView;
     private TitleBarView mTitleBarView;
 
@@ -58,8 +58,8 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
 
     private void initData() {
         mTitleBarView.setTitle(getString(R.string.modify_account));
-        mKeepAccountsSqlModel = new KeepAccountsSqlModel(mRefreshViewListener);
-        mModifyBean = (AccountsBean) getIntent().getSerializableExtra(ExtraKey.ACCOUNTS_BEAN);
+        mKeepAccountsSqlModel = new KeepAccountSqlModel(mRefreshViewListener);
+        mModifyBean = (AccountBean) getIntent().getSerializableExtra(ExtraKey.ACCOUNT_BEAN);
         if (mModifyBean != null) {
             mEtMoney.setText(mModifyBean.getMoney() + "");
             mEtMoney.setSelection(mEtMoney.getText().length());
@@ -99,7 +99,7 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
             mKeepAccountsSqlModel.handleModelEvent(HandleModelType.UPDATE_ACCOUNTS, mModifyBean);
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
-            ToastUtil.showShortToast(AccountsApplication.getAppContext().getString(R.string.data_invalid));
+            ToastUtil.showShortToast(AccountApplication.getAppContext().getString(R.string.data_invalid));
         } finally {
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
         }

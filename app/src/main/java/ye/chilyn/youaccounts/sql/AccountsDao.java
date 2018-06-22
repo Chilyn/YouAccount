@@ -6,8 +6,8 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
-import ye.chilyn.youaccounts.keepaccounts.constant.AccountsTable;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
+import ye.chilyn.youaccounts.keepaccount.constant.AccountTable;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
 
 /**
  * Created by Alex on 2018/1/16.
@@ -16,7 +16,7 @@ import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
 
 public class AccountsDao {
 
-    private YouAccountsSqlHelper mSqlHelper = YouAccountsSqlHelper.getInstance();
+    private YouAccountSqlHelper mSqlHelper = YouAccountSqlHelper.getInstance();
 
     public AccountsDao() {
     }
@@ -26,14 +26,14 @@ public class AccountsDao {
      * @param bean
      * @return
      */
-    public boolean insertAccounts(AccountsBean bean) {
+    public boolean insertAccounts(AccountBean bean) {
         ContentValues values = new ContentValues();
-        values.put(AccountsTable.USER_ID, bean.getUserId());
-        values.put(AccountsTable.MONEY, bean.getMoney());
-        values.put(AccountsTable.BILL_TYPE, bean.getBillType());
-        values.put(AccountsTable.PAYMENT_TIME_MILL, bean.getTimeMill());
-        values.put(AccountsTable.PAYMENT_TIME, bean.getTime());
-        long errCode = mSqlHelper.openDatabase().insert(AccountsTable.TABLE_NAME, null, values);
+        values.put(AccountTable.USER_ID, bean.getUserId());
+        values.put(AccountTable.MONEY, bean.getMoney());
+        values.put(AccountTable.BILL_TYPE, bean.getBillType());
+        values.put(AccountTable.PAYMENT_TIME_MILL, bean.getTimeMill());
+        values.put(AccountTable.PAYMENT_TIME, bean.getTime());
+        long errCode = mSqlHelper.openDatabase().insert(AccountTable.TABLE_NAME, null, values);
         mSqlHelper.closeDatabase();
         if (errCode == -1) {
             return false;
@@ -49,32 +49,32 @@ public class AccountsDao {
      * @param endTime
      * @return
      */
-    public List<AccountsBean> queryAccounts(int userId, long startTime, long endTime) {
-        Cursor cursor = mSqlHelper.openDatabase().query(AccountsTable.TABLE_NAME, null,
-                AccountsTable.SQL_QUERY_ACCOUNTS_WHERE,
+    public List<AccountBean> queryAccounts(int userId, long startTime, long endTime) {
+        Cursor cursor = mSqlHelper.openDatabase().query(AccountTable.TABLE_NAME, null,
+                AccountTable.SQL_QUERY_ACCOUNTS_WHERE,
                 new String[]{userId + "", startTime + "", endTime + ""},
                 null, null,
-                AccountsTable.SQL_QUERY_ACCOUNTS_ORDER_BY);
+                AccountTable.SQL_QUERY_ACCOUNTS_ORDER_BY);
 
-        List<AccountsBean> listAccountsBean = new ArrayList<>();
+        List<AccountBean> listAccountBean = new ArrayList<>();
         while(cursor.moveToNext()) {
-            AccountsBean bean = new AccountsBean();
-            int uid = Integer.valueOf(cursor.getString(cursor.getColumnIndex(AccountsTable.USER_ID)));
-            float money = cursor.getFloat(cursor.getColumnIndex(AccountsTable.MONEY));
-            String billType = cursor.getString(cursor.getColumnIndex(AccountsTable.BILL_TYPE));
-            long timeMill = cursor.getLong(cursor.getColumnIndex(AccountsTable.PAYMENT_TIME_MILL));
-            String time = cursor.getString(cursor.getColumnIndex(AccountsTable.PAYMENT_TIME));
+            AccountBean bean = new AccountBean();
+            int uid = Integer.valueOf(cursor.getString(cursor.getColumnIndex(AccountTable.USER_ID)));
+            float money = cursor.getFloat(cursor.getColumnIndex(AccountTable.MONEY));
+            String billType = cursor.getString(cursor.getColumnIndex(AccountTable.BILL_TYPE));
+            long timeMill = cursor.getLong(cursor.getColumnIndex(AccountTable.PAYMENT_TIME_MILL));
+            String time = cursor.getString(cursor.getColumnIndex(AccountTable.PAYMENT_TIME));
             bean.setUserId(uid);
             bean.setMoney(money);
             bean.setBillType(billType);
             bean.setTimeMill(timeMill);
             bean.setTime(time);
-            listAccountsBean.add(bean);
+            listAccountBean.add(bean);
         }
 
         cursor.close();
         mSqlHelper.closeDatabase();
-        return listAccountsBean;
+        return listAccountBean;
     }
 
     /**
@@ -86,13 +86,13 @@ public class AccountsDao {
      */
     public float calculateTotalPayment(int userId, long startTime, long endTime) {
         float totalPayment = 0.0f;
-        Cursor cursor = mSqlHelper.openDatabase().query(AccountsTable.TABLE_NAME,
-                new String[]{AccountsTable.SQL_CALCULATE_ACCOUNTS_COLUMN},
-                AccountsTable.SQL_QUERY_ACCOUNTS_WHERE,
+        Cursor cursor = mSqlHelper.openDatabase().query(AccountTable.TABLE_NAME,
+                new String[]{AccountTable.SQL_CALCULATE_ACCOUNTS_COLUMN},
+                AccountTable.SQL_QUERY_ACCOUNTS_WHERE,
                 new String[]{userId + "", startTime + "", endTime + ""},
                 null, null, null);
         if (cursor.moveToNext()) {
-            totalPayment = cursor.getFloat(cursor.getColumnIndex(AccountsTable.TOTAL_PAYMENT));
+            totalPayment = cursor.getFloat(cursor.getColumnIndex(AccountTable.TOTAL_PAYMENT));
         }
 
         cursor.close();
@@ -105,9 +105,9 @@ public class AccountsDao {
      * @param bean
      * @return
      */
-    public boolean deleteAccount(AccountsBean bean) {
-        int deleteRows = mSqlHelper.openDatabase().delete(AccountsTable.TABLE_NAME,
-                AccountsTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});
+    public boolean deleteAccount(AccountBean bean) {
+        int deleteRows = mSqlHelper.openDatabase().delete(AccountTable.TABLE_NAME,
+                AccountTable.SQL_DELETE_ACCOUNT_WHERE, new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});
         mSqlHelper.closeDatabase();
         if (deleteRows == 0) {
             return false;
@@ -121,12 +121,12 @@ public class AccountsDao {
      * @param bean
      * @return
      */
-    public boolean updateAccount(AccountsBean bean) {
+    public boolean updateAccount(AccountBean bean) {
         ContentValues values = new ContentValues();
-        values.put(AccountsTable.MONEY, bean.getMoney());
-        values.put(AccountsTable.BILL_TYPE, bean.getBillType());
-        int affectedRows = mSqlHelper.openDatabase().update(AccountsTable.TABLE_NAME, values,
-                AccountsTable.SQL_UPDATE_ACCOUNT_WHERE,
+        values.put(AccountTable.MONEY, bean.getMoney());
+        values.put(AccountTable.BILL_TYPE, bean.getBillType());
+        int affectedRows = mSqlHelper.openDatabase().update(AccountTable.TABLE_NAME, values,
+                AccountTable.SQL_UPDATE_ACCOUNT_WHERE,
                 new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});
         mSqlHelper.closeDatabase();
         if (affectedRows > 0) {

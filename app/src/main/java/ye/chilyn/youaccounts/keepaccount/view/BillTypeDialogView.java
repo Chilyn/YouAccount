@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.view;
+package ye.chilyn.youaccounts.keepaccount.view;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import ye.chilyn.youaccounts.R;
-import ye.chilyn.youaccounts.keepaccounts.adapter.BillTypeAdapter;
+import ye.chilyn.youaccounts.keepaccount.adapter.BillTypeAdapter;
 import ye.chilyn.youaccounts.util.DialogUtil;
 
 /**

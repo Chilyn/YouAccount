@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.ypy.eventbus.EventBus;
 
-import ye.chilyn.youaccounts.AccountsApplication;
+import ye.chilyn.youaccounts.AccountApplication;
 import ye.chilyn.youaccounts.R;
 import ye.chilyn.youaccounts.base.BaseActivity;
 import ye.chilyn.youaccounts.base.common.BaseStaticInnerHandler;
@@ -119,7 +119,7 @@ public class ModifyNicknameActivity extends BaseActivity implements View.OnClick
             return;
         }
 
-        UserBean loginUserBean = AccountsApplication.getLoginUserInfo();
+        UserBean loginUserBean = AccountApplication.getLoginUserInfo();
         password = MD5Util.getStringMD5(MD5Util.getStringMD5(password));
         if (!loginUserBean.getPassword().equals(password)) {
             ToastUtil.showShortToast(getString(R.string.password_is_wrong));
@@ -171,7 +171,7 @@ public class ModifyNicknameActivity extends BaseActivity implements View.OnClick
 
     private void onModifyNicknameSuccess(UserBean bean) {
         SharePreferencesUtils.save(SharePreferenceKey.NICKNAME, bean.getNickname());
-        AccountsApplication.setLoginUserInfo(bean.copy());
+        AccountApplication.setLoginUserInfo(bean.copy());
         ToastUtil.showShortToast(getString(R.string.nickname_has_been_modified));
         EventBus.getDefault().post(EventType.MODIFY_NICKNAME_SUCCESS);
         finish();

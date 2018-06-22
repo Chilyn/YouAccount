@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.keepaccounts.model;
+package ye.chilyn.youaccounts.keepaccount.model;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutorService;
 import ye.chilyn.youaccounts.base.BaseModel;
 import ye.chilyn.youaccounts.constant.HandleModelType;
 import ye.chilyn.youaccounts.constant.RefreshViewType;
-import ye.chilyn.youaccounts.keepaccounts.entity.AccountsBean;
-import ye.chilyn.youaccounts.keepaccounts.entity.QueryAccountsParameter;
+import ye.chilyn.youaccounts.keepaccount.entity.AccountBean;
+import ye.chilyn.youaccounts.keepaccount.entity.QueryAccountParameter;
 import ye.chilyn.youaccounts.sql.AccountsDao;
 import ye.chilyn.youaccounts.util.CacheExecutorHelper;
 
@@ -16,12 +16,12 @@ import ye.chilyn.youaccounts.util.CacheExecutorHelper;
  * 账目相关数据库操作的Model
  */
 
-public class KeepAccountsSqlModel extends BaseModel {
+public class KeepAccountSqlModel extends BaseModel {
 
     private ExecutorService mSqlTaskExecutor = CacheExecutorHelper.getInstance().getCacheExecutor();
     private AccountsDao mAccountsDao = new AccountsDao();
 
-    public KeepAccountsSqlModel(OnRefreshViewListener listener) {
+    public KeepAccountSqlModel(OnRefreshViewListener listener) {
         super(listener);
     }
 
@@ -44,25 +44,25 @@ public class KeepAccountsSqlModel extends BaseModel {
         public void run() {
             switch (mEventType) {
                 case HandleModelType.INSERT_ACCOUNTS:
-                    insertAccounts((AccountsBean) mData);
+                    insertAccounts((AccountBean) mData);
                     break;
 
                 case HandleModelType.QUERY_ACCOUNTS:
-                    queryAccounts((QueryAccountsParameter) mData);
+                    queryAccounts((QueryAccountParameter) mData);
                     break;
 
                 case HandleModelType.DELETE_ACCOUNTS:
-                    deleteAccounts((AccountsBean) mData);
+                    deleteAccounts((AccountBean) mData);
                     break;
 
                 case HandleModelType.UPDATE_ACCOUNTS:
-                    updateAccounts((AccountsBean) mData);
+                    updateAccounts((AccountBean) mData);
                     break;
             }
         }
     }
 
-    private void insertAccounts(AccountsBean bean) {
+    private void insertAccounts(AccountBean bean) {
         boolean isSuccess = mAccountsDao.insertAccounts(bean);
         if (isSuccess) {
             callRefreshView(RefreshViewType.INSERT_ACCOUNTS_SUCCESS, null);
@@ -71,12 +71,12 @@ public class KeepAccountsSqlModel extends BaseModel {
         }
     }
 
-    private void queryAccounts(QueryAccountsParameter param) {
-        List<AccountsBean> listAccountsBean = mAccountsDao.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
-        callRefreshView(RefreshViewType.QUERY_ACCOUNTS_SUCCESS, listAccountsBean);
+    private void queryAccounts(QueryAccountParameter param) {
+        List<AccountBean> listAccountBean = mAccountsDao.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
+        callRefreshView(RefreshViewType.QUERY_ACCOUNTS_SUCCESS, listAccountBean);
     }
 
-    private void deleteAccounts(AccountsBean bean) {
+    private void deleteAccounts(AccountBean bean) {
         if (mAccountsDao.deleteAccount(bean)) {
             callRefreshView(RefreshViewType.DELETE_ACCOUNT_SUCCESS, bean);
         } else {
@@ -84,7 +84,7 @@ public class KeepAccountsSqlModel extends BaseModel {
         }
     }
 
-    private void updateAccounts(AccountsBean bean) {
+    private void updateAccounts(AccountBean bean) {
         if (mAccountsDao.updateAccount(bean)) {
             callRefreshView(RefreshViewType.UPDATE_ACCOUNT_SUCCESS, null);
         } else {
