@@ -1,12 +1,10 @@
 package ye.chilyn.youaccounts;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +19,6 @@ import ye.chilyn.youaccounts.util.FragmentTabManager;
  */
 public class MainActivity extends BaseActivity {
 
-    private TextView mTvTabKeepAccount, mTvTabMe;
-    private FragmentTabManager mTabManager;
     private List<Fragment> mFragments = new ArrayList<>();
     private List<View> mTabs = new ArrayList<>();
 
@@ -32,43 +28,18 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initViews();
         initData();
-        setListener();
     }
 
     private void initViews() {
-        mTvTabKeepAccount = (TextView) findViewById(R.id.tv_tab1);
-        mTvTabMe = (TextView) findViewById(R.id.tv_tab2);
-        mTabs.add(mTvTabKeepAccount);
-        mTabs.add(mTvTabMe);
+        mTabs.add(findViewById(R.id.tab1));
+        mTabs.add(findViewById(R.id.tab2));
     }
 
     private void initData() {
-        mTvTabKeepAccount.setSelected(true);
         mFragments.add(new KeepAccountsFragment());
         mFragments.add(new MeFragment());
-        mTabManager = new FragmentTabManager(this, mFragments, R.id.fl_fragments, mTabs);
+        FragmentTabManager manager = new FragmentTabManager(this, mFragments, R.id.fl_fragments, mTabs);
     }
-
-    private void setListener() {
-        mTabManager.setOnTabClickListener(mTabClickListener);
-    }
-
-    private FragmentTabManager.OnTabClickListener mTabClickListener = new FragmentTabManager.OnTabClickListener() {
-        @Override
-        public void onClick(View tab) {
-            switch (tab.getId()) {
-                case R.id.tv_tab1:
-                    mTvTabKeepAccount.setSelected(true);
-                    mTvTabMe.setSelected(false);
-                    break;
-
-                case R.id.tv_tab2:
-                    mTvTabKeepAccount.setSelected(false);
-                    mTvTabMe.setSelected(true);
-                    break;
-            }
-        }
-    };
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

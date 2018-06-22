@@ -16,21 +16,13 @@
         android:layout_height="45dp"
         android:layout_below="@id/space">
 
-        <TextView
+        <ImageView
             android:id="@+id/left_option"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:text="＜"/>
-
-        <TextView
-            android:id="@+id/left_divider"
-            android:layout_width="1px"
-            android:layout_height="25dp"
-            android:layout_toRightOf="@id/left_option"
-            android:layout_centerVertical="true"
-            android:background="@color/divider_dark_gray"/>
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="12dp"
+            android:src="@drawable/back"
+            android:foreground="@drawable/selector_btn_foreground"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -40,14 +32,6 @@
             android:text=""
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/right_divider"
-            android:layout_width="1px"
-            android:layout_height="25dp"
-            android:layout_toLeftOf="@+id/right_option"
-            android:layout_centerVertical="true"
-            android:background="@color/divider_dark_gray"/>
 
         <TextView
             android:id="@+id/right_option"
@@ -60,6 +44,7 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textSize="14sp"
-            android:text=""/>
+            android:text=""
+            android:foreground="@drawable/selector_btn_foreground"/>
     </RelativeLayout>
 </RelativeLayout>

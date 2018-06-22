@@ -42,7 +42,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TitleBarView mTitleBarView;
     private ImageView mIvProfilePhoto;
     private TextView mTvNickname;
-    private LinearLayout mLlModifyPassword, mLlModifyNickname;
     private TextView mTvVersion;
 
     //-------------------备份数据相关------------------------//
@@ -77,8 +76,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTitleBarView.setRightOptionViewVisibility(false);
         mIvProfilePhoto = findView(R.id.iv_profile_photo);
         mTvNickname = findView(R.id.tv_nick_name);
-        mLlModifyPassword = findView(R.id.ll_modify_password);
-        mLlModifyNickname = findView(R.id.ll_modify_nickname);
         mLlBackupData = findView(R.id.ll_backup_data);
         mTvVersion = findView(R.id.tv_version);
         mLlExit = findView(R.id.ll_exit);
@@ -108,8 +105,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     private void setListener() {
         mIvProfilePhoto.setOnClickListener(this);
-        mLlModifyPassword.setOnClickListener(this);
-        mLlModifyNickname.setOnClickListener(this);
+        findView(R.id.rl_modify_password).setOnClickListener(this);
+        findView(R.id.rl_modify_nickname).setOnClickListener(this);
         mLlBackupData.setOnClickListener(this);
         mLlExit.setOnClickListener(this);
     }
@@ -120,11 +117,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.iv_profile_photo:
                 break;
 
-            case R.id.ll_modify_password:
+            case R.id.rl_modify_password:
                 startActivity(new Intent(getActivity(), ModifyPasswordActivity.class));
                 break;
 
-            case R.id.ll_modify_nickname:
+            case R.id.rl_modify_nickname:
                 startActivity(new Intent(getActivity(), ModifyNicknameActivity.class));
                 break;
 

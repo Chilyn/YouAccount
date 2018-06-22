@@ -5,114 +5,120 @@
     android:background="@color/background_gray"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title_bar"/>
+    <include layout="@layout/layout_title_bar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
+        android:layout_marginTop="15dp"
         android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <ImageView
             android:id="@+id/iv_profile_photo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text=""/>
+            android:text=""
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_modify_password"
+    <RelativeLayout
+        android:id="@+id/rl_modify_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
         android:background="@drawable/selector_list_item_color"
-        android:orientation="horizontal">
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/modify_password"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/modify_password"
+            android:textColor="@android:color/black" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider_light_gray"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_light_gray" />
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ll_modify_nickname"
+    <RelativeLayout
+        android:id="@+id/rl_modify_nickname"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
         android:background="@drawable/selector_list_item_color"
-        android:orientation="horizontal">
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/modify_nick_name"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/modify_nick_name"
+            android:textColor="@android:color/black" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider_light_gray"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider_light_gray" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_backup_data"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
         android:background="@drawable/selector_list_item_color"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/backup"/>
+            android:layout_marginLeft="10dp"
+            android:text="@string/backup"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
         android:background="@drawable/selector_list_item_color"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/version"/>
+            android:layout_marginLeft="10dp"
+            android:text="@string/version"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:textColor="@android:color/black"
-            android:text=""/>
+            android:text=""
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
@@ -120,15 +126,15 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center"
         android:background="@drawable/selector_list_item_color"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:text="@string/exit"/>
+            android:text="@string/exit"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 </LinearLayout>

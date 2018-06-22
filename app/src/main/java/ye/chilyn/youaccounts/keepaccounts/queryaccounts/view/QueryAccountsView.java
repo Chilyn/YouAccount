@@ -44,11 +44,10 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private static final int YEAR_MONTH_DAY = DateTimePicker.YEAR_MONTH_DAY;
     private static final int START_TIME = 0, END_TIME = 1;
     private static final int DATE1 = 0, DATE2 = 1;
-    private static final int NONE = -1;
     private TextView mTvChooseMonthOrDate;
     private RelativeLayout mRlMonth, mRlDate;
-    private RelativeLayout mRlDate1, mRlDate2;
-    private TextView mTvAccountsRange, mTvMonth, mTvDate1, mTvTo, mTvDate2;
+    private TextView mTvDate1, mBottomLineDate1, mTvTo, mTvDate2, mBottomLineDate2;
+    private TextView mTvAccountsRange, mTvMonth;
     private TextView mTvQuery;
     private TextView mTvTotalMoney;
     private NumberFormat mNumberFormat;
@@ -56,7 +55,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
     private SimpleDateFormat mMonthFormat = new SimpleDateFormat("yyyy-MM");
     private DateTimePicker mPicker;
     private int mCurrentChooseMode = DateTimePicker.YEAR_MONTH;
-    private int mCurrentSelectingDate = NONE;
+    private int mCurrentSelectingDate = DATE1;
     private AlertDialog mDialogOverSixMonth;
     private ProgressDialogView mProgressDialogView;
 
@@ -76,23 +75,40 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         mRlDate = findView(R.id.rl_date);
         mTvAccountsRange = findView(R.id.tv_accounts_range);
         mTvMonth = findView(R.id.tv_month);
-        mRlDate1 = findView(R.id.rl_date1);
         mTvDate1 = findView(R.id.tv_date1);
+        mBottomLineDate1 = findView(R.id.bottom_line_date1);
         mTvTo = findView(R.id.tv_to);
-        mRlDate2 = findView(R.id.rl_date2);
         mTvDate2 = findView(R.id.tv_date2);
+        mBottomLineDate2 = findView(R.id.bottom_line_date2);
         mTvQuery = findView(R.id.tv_query);
         mTvTotalMoney = findView(R.id.tv_total_money);
         mProgressDialogView = new ProgressDialogView(mContext, getString(R.string.querying));
+        mRlDate.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void initData() {
         super.initData();
         mTvMonth.setText(mMonthFormat.format(new Date()));
-        mRlDate1.setSelected(true);
+        mTvDate1.setText(mDateFormat.format(new Date()));
+        setSelectedDateViews();
         mNumberFormat = NumberFormat.getCurrencyInstance();
         mNumberFormat.setRoundingMode(RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 设置选中的日期
+     */
+    private void setSelectedDateViews() {
+        boolean isSelectingDate1 = true;
+        if (mCurrentSelectingDate != DATE1) {
+            isSelectingDate1 = false;
+        }
+
+        mTvDate1.setSelected(isSelectingDate1);
+        mBottomLineDate1.setSelected(isSelectingDate1);
+        mTvDate2.setSelected(!isSelectingDate1);
+        mBottomLineDate2.setSelected(!isSelectingDate1);
     }
 
     @Override
@@ -100,8 +116,8 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         super.setViewListener();
         mTvChooseMonthOrDate.setOnClickListener(this);
         mTvMonth.setOnClickListener(this);
-        mRlDate1.setOnClickListener(this);
-        mRlDate2.setOnClickListener(this);
+        mTvDate1.setOnClickListener(this);
+        mTvDate2.setOnClickListener(this);
         mTvQuery.setOnClickListener(this);
     }
 
@@ -116,17 +132,15 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                 showPicker(getString(R.string.choose_time));
                 break;
 
-            case R.id.rl_date1:
+            case R.id.tv_date1:
                 mCurrentSelectingDate = DATE1;
-                mRlDate1.setSelected(true);
-                mRlDate2.setSelected(false);
+                setSelectedDateViews();
                 showPicker(getString(R.string.choose_start_date));
                 break;
 
-            case R.id.rl_date2:
+            case R.id.tv_date2:
                 mCurrentSelectingDate = DATE2;
-                mRlDate1.setSelected(false);
-                mRlDate2.setSelected(true);
+                setSelectedDateViews();
                 showPicker(getString(R.string.choose_end_date));
                 break;
 
@@ -144,11 +158,8 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         if (mCurrentChooseMode == YEAR_MONTH) {
             mCurrentChooseMode = YEAR_MONTH_DAY;
             mTvChooseMonthOrDate.setText(getString(R.string.choose_date));
-            mRlMonth.setVisibility(View.GONE);
+            mRlMonth.setVisibility(View.INVISIBLE);
             mRlDate.setVisibility(View.VISIBLE);
-            if (TextUtils.isEmpty(mTvDate1.getText())) {
-                mTvDate1.setText(mDateFormat.format(new Date()));
-            }
             return;
         }
 
@@ -156,7 +167,7 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
             mCurrentChooseMode = YEAR_MONTH;
             mTvChooseMonthOrDate.setText(getString(R.string.choose_month));
             mRlMonth.setVisibility(View.VISIBLE);
-            mRlDate.setVisibility(View.GONE);
+            mRlDate.setVisibility(View.INVISIBLE);
             return;
         }
     }
@@ -173,40 +184,13 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         int selectedYear = endYear;
         int selectedMonth = endMonth;
         int selectedDay = endDay;
-        //如果是按日期选择的模式，弹窗日期默认选中上次选中的月份
-        if (mCurrentChooseMode == YEAR_MONTH) {
-            try {
-                Date lastChooseDate = mMonthFormat.parse(mTvMonth.getText().toString());
-                calendar.setTime(lastChooseDate);
-                selectedYear = calendar.get(Calendar.YEAR);
-                selectedMonth = calendar.get(Calendar.MONTH) + 1;
-                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //如果是按日期选择的模式，弹窗日期默认选中上次选中的日期
-        if (mCurrentChooseMode == YEAR_MONTH_DAY && mCurrentSelectingDate == DATE1) {
-            try {
-                Date lastChooseDate = mDateFormat.parse(mTvDate1.getText().toString());
-                calendar.setTime(lastChooseDate);
-                selectedYear = calendar.get(Calendar.YEAR);
-                selectedMonth = calendar.get(Calendar.MONTH) + 1;
-                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        } else if (mCurrentChooseMode == YEAR_MONTH_DAY && mCurrentSelectingDate == DATE2) {
-            try {
-                Date lastChooseDate = mDateFormat.parse(mTvDate2.getText().toString());
-                calendar.setTime(lastChooseDate);
-                selectedYear = calendar.get(Calendar.YEAR);
-                selectedMonth = calendar.get(Calendar.MONTH) + 1;
-                selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        Date lastChooseDate = getLastChooseDate();
+        //如果获取到的上次选择日期不为空则设置上次选择过的日期
+        if (lastChooseDate != null) {
+            calendar.setTime(lastChooseDate);
+            selectedYear = calendar.get(Calendar.YEAR);
+            selectedMonth = calendar.get(Calendar.MONTH) + 1;
+            selectedDay = calendar.get(Calendar.DAY_OF_MONTH);
         }
 
         mPicker = new DateTimePicker(mContext, mCurrentChooseMode, DateTimePicker.NONE);
@@ -223,6 +207,39 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
         }
         mPicker.setSelectedItem(selectedYear, selectedMonth, selectedDay, 0, 0);
         mPicker.show();
+    }
+
+    /**
+     * 获取目前查询模式下上次选中的日期
+     * @return
+     */
+    private Date getLastChooseDate() {
+        Date lastChooseDate = null;
+        //如果是按月份选择的模式，弹窗日期默认选中上次选中的月份
+        if (mCurrentChooseMode == YEAR_MONTH) {
+            try {
+                lastChooseDate = mMonthFormat.parse(mTvMonth.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //如果是按日期选择的模式，弹窗日期默认选中上次选中的日期
+        if (mCurrentChooseMode == YEAR_MONTH_DAY && mCurrentSelectingDate == DATE1) {
+            try {
+                lastChooseDate = mDateFormat.parse(mTvDate1.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else if (mCurrentChooseMode == YEAR_MONTH_DAY && mCurrentSelectingDate == DATE2) {
+            try {
+                lastChooseDate = mDateFormat.parse(mTvDate2.getText().toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return lastChooseDate;
     }
 
     private DateTimePicker.OnYearMonthTimePickListener mYearMonthPickListener = new DateTimePicker.OnYearMonthTimePickListener() {
@@ -247,7 +264,6 @@ public class QueryAccountsView extends BaseAccountsView implements View.OnClickL
                     mTvDate2.setText(sb.toString());
                     break;
             }
-            mCurrentSelectingDate = NONE;
         }
     };
 

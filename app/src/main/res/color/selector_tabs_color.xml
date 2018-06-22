@@ -3,5 +3,5 @@
     <item android:state_selected="true"
         android:color="@color/colorPrimary" />
 
-    <item android:color="@color/text_gray" />
+    <item android:color="@color/navigation_tabs_text_gray" />
 </selector>
