@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YouAccounts</string>
+    <string name="app_name">YouAccount</string>
     <string name="db">db</string>
     <string name="dot">.</string>
     <string name="keep_accounts">记账</string>
@@ -52,7 +52,7 @@
     <string name="forgot_password">忘记密码？</string>
     <string name="login">登录</string>
     <string name="close">X</string>
-    <string name="welcome">欢迎使用YouAccounts</string>
+    <string name="welcome">欢迎使用YouAccount</string>
     <string name="skip">跳过</string>
     <string name="nickname">昵称：</string>
     <string name="eight_to_fifteen_character">8~15个字符</string>
