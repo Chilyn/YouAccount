@@ -78,6 +78,29 @@ public class AccountsDao {
     }
 
     /**
+     * 计算给定时间范围内的总支出
+     * @param userId
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public float calculateTotalPayment(int userId, long startTime, long endTime) {
+        float totalPayment = 0.0f;
+        Cursor cursor = mSqlHelper.openDatabase().query(AccountsTable.TABLE_NAME,
+                new String[]{AccountsTable.SQL_CALCULATE_ACCOUNTS_COLUMN},
+                AccountsTable.SQL_QUERY_ACCOUNTS_WHERE,
+                new String[]{userId + "", startTime + "", endTime + ""},
+                null, null, null);
+        if (cursor.moveToNext()) {
+            totalPayment = cursor.getFloat(cursor.getColumnIndex(AccountsTable.TOTAL_PAYMENT));
+        }
+
+        cursor.close();
+        mSqlHelper.closeDatabase();
+        return totalPayment;
+    }
+
+    /**
      * 删除账目数据
      * @param bean
      * @return
