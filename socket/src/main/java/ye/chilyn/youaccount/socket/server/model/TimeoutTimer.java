@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.socket.server.model;
+package ye.chilyn.youaccount.socket.server.model;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

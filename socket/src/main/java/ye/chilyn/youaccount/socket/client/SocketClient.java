@@ -1,6 +1,6 @@
-package ye.chilyn.youaccounts.socket.client;
+package ye.chilyn.youaccount.socket.client;
 
-import ye.chilyn.youaccounts.socket.constants.Constants;
+import ye.chilyn.youaccount.socket.constants.Constants;
 
 import java.io.File;
 import java.io.FileInputStream;

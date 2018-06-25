@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.socket.server.util;
+package ye.chilyn.youaccount.socket.server.util;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

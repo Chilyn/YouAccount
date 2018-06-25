@@ -1,4 +1,4 @@
-package ye.chilyn.youaccounts.socket.constants;
+package ye.chilyn.youaccount.socket.constants;
 
 /**
  * Created by Alex on 2018/6/6.

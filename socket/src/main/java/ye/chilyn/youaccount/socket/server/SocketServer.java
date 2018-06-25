@@ -1,9 +1,9 @@
-package ye.chilyn.youaccounts.socket.server;
+package ye.chilyn.youaccount.socket.server;
 
-import ye.chilyn.youaccounts.socket.constants.Constants;
-import ye.chilyn.youaccounts.socket.server.task.AcceptFileTask;
-import ye.chilyn.youaccounts.socket.server.task.AcceptSocketLoopTask;
-import ye.chilyn.youaccounts.socket.server.util.Printer;
+import ye.chilyn.youaccount.socket.server.task.AcceptFileTask;
+import ye.chilyn.youaccount.socket.server.task.AcceptSocketLoopTask;
+import ye.chilyn.youaccount.socket.constants.Constants;
+import ye.chilyn.youaccount.socket.server.util.Printer;
 
 import java.net.Socket;
 import java.util.ArrayList;
