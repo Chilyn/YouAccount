@@ -5,7 +5,9 @@
     <string name="keep_accounts">记账</string>
     <string name="me">我的</string>
     <string name="paid_money">支付金额：</string>
+    <string name="money">金额：</string>
     <string name="bill_type">账单类型：</string>
+    <string name="type">类型：</string>
     <string name="this_week_total">本周支出：</string>
     <string name="expenditure">支出</string>
     <string name="yuan">元</string>
@@ -39,6 +41,7 @@
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
     <string name="input_money">输入金额</string>
+    <string name="input_bill_type">输入类型</string>
     <string name="modify_password">修改密码</string>
     <string name="exit">退出</string>
     <string name="modify_nick_name">修改昵称</string>
@@ -115,6 +118,5 @@
         <item>房租</item>
         <item>娱乐</item>
         <item>车费</item>
-        <item>其他</item>
     </string-array>
 </resources>

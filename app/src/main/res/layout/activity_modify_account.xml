@@ -32,7 +32,7 @@
             android:hint="@string/input_money"
             android:textColorHint="@color/text_hint_gray"
             android:textSize="14sp"
-            android:background="@drawable/shape_modify_widget_background"/>
+            android:background="@drawable/shape_et_background"/>
     </LinearLayout>
 
     <TextView
@@ -58,7 +58,7 @@
             android:layout_height="30dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:background="@drawable/shape_modify_widget_background">
+            android:background="@drawable/shape_et_background">
 
             <TextView
                 android:id="@+id/tv_bill_type"

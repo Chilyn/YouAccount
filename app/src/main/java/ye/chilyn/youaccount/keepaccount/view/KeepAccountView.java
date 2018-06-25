@@ -29,7 +29,8 @@ import ye.chilyn.youaccount.util.ToastUtil;
 public class KeepAccountView extends BaseAccountView implements View.OnClickListener {
 
     private EditText mEtMoney;
-    private TextView mTvBillType, mTvKeepAccounts;
+    private EditText mEtBillType;
+    private TextView mTvKeepAccounts;
     private TextView mTvThisWeekTotal;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private NumberFormat mNumberFormat;
@@ -48,7 +49,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     public void initViews() {
         super.initViews();
         mEtMoney = findView(R.id.et_money);
-        mTvBillType = findView(R.id.tv_bill_type);
+        mEtBillType = findView(R.id.et_bill_type);
         mTvKeepAccounts = findView(R.id.tv_keep_accounts);
         mTvThisWeekTotal = findView(R.id.tv_this_week_total);
         mBillTypeDialogView = new BillTypeDialogView(mContext, mBillTypeSelectedListener);
@@ -65,14 +66,14 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     @Override
     public void setViewListener() {
         super.setViewListener();
-        findView(R.id.ll_bill_type).setOnClickListener(this);
+        findView(R.id.tv_choose_type).setOnClickListener(this);
         mTvKeepAccounts.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_bill_type:
+            case R.id.tv_choose_type:
                 mBillTypeDialogView.showDialog();
                 break;
 
@@ -90,7 +91,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
         try {
             float money = Float.valueOf(moneyStr);
             Date date = new Date();
-            AccountBean bean = new AccountBean(mUserId, money, mTvBillType.getText().toString(), date.getTime(), dateFormat.format(date));
+            AccountBean bean = new AccountBean(mUserId, money, mEtBillType.getText().toString(), date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
             mProgressDialogView.showProgressDialog();
@@ -103,7 +104,8 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     private BillTypeDialogView.OnBillTypeSelectedListener mBillTypeSelectedListener = new BillTypeDialogView.OnBillTypeSelectedListener() {
         @Override
         public void onItemSelected(String billType) {
-            mTvBillType.setText(billType);
+            mEtBillType.setText(billType);
+            mEtBillType.setSelection(billType.length());
         }
     };
 
