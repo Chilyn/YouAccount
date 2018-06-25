@@ -38,8 +38,6 @@ public class KeepAccountFragment extends BaseFragment {
     private IBaseView mKeepAccountsView;
     /**数据库操作Model*/
     private IBaseModel mKeepAccountsSqlModel;
-    /**账目计算Model*/
-    private IBaseModel mAccountsCalculateModel;
     /**标题栏*/
     private TitleBarView mTitleBarView;
     private int mUserId;
@@ -71,10 +69,7 @@ public class KeepAccountFragment extends BaseFragment {
 
         mUserId = AccountApplication.getLoginUserInfo().getUserId();
         mKeepAccountsSqlModel = new KeepAccountSqlModel(mRefreshViewListener);
-        mAccountsCalculateModel = new AccountCalculateModel(mRefreshViewListener);
-        Date now = new Date();
-        mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+        queryAccounts();
         mKeepAccountsView.refreshViews(RefreshViewType.SHOW_PROGRESS_DIALOG, null);
     }
 
@@ -100,13 +95,8 @@ public class KeepAccountFragment extends BaseFragment {
         public void onHandleModel(int type, Object data) {
             switch (type) {
                 case HandleModelType.INSERT_ACCOUNTS:
-                case HandleModelType.QUERY_ACCOUNTS:
-                case HandleModelType.UPDATE_ACCOUNTS:
                 case HandleModelType.DELETE_ACCOUNTS:
                     mKeepAccountsSqlModel.handleModelEvent(type, data);
-                    break;
-
-                default:
                     break;
             }
         }
@@ -119,10 +109,10 @@ public class KeepAccountFragment extends BaseFragment {
         @Override
         public void onRefreshView(int refreshType, Object data) {
             switch (refreshType) {
-                case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
-                    //计算总账目
-                    mAccountsCalculateModel.handleModelEvent(HandleModelType.CALCULATE_TOTAL_ACCOUNTS, data);
+                case RefreshViewType.INSERT_ACCOUNTS_SUCCESS:
+                case RefreshViewType.DELETE_ACCOUNT_SUCCESS:
                     mKeepAccountsView.refreshViews(refreshType, data);
+                    queryAccounts();
                     break;
 
                 default:
@@ -136,11 +126,15 @@ public class KeepAccountFragment extends BaseFragment {
         switch (eventType) {
             case EventType.QUERY_ACCOUNTS_AFTER_DELETE:
             case EventType.QUERY_ACCOUNTS_AFTER_UPDATE:
-                Date now = new Date();
-                mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
-                        new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
+                queryAccounts();
                 break;
         }
+    }
+
+    private void queryAccounts() {
+        Date now = new Date();
+        mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
+                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     @Override

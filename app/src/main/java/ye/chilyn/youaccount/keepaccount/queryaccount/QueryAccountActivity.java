@@ -25,7 +25,6 @@ public class QueryAccountActivity extends BaseActivity {
 
     private TitleBarView mTitleBarView;
     private IBaseModel mKeepAccountsSqlModel;
-    private IBaseModel mAccountsCalculateModel;
     private IBaseView mQueryAccountsView;
     private int mUserId;
 
@@ -47,7 +46,6 @@ public class QueryAccountActivity extends BaseActivity {
         mTitleBarView.setTitle(getString(R.string.query_accounts));
         mUserId = AccountApplication.getLoginUserInfo().getUserId();
         mKeepAccountsSqlModel = new KeepAccountSqlModel(mRefreshViewListener);
-        mAccountsCalculateModel = new AccountCalculateModel(mRefreshViewListener);
         Date now = new Date();
         mKeepAccountsSqlModel.handleModelEvent(HandleModelType.QUERY_ACCOUNTS,
                 new QueryAccountParameter(mUserId, DateUtil.getMonthStartTime(now), DateUtil.getMonthEndTime(now)));
@@ -76,17 +74,7 @@ public class QueryAccountActivity extends BaseActivity {
 
         @Override
         public void onRefreshView(int refreshType, Object data) {
-            switch (refreshType) {
-                case RefreshViewType.QUERY_ACCOUNTS_SUCCESS:
-                    //计算总账目
-                    mAccountsCalculateModel.handleModelEvent(HandleModelType.CALCULATE_TOTAL_ACCOUNTS, data);
-                    mQueryAccountsView.refreshViews(refreshType, data);
-                    break;
-
-                default:
-                    mQueryAccountsView.refreshViews(refreshType, data);
-                    break;
-            }
+            mQueryAccountsView.refreshViews(refreshType, data);
         }
     }
 

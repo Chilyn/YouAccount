@@ -78,13 +78,13 @@ public class AccountsDao {
     }
 
     /**
-     * 计算给定时间范围内的总支出
+     * 查询给定时间范围内的总支出
      * @param userId
      * @param startTime
      * @param endTime
      * @return
      */
-    public float calculateTotalPayment(int userId, long startTime, long endTime) {
+    public float queryTotalPayments(int userId, long startTime, long endTime) {
         float totalPayment = 0.0f;
         Cursor cursor = mSqlHelper.openDatabase().query(AccountTable.TABLE_NAME,
                 new String[]{AccountTable.SQL_CALCULATE_ACCOUNTS_COLUMN},

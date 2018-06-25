@@ -149,7 +149,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
                     view.mProgressDialogView.dismissProgressDialog();
                     break;
 
-                case RefreshViewType.SHOW_TOTAL_ACCOUNTS:
+                case RefreshViewType.SHOW_TOTAL_PAYMENTS:
                     view.showTotalAccounts((Float) msg.obj);
                     break;
 
@@ -171,9 +171,6 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     private void onInsertAccountsSuccess(){
         ToastUtil.showShortToast(getString(R.string.record_success));
         mEtMoney.setText(null);
-        Date now = new Date();
-        callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     /**
@@ -187,9 +184,6 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     @Override
     protected void onDeleteAccountSuccess(AccountBean bean) {
         ToastUtil.showShortToast(getString(R.string.delete_success));
-        Date now = new Date();
-        callHandleModel(HandleModelType.QUERY_ACCOUNTS,
-                new QueryAccountParameter(mUserId, DateUtil.getThisWeekStartTime(now), DateUtil.getThisWeekEndTime(now)));
     }
 
     @Override

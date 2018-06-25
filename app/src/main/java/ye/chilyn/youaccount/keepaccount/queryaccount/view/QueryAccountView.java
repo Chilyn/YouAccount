@@ -371,7 +371,7 @@ public class QueryAccountView extends BaseAccountView implements View.OnClickLis
                     ToastUtil.showShortToast(view.getString(R.string.delete_fail));
                     break;
 
-                case RefreshViewType.SHOW_TOTAL_ACCOUNTS:
+                case RefreshViewType.SHOW_TOTAL_PAYMENTS:
                     view.showTotalAccounts((Float) msg.obj);
                     break;
             }

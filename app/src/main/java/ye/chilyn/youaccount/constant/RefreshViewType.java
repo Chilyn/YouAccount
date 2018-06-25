@@ -15,7 +15,7 @@ public interface RefreshViewType {
     /**查询账目成功*/
     int QUERY_ACCOUNTS_SUCCESS = 103;
     /**查询账目失败*/
-    int SHOW_TOTAL_ACCOUNTS = 104;
+    int SHOW_TOTAL_PAYMENTS = 104;
     /**删除账目成功*/
     int DELETE_ACCOUNT_SUCCESS = 105;
     /**删除账目失败*/

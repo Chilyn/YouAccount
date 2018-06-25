@@ -58,6 +58,6 @@ public class AccountCalculateModel extends BaseModel {
             BigDecimal itemValue = new BigDecimal(Float.toString(bean.getMoney()));
             total = total.add(itemValue);
         }
-        callRefreshView(RefreshViewType.SHOW_TOTAL_ACCOUNTS, total.floatValue());
+        callRefreshView(RefreshViewType.SHOW_TOTAL_PAYMENTS, total.floatValue());
     }
 }

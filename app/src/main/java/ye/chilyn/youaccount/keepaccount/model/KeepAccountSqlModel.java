@@ -74,6 +74,8 @@ public class KeepAccountSqlModel extends BaseModel {
     private void queryAccounts(QueryAccountParameter param) {
         List<AccountBean> listAccountBean = mAccountsDao.queryAccounts(param.getUserId(), param.getStartTime(), param.getEndTime());
         callRefreshView(RefreshViewType.QUERY_ACCOUNTS_SUCCESS, listAccountBean);
+        float totalPayments = mAccountsDao.queryTotalPayments(param.getUserId(), param.getStartTime(), param.getEndTime());
+        callRefreshView(RefreshViewType.SHOW_TOTAL_PAYMENTS, totalPayments);
     }
 
     private void deleteAccounts(AccountBean bean) {
