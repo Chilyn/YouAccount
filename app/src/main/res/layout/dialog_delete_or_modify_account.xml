@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="100dp">
 
     <TextView
         android:id="@+id/tv_modify_account"
@@ -12,19 +10,25 @@
         android:gravity="center"
         android:text="@string/modify_account"
         android:textColor="@android:color/black"
-        android:background="@drawable/selector_list_item_color"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider_dark_gray"/>
+        android:foreground="@drawable/selector_top_corner_item_foreground"
+        android:background="@drawable/shape_dialog_item_top"/>
 
     <TextView
         android:id="@+id/tv_delete_account"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:text="@string/delete_account"
         android:textColor="@android:color/black"
-        android:background="@drawable/selector_list_item_color"/>
-</LinearLayout>
+        android:foreground="@drawable/selector_bottom_corner_item_foreground"
+        android:background="@drawable/shape_dialog_item_bottom"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerInParent="true"
+        android:background="@color/divider_dark_gray"/>
+</RelativeLayout>

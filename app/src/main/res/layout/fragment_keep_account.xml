@@ -91,7 +91,7 @@
             android:gravity="center"
             android:textColor="@android:color/white"
             android:text="@string/keep_an_account"
-            android:foreground="@drawable/selector_round_btn_foreground"
+            android:foreground="@drawable/selector_round_corner_btn_foreground"
             android:background="@drawable/shape_btn_background"/>
     </RelativeLayout>
 

@@ -21,6 +21,7 @@ public class BackupView extends BaseView implements View.OnClickListener {
     private AlertDialog mDialogUploadErrorInfo;
     private Dialog mDialogChooseServer;
     private TextView mTvLocalServer, mTvRemoteServer;
+    private int mDialogWidthDp = 200, mDialogHeightDp = 100;
 
     public BackupView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -37,7 +38,7 @@ public class BackupView extends BaseView implements View.OnClickListener {
         View chooseServerDialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_choose_server, null);
         mTvLocalServer = (TextView) chooseServerDialogView.findViewById(R.id.tv_local_server);
         mTvRemoteServer = (TextView) chooseServerDialogView.findViewById(R.id.tv_remote_server);
-        mDialogChooseServer = DialogUtil.createDialog(mContext, chooseServerDialogView, 250, 100);
+        mDialogChooseServer = DialogUtil.createDialog(mContext, chooseServerDialogView, mDialogWidthDp, mDialogHeightDp);
     }
 
     @Override

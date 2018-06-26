@@ -166,6 +166,6 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:text="@string/login"
-        android:foreground="@drawable/selector_round_btn_foreground"
+        android:foreground="@drawable/selector_round_corner_btn_foreground"
         android:background="@drawable/shape_btn_background"/>
 </RelativeLayout>
