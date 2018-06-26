@@ -1,6 +1,7 @@
 package ye.chilyn.youaccount.keepaccount.view;
 
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,13 +12,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import ye.chilyn.youaccount.AccountApplication;
 import ye.chilyn.youaccount.R;
 import ye.chilyn.youaccount.base.common.BaseStaticInnerHandler;
 import ye.chilyn.youaccount.constant.HandleModelType;
 import ye.chilyn.youaccount.constant.RefreshViewType;
 import ye.chilyn.youaccount.keepaccount.entity.AccountBean;
-import ye.chilyn.youaccount.keepaccount.entity.QueryAccountParameter;
-import ye.chilyn.youaccount.util.DateUtil;
+import ye.chilyn.youaccount.keepaccount.interfaces.OnBillTypeSelectedListener;
 import ye.chilyn.youaccount.util.SoftKeyboardUtil;
 import ye.chilyn.youaccount.util.ToastUtil;
 
@@ -35,7 +36,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     private NumberFormat mNumberFormat;
     /**账单类型选择弹窗*/
-    private BillTypeDialogView mBillTypeDialogView;
+    private BillTypeWindowView mBillTypeWindowView;
     private ProgressDialogView mProgressDialogView;
 
     public KeepAccountView(View rootView, OnHandleModelListener listener) {
@@ -52,7 +53,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
         mEtBillType = findView(R.id.et_bill_type);
         mTvKeepAccounts = findView(R.id.tv_keep_accounts);
         mTvThisWeekTotal = findView(R.id.tv_this_week_total);
-        mBillTypeDialogView = new BillTypeDialogView(mContext, mBillTypeSelectedListener);
+        mBillTypeWindowView = new BillTypeWindowView(mEtBillType, mBillTypeSelectedListener);
         mProgressDialogView = new ProgressDialogView(mContext, getString(R.string.querying));
     }
 
@@ -74,7 +75,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_choose_type:
-                mBillTypeDialogView.showDialog();
+                mBillTypeWindowView.show();
                 break;
 
             case R.id.tv_keep_accounts:
@@ -87,11 +88,17 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
      * 记账
      */
     private void keepAccounts() {
+        String billType = mEtBillType.getText().toString();
+        if (TextUtils.isEmpty(billType)) {
+            ToastUtil.showShortToast(AccountApplication.getAppContext().getString(R.string.data_invalid));
+            return;
+        }
+
         String moneyStr = mEtMoney.getText().toString();
         try {
             float money = Float.valueOf(moneyStr);
             Date date = new Date();
-            AccountBean bean = new AccountBean(mUserId, money, mEtBillType.getText().toString(), date.getTime(), dateFormat.format(date));
+            AccountBean bean = new AccountBean(mUserId, money, billType, date.getTime(), dateFormat.format(date));
             callHandleModel(HandleModelType.INSERT_ACCOUNTS, bean);
             SoftKeyboardUtil.forceCloseSoftKeyboard(mEtMoney);
             mProgressDialogView.showProgressDialog();
@@ -101,7 +108,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
         }
     }
 
-    private BillTypeDialogView.OnBillTypeSelectedListener mBillTypeSelectedListener = new BillTypeDialogView.OnBillTypeSelectedListener() {
+    private OnBillTypeSelectedListener mBillTypeSelectedListener = new OnBillTypeSelectedListener() {
         @Override
         public void onItemSelected(String billType) {
             mEtBillType.setText(billType);

@@ -17,7 +17,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/paid_money"/>
+            android:text="@string/paid_money"
+            android:textColor="@android:color/black"/>
 
         <EditText
             android:id="@+id/et_money"
@@ -40,45 +41,51 @@
         android:layout_height="1px"
         android:background="@color/divider_dark_gray"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:paddingLeft="@dimen/activity_horizontal_margin">
 
         <TextView
+            android:id="@+id/tv_bill_type_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bill_type"/>
+            android:layout_centerVertical="true"
+            android:text="@string/bill_type"
+            android:textColor="@android:color/black"/>
 
-        <RelativeLayout
-            android:id="@+id/ll_bill_type"
+        <EditText
+            android:id="@+id/et_bill_type"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="@drawable/shape_et_background">
+            android:paddingLeft="18dp"
+            android:paddingRight="22dp"
+            android:layout_toRightOf="@id/tv_bill_type_name"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:hint="@string/input_bill_type"
+            android:textColorHint="@color/text_hint_gray"
+            android:text="@string/eat"
+            android:textSize="14sp"
+            android:background="@drawable/shape_et_background"/>
 
-            <TextView
-                android:id="@+id/tv_bill_type"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/eat"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingLeft="5dp"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:textSize="8sp"
-                android:textColor="@color/text_hint_gray"
-                android:text="@string/triangle"/>
-        </RelativeLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_choose_type"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingRight="7dp"
+            android:paddingLeft="5dp"
+            android:layout_alignRight="@id/et_bill_type"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/triangle"
+            android:textStyle="bold"
+            android:textSize="10sp"
+            android:textColor="@android:color/black"/>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
@@ -95,13 +102,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/keep_accounts_time"/>
+            android:text="@string/keep_accounts_time"
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text=""
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 
     <TextView

@@ -2,6 +2,7 @@ package ye.chilyn.youaccount.keepaccount.modifyaccount;
 
 import android.os.Message;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +19,9 @@ import ye.chilyn.youaccount.constant.HandleModelType;
 import ye.chilyn.youaccount.constant.RefreshViewType;
 import ye.chilyn.youaccount.keepaccount.constant.ExtraKey;
 import ye.chilyn.youaccount.keepaccount.entity.AccountBean;
+import ye.chilyn.youaccount.keepaccount.interfaces.OnBillTypeSelectedListener;
 import ye.chilyn.youaccount.keepaccount.model.KeepAccountSqlModel;
-import ye.chilyn.youaccount.keepaccount.view.BillTypeDialogView;
+import ye.chilyn.youaccount.keepaccount.view.BillTypeWindowView;
 import ye.chilyn.youaccount.util.SoftKeyboardUtil;
 import ye.chilyn.youaccount.util.ToastUtil;
 import ye.chilyn.youaccount.view.TitleBarView;
@@ -31,10 +33,11 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
 
     private IBaseModel mKeepAccountsSqlModel;
     private EditText mEtMoney;
-    private TextView mTvBillType, mTvTime;
+    private EditText mEtBillType;
+    private TextView mTvTime;
     private TextView mTvModify;
     private AccountBean mModifyBean;
-    private BillTypeDialogView mBillTypeDialogView;
+    private BillTypeWindowView mBillTypeWindowView;
     private TitleBarView mTitleBarView;
 
     @Override
@@ -50,10 +53,10 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
         mTitleBarView = new TitleBarView(findView(R.id.title_bar), this);
         mTitleBarView.setRightOptionViewVisibility(false);
         mEtMoney = findView(R.id.et_money);
-        mTvBillType = findView(R.id.tv_bill_type);
+        mEtBillType = findView(R.id.et_bill_type);
         mTvTime = findView(R.id.tv_time);
         mTvModify = findView(R.id.tv_modify);
-        mBillTypeDialogView = new BillTypeDialogView(this, mBillTypeSelectedListener);
+        mBillTypeWindowView = new BillTypeWindowView(mEtBillType, mBillTypeSelectedListener);
     }
 
     private void initData() {
@@ -63,14 +66,14 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
         if (mModifyBean != null) {
             mEtMoney.setText(mModifyBean.getMoney() + "");
             mEtMoney.setSelection(mEtMoney.getText().length());
-            mTvBillType.setText(mModifyBean.getBillType());
+            mEtBillType.setText(mModifyBean.getBillType());
             mTvTime.setText(mModifyBean.getTime());
         }
     }
 
     private void setListener() {
         mTvModify.setOnClickListener(this);
-        findView(R.id.ll_bill_type).setOnClickListener(this);
+        findView(R.id.tv_choose_type).setOnClickListener(this);
     }
 
 
@@ -81,8 +84,8 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
                 modifyAccount();
                 break;
 
-            case R.id.ll_bill_type:
-                mBillTypeDialogView.showDialog();
+            case R.id.tv_choose_type:
+                mBillTypeWindowView.show();
                 break;
         }
     }
@@ -91,11 +94,17 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
      * 修改账目
      */
     private void modifyAccount() {
+        String billType = mEtBillType.getText().toString();
+        if (TextUtils.isEmpty(billType)) {
+            ToastUtil.showShortToast(AccountApplication.getAppContext().getString(R.string.data_invalid));
+            return;
+        }
+
         String moneyStr = mEtMoney.getText().toString();
         try {
             float money = Float.valueOf(moneyStr);
             mModifyBean.setMoney(money);
-            mModifyBean.setBillType(mTvBillType.getText().toString());
+            mModifyBean.setBillType(billType);
             mKeepAccountsSqlModel.handleModelEvent(HandleModelType.UPDATE_ACCOUNTS, mModifyBean);
         } catch (NumberFormatException e) {
             mEtMoney.setText(null);
@@ -105,10 +114,11 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private BillTypeDialogView.OnBillTypeSelectedListener mBillTypeSelectedListener = new BillTypeDialogView.OnBillTypeSelectedListener() {
+    private OnBillTypeSelectedListener mBillTypeSelectedListener = new OnBillTypeSelectedListener() {
         @Override
         public void onItemSelected(String billType) {
-            mTvBillType.setText(billType);
+            mEtBillType.setText(billType);
+            mEtBillType.setSelection(billType.length());
         }
     };
 
