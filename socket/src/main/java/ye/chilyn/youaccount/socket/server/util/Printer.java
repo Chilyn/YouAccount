@@ -39,13 +39,21 @@ public class Printer {
     }
 
     public static void print(String msg) {
+        printWithPrefix("", msg);
+    }
+
+    public static void printWithSpaceLine(String msg) {
+        printWithPrefix("\n", msg);
+    }
+
+    private static void printWithPrefix(String prefix, String msg) {
         if (!FileUtil.isFileExists(FilePath.PRINT_FILE_PATH)) {
             FilePath.checkDirCreation();
             setPrintFilePath();
         }
 
         DATE.setTime(System.currentTimeMillis());
-        System.out.println(FORMAT.format(DATE) + TAG + msg);
+        System.out.println(prefix + FORMAT.format(DATE) + TAG + msg);
     }
 
     public void log(String msg) {
@@ -66,8 +74,10 @@ public class Printer {
             print("Log file path: " + mLogFilePath + mLogEndString);
         }
 
+        DATE.setTime(System.currentTimeMillis());
         StringBuilder sb = new StringBuilder();
-        sb.append(TAG)
+        sb.append(FORMAT.format(DATE))
+                .append(TAG)
                 .append(msg)
                 .append("\n");
         try {

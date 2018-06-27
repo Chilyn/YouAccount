@@ -1,10 +1,14 @@
 package ye.chilyn.youaccount.socket.server;
 
 import ye.chilyn.youaccount.socket.server.task.AcceptFileTask;
-import ye.chilyn.youaccount.socket.server.task.AcceptSocketLoopTask;
 import ye.chilyn.youaccount.socket.constants.Constants;
+import ye.chilyn.youaccount.socket.server.task.AddBlackListToFileTask;
+import ye.chilyn.youaccount.socket.server.task.GetBlackListTask;
 import ye.chilyn.youaccount.socket.server.util.Printer;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,24 +21,105 @@ import java.util.concurrent.Executors;
  * Created by Alex on 2018/6/6.
  */
 
-public class SocketServer implements AcceptSocketLoopTask.AcceptedSocketCallback, AcceptFileTask.AddBlackListListener {
+public class SocketServer implements AcceptFileTask.AddBlackListListener, GetBlackListTask.GetBlackListCallback {
 
-    private ExecutorService mServerTaskExecutor = Executors.newFixedThreadPool(3);
+    private ExecutorService mSocketTaskExecutor = Executors.newSingleThreadExecutor();
+    private ExecutorService mBlackListTaskExecutor = Executors.newSingleThreadExecutor();
     private List<String> mIpBlackList = new ArrayList<>();
     private List<Map<String, Object>> mTimeoutIpList = new ArrayList<>();
 
     public static void main(String[] args) {
-        new SocketServer().startServer();
+        SocketServer server = new SocketServer();
+        server.getBlackList();
+        server.startServer();
     }
-    
-    public void startServer() {
-        mServerTaskExecutor.execute(new AcceptSocketLoopTask(this,
-                mIpBlackList));
+
+    private void getBlackList() {
+        mBlackListTaskExecutor.execute(new GetBlackListTask(this));
+    }
+
+    private void startServer() {
+        ServerSocket server = null;
+        try {
+            server = new ServerSocket(Constants.SERVER_PORT);
+            Printer.print("Server started");
+            int count = 0;
+            while (true) {
+                Socket socket = server.accept();
+                if (count == Integer.MAX_VALUE) {
+                    count = 0;
+                } else {
+                    count++;
+                }
+
+                if (isSocketIpInBlackList(socket, count)) {
+                    closeSocket(socket, count);
+                    continue;
+                }
+
+                String ipAddress = getSocketIpAddress(socket);
+                Printer.printWithSpaceLine("Accepted a socket, ip address " + ipAddress + ", Socket ID: " + count);
+                mSocketTaskExecutor.execute(new AcceptFileTask(socket, ipAddress, count, this));
+            }
+        } catch (Exception e) {
+            Printer.print("Server Error:" + e.getMessage());
+        } finally {
+            if (server != null) {
+                try {
+                    server.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            System.exit(0);
+        }
+    }
+
+    private String getSocketIpAddress(Socket socket) {
+        InetAddress address = socket.getInetAddress();
+        if (address == null) {
+            return null;
+        }
+
+        return address.getHostAddress();
+    }
+
+    private void closeSocket(Socket socket, int id) {
+        try {
+            socket.close();
+            Printer.print("socket close, Socket ID: " + id);
+        } catch (Exception e) {
+            Printer.print("socket close failed, Socket ID: " + id);
+        }
+    }
+
+    private boolean isSocketIpInBlackList(Socket socket, int id) {
+        synchronized (this) {
+            String ipAddress = getSocketIpAddress(socket);
+            if (ipAddress == null || "".equals(ipAddress)) {
+                return false;
+            }
+
+            if (!mIpBlackList.contains(ipAddress)) {
+                return false;
+            }
+
+            Printer.printWithSpaceLine("Accepted an attack socket, ip address " + ipAddress
+                    + ", Socket ID: " + id);
+            return true;
+        }
     }
 
     @Override
-    public void onAcceptedSocket(Socket socket, int id) {
-        mServerTaskExecutor.execute(new AcceptFileTask(socket, id, this));
+    public void onGetBlackListSuccess(List<String> ipBlackList) {
+        if (ipBlackList.size() == 0) {
+            return;
+        }
+
+        synchronized (this) {
+            mIpBlackList.addAll(ipBlackList);
+        }
     }
 
     @Override
@@ -53,6 +138,8 @@ public class SocketServer implements AcceptSocketLoopTask.AcceptedSocketCallback
             Printer.print("new attacker's ip " + ipAddress + ", Socket ID: " + socketId);
             mIpBlackList.add(ipAddress);
         }
+
+        mBlackListTaskExecutor.execute(new AddBlackListToFileTask(ipAddress, socketId));
     }
 
     @Override

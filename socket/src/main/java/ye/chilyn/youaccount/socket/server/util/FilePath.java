@@ -24,9 +24,14 @@ public final class FilePath {
     public static final String SERVER_DIR_PATH;
 
     /**
-     * 控制台输出文件的目录路径
+     * 控制台输出文件的路径
      */
     public static final String PRINT_FILE_PATH;
+
+    /**
+     * 黑名单文件的路径
+     */
+    public static final String BLACK_LIST_FILE_PATH;
 
     /**
      * 接收文件的目录路径
@@ -34,17 +39,19 @@ public final class FilePath {
     public static final String ACCEPTED_DIR_PATH;
 
     static {
-        FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
+        FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS", Locale.getDefault());
         FORMAT.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
 
         String userDir = System.getProperty("user.dir");
-        ROOT_DIR_PATH = userDir + File.separator + ".YouAccounts";
+        ROOT_DIR_PATH = userDir + File.separator + ".YouAccount";
         FileUtil.createDir(ROOT_DIR_PATH);
 
         SERVER_DIR_PATH = ROOT_DIR_PATH + File.separator + "server";
         FileUtil.createDir(SERVER_DIR_PATH);
         PRINT_FILE_PATH = SERVER_DIR_PATH + File.separator +
                 "server" + getTimeString(System.currentTimeMillis()) + ".log";
+        BLACK_LIST_FILE_PATH = SERVER_DIR_PATH + File.separator +
+                "black_list.log";
 
         String acceptDirPath = ROOT_DIR_PATH + File.separator + "file";
         FileUtil.createDir(acceptDirPath);

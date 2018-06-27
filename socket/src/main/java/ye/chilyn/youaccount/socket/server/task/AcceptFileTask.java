@@ -17,14 +17,16 @@ public class AcceptFileTask implements Runnable, TimeoutTimer.TimeoutCallback {
     private Socket socket;
     private AddBlackListListener mBlackListListener;
     private int id;
+    private String ipAddress;
     private String mUploadFilePath, mLogFilePath;
     private Printer mPrinter;
     private TimeoutTimer mTimer = new TimeoutTimer(this);
     private int mReadLineId = 0;
 
-    public AcceptFileTask(Socket socket, int id, AddBlackListListener listener) {
+    public AcceptFileTask(Socket socket, String ipAddress, int id, AddBlackListListener listener) {
         this.socket = socket;
         this.id = id;
+        this.ipAddress = ipAddress;
         mBlackListListener = listener;
         initFilePath();
         initLog();
@@ -54,7 +56,7 @@ public class AcceptFileTask implements Runnable, TimeoutTimer.TimeoutCallback {
             is = socket.getInputStream();
             os = socket.getOutputStream();
 
-            log("waiting client's command");
+            log("waiting client's command, ip address " + ipAddress);
             increaseReadLineId();
             mTimer.startTimeoutCount(getReadLineId());
             String info = readLine(is);
@@ -75,11 +77,18 @@ public class AcceptFileTask implements Runnable, TimeoutTimer.TimeoutCallback {
                 writeFileData(totalLength, is);
                 writeLine(os, Constants.FINISHED);
             } else {
-                log("unknown command " + info);
-                addBlackIpAddress(socket);
+                log("unknown command " + info + ", this is an attacker");
+                addBlackIpAddress();
             }
         } catch (Exception e) {
-            log("error info:" + e.getMessage());
+            StringBuilder info = new StringBuilder();
+            info.append(e.getMessage());
+            if (Constants.ERR_CONNECTION_RESET.equals(info)) {
+                addBlackIpAddress();
+                info.append(", this is an attacker");
+            }
+
+            log("error info:" + info.toString());
         } finally {
             mTimer.shutdown();
             closeSocket(socket);
@@ -188,7 +197,7 @@ public class AcceptFileTask implements Runnable, TimeoutTimer.TimeoutCallback {
     public void onTimeout(int id) {
         if (id == getReadLineId()) {
             log("read command timeout");
-            addTimeoutIpAddress(socket);
+            addBlackIpAddress();
             try {
                 socket.close();
             } catch (IOException e) {
@@ -198,11 +207,8 @@ public class AcceptFileTask implements Runnable, TimeoutTimer.TimeoutCallback {
 
     /**
      * 将攻击者ip地址添加到黑名单
-     * @param socket
      */
-    private void addBlackIpAddress(Socket socket) {
-        String ipAddress = getIpAddress(socket, "attacker's");
-        log("attacker's ip address: " + ipAddress);
+    private void addBlackIpAddress() {
         if (mBlackListListener != null) {
             mBlackListListener.onAddBlackList(ipAddress, id);
         }
@@ -210,35 +216,11 @@ public class AcceptFileTask implements Runnable, TimeoutTimer.TimeoutCallback {
 
     /**
      * 将读命令超时的ip地址登记
-     * @param socket
      */
-    private void addTimeoutIpAddress(Socket socket) {
-        String ipAddress = getIpAddress(socket, "timeout");
-        log("timeout ip address: " + ipAddress);
+    private void addTimeoutIpAddress() {
         if (mBlackListListener != null) {
             mBlackListListener.onAddTimeoutIp(ipAddress, id);
         }
-    }
-
-    /**
-     * 获取socket的ip地址
-     * @param socket
-     * @param description
-     * @return
-     */
-    private String getIpAddress(Socket socket, String description) {
-        if (socket == null) {
-            log("can not get " + description + " ip address, socket is null");
-            return "";
-        }
-
-        InetAddress address = socket.getInetAddress();
-        if (address == null) {
-            log("can not get " + description + " ip address, InetAddress is null");
-            return "";
-        }
-
-        return address.getHostAddress();
     }
 
     public interface AddBlackListListener {

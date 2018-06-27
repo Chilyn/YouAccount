@@ -4,6 +4,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
+jar {
+    baseName = "server"
+    manifest{
+        attributes 'Main-Class': 'ye.chilyn.youaccount.socket.server.SocketServer'
+    }
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
