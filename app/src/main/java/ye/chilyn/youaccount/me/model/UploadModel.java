@@ -26,6 +26,7 @@ import ye.chilyn.youaccount.base.BaseModel;
 import ye.chilyn.youaccount.constant.AppFilePath;
 import ye.chilyn.youaccount.constant.HandleModelType;
 import ye.chilyn.youaccount.constant.RefreshViewType;
+import ye.chilyn.youaccount.me.entity.UploadInfo;
 import ye.chilyn.youaccount.util.LG;
 
 /**
@@ -36,7 +37,7 @@ public class UploadModel extends BaseModel{
 
     public static final String TAG = "UploadModel>>>";
     private static final String HOST = AccountApplication.getAppContext().getString(R.string.host);
-    private static final int SERVER_PORT = 6666;
+    private static final int SERVER_PORT =  AccountApplication.getAppContext().getResources().getInteger(R.integer.server_port);
     private static final String START_UPLOAD = AccountApplication.getAppContext().getString(R.string.start_upload);
     private static final String FINISHED = AccountApplication.getAppContext().getString(R.string.finished);
     private static final String OK = AccountApplication.getAppContext().getString(R.string.ok);
@@ -51,6 +52,7 @@ public class UploadModel extends BaseModel{
     private int mSearhHostFinishedCount;
     private long mUploadingLength;
     private long mTotalLength;
+    private int mUploadId = -1;
 
     public UploadModel(OnRefreshViewListener listener) {
         super(listener);
@@ -60,11 +62,11 @@ public class UploadModel extends BaseModel{
     public void handleModelEvent(int type, Object data) {
         switch (type) {
             case HandleModelType.UPLOAD_TO_LOCAL_SERVER:
-                uploadToLocalServer();
+                uploadToLocalServer((Integer) data);
                 break;
 
             case HandleModelType.UPLOAD_TO_REMOTE_SERVER:
-                uploadToRemoteServer();
+                uploadToRemoteServer((Integer) data);
                 break;
 
             case HandleModelType.CANCEL_UPLOAD:
@@ -82,7 +84,8 @@ public class UploadModel extends BaseModel{
     /**
      * 上传至本地服务器
      */
-    public void uploadToLocalServer() {
+    public void uploadToLocalServer(int uploadId) {
+        mUploadId = uploadId;
         String ipAddress = getDeviceIp();
         if (TextUtils.isEmpty(ipAddress)) {
             return;
@@ -99,13 +102,13 @@ public class UploadModel extends BaseModel{
     private String getDeviceIp(){
         @SuppressLint("WifiManagerLeak") WifiManager wm = (WifiManager) AccountApplication.getAppContext().getSystemService(Context.WIFI_SERVICE);
         if(wm == null) {
-            callRefreshView(RefreshViewType.UPLOAD_FAILED, "无WIFI设备信息");
+            callRefreshView(RefreshViewType.UPLOAD_FAILED, new UploadInfo(mUploadId, "无WIFI设备信息"));
             return "";
         }
 
         //检查Wifi状态
         if(!wm.isWifiEnabled()) {
-            callRefreshView(RefreshViewType.UPLOAD_FAILED, "WIFI未打开");
+            callRefreshView(RefreshViewType.UPLOAD_FAILED, new UploadInfo(mUploadId, "WIFI未打开"));
             return "";
         }
 
@@ -148,7 +151,8 @@ public class UploadModel extends BaseModel{
     /**
      * 上传至远程服务器
      */
-    public void uploadToRemoteServer() {
+    public void uploadToRemoteServer(int uploadId) {
+        mUploadId = uploadId;
         shutdownSearchHost();
         initUploadFileExecutor();
         startUploadFile(null);
@@ -257,7 +261,7 @@ public class UploadModel extends BaseModel{
                     addSearHostFinishedCount();
                     if (isSearHostFinished()) {
                         log("finished searching host, didn't find available server");
-                        callRefreshView(RefreshViewType.UPLOAD_FAILED, "无可用服务器");
+                        callRefreshView(RefreshViewType.UPLOAD_FAILED, new UploadInfo(mUploadId, "无可用服务器"));
                     }
                     return;
                 }
@@ -321,33 +325,32 @@ public class UploadModel extends BaseModel{
                     info = readLine(is);
                     if (OK.equals(info)) {
                         log("start upload");
-                        callRefreshView(RefreshViewType.REFRESH_UPLOAD_INFO, "正在上传0%");
+                        callRefreshView(RefreshViewType.REFRESH_UPLOAD_PROGRESS, new UploadInfo(mUploadId, "正在上传0%"));
 
                         long startTime = System.currentTimeMillis();
-                        startReadProgressTimer();
+                        startReadProgressTimer(mUploadId);
                         uploadFileData(fis, os);
                         stopReadProgressTimer();
                         log("upload progress 100%");
-                        callRefreshView(RefreshViewType.REFRESH_UPLOAD_INFO, "正在上传100%");
+                        callRefreshView(RefreshViewType.REFRESH_UPLOAD_PROGRESS, new UploadInfo(mUploadId, "正在上传100%"));
                         log("upload file time use: " + (System.currentTimeMillis() - startTime) + "ms");
                         while (true) {
                             info = readLine(is);
                             if (FINISHED.equals(info)) {
                                 log("upload success");
-                                callRefreshView(RefreshViewType.UPLOAD_SUCCESS, "上传成功");
+                                callRefreshView(RefreshViewType.UPLOAD_SUCCESS, new UploadInfo(mUploadId, "上传成功"));
                                 break;
                             }
                         }
                     } else {
-                        callRefreshView(RefreshViewType.UPLOAD_FAILED, "上传失败，服务器无回应");
+                        callRefreshView(RefreshViewType.UPLOAD_FAILED, new UploadInfo(mUploadId, "上传失败，未知的服务器命令: " + info));
                     }
                 } else {
-                    callRefreshView(RefreshViewType.UPLOAD_FAILED, "上传失败，服务器无回应");
+                    callRefreshView(RefreshViewType.UPLOAD_FAILED, new UploadInfo(mUploadId, "上传失败，未知的服务器命令: " + info));
                 }
-
             } catch (Exception e) {
                 log(e.getMessage());
-                callRefreshView(RefreshViewType.UPLOAD_FAILED, "上传失败, 错误信息：" + e.getMessage());
+                callRefreshView(RefreshViewType.UPLOAD_FAILED, new UploadInfo(mUploadId, "上传失败, 错误信息：" + e.getMessage()));
             } finally {
                 closeInputStream(fis, "FileInputStream");
                 closeSocket(socket);
@@ -434,7 +437,7 @@ public class UploadModel extends BaseModel{
     /**
      * 开启定时更新上传进度的定时器
      */
-    private void startReadProgressTimer() {
+    private void startReadProgressTimer(int id) {
         mFuture = mTimerExecutor.scheduleAtFixedRate(new ReadProgressTimerTask(), 0, 1, TimeUnit.SECONDS);
     }
 
@@ -453,7 +456,7 @@ public class UploadModel extends BaseModel{
         public void run() {
             int progress = (int)(mUploadingLength / (mTotalLength * 1.0f) * 100);
             log("upload progress" + progress + "%");
-            callRefreshView(RefreshViewType.REFRESH_UPLOAD_INFO, "正在上传" + progress + "%");
+            callRefreshView(RefreshViewType.REFRESH_UPLOAD_PROGRESS, new UploadInfo(mUploadId, "正在上传" + progress + "%"));
         }
     }
 

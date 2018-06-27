@@ -12,6 +12,7 @@ import ye.chilyn.youaccount.R;
 import ye.chilyn.youaccount.base.BaseView;
 import ye.chilyn.youaccount.constant.HandleModelType;
 import ye.chilyn.youaccount.constant.RefreshViewType;
+import ye.chilyn.youaccount.me.entity.UploadInfo;
 import ye.chilyn.youaccount.util.DialogUtil;
 import ye.chilyn.youaccount.util.ToastUtil;
 
@@ -22,6 +23,8 @@ public class BackupView extends BaseView implements View.OnClickListener {
     private Dialog mDialogChooseServer;
     private TextView mTvLocalServer, mTvRemoteServer;
     private int mDialogWidthDp = 200, mDialogHeightDp = 100;
+    private int mUploadCount;
+    private boolean mIsUploadCanceled = false;
 
     public BackupView(View rootView, OnHandleModelListener listener) {
         super(rootView, listener);
@@ -55,6 +58,7 @@ public class BackupView extends BaseView implements View.OnClickListener {
     private DialogInterface.OnCancelListener mOnCancelListener = new DialogInterface.OnCancelListener() {
         @Override
         public void onCancel(DialogInterface dialog) {
+            mIsUploadCanceled = true;
             callHandleModel(HandleModelType.CANCEL_UPLOAD, null);
         }
     };
@@ -63,43 +67,74 @@ public class BackupView extends BaseView implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_local_server:
-                mDialogChooseServer.dismiss();
-                mDialogUploadProgress.setMessage(getString(R.string.connecting_server));
-                mDialogUploadProgress.show();
-                callHandleModel(HandleModelType.UPLOAD_TO_LOCAL_SERVER, null);
+                uploadFile(HandleModelType.UPLOAD_TO_LOCAL_SERVER);
                 break;
 
             case R.id.tv_remote_server:
-                mDialogChooseServer.dismiss();
-                mDialogUploadProgress.setMessage(getString(R.string.connecting_server));
-                mDialogUploadProgress.show();
-                callHandleModel(HandleModelType.UPLOAD_TO_REMOTE_SERVER, null);
+                uploadFile(HandleModelType.UPLOAD_TO_REMOTE_SERVER);
                 break;
         }
+    }
+
+    private void uploadFile(int handleModelType) {
+        mIsUploadCanceled = false;
+        mUploadCount++;
+        mDialogChooseServer.dismiss();
+        mDialogUploadProgress.setMessage(getString(R.string.connecting_server));
+        mDialogUploadProgress.show();
+        callHandleModel(handleModelType, mUploadCount);
     }
     
     @Override
     public void refreshViews(int refreshType, Object data) {
+        if (refreshType != RefreshViewType.SHOW_CHOOSE_SERVER_DIALOG && mIsUploadCanceled) {
+            return;
+        }
+
         switch (refreshType) {
             case RefreshViewType.UPLOAD_FAILED:
-                mDialogUploadProgress.dismiss();
-                mDialogUploadErrorInfo.setMessage((String) data);
-                mDialogUploadErrorInfo.show();
+                onUploadFailed((UploadInfo) data);
                 break;
 
             case RefreshViewType.UPLOAD_SUCCESS:
-                mDialogUploadProgress.dismiss();
-                ToastUtil.showShortToast((String) data);
+                onUploadSuccess((UploadInfo) data);
                 break;
 
-            case RefreshViewType.REFRESH_UPLOAD_INFO:
-                mDialogUploadProgress.setMessage((String) data);
+            case RefreshViewType.REFRESH_UPLOAD_PROGRESS:
+                onRefreshUploadProgress((UploadInfo) data);
                 break;
 
             case RefreshViewType.SHOW_CHOOSE_SERVER_DIALOG:
                 mDialogChooseServer.show();
                 break;
         }
+    }
+
+    private void onUploadFailed(UploadInfo info) {
+        if (mUploadCount != info.getId()) {
+            return;
+        }
+
+        mDialogUploadProgress.dismiss();
+        mDialogUploadErrorInfo.setMessage(info.getInfo());
+        mDialogUploadErrorInfo.show();
+    }
+
+    private void onUploadSuccess(UploadInfo info) {
+        if (mUploadCount != info.getId()) {
+            return;
+        }
+
+        mDialogUploadProgress.dismiss();
+        ToastUtil.showShortToast(info.getInfo());
+    }
+
+    private void onRefreshUploadProgress(UploadInfo info) {
+        if (mUploadCount != info.getId()) {
+            return;
+        }
+
+        mDialogUploadProgress.setMessage(info.getInfo());
     }
 
     private String getString(int resId) {

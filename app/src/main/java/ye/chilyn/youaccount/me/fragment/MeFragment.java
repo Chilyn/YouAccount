@@ -194,7 +194,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
                 case RefreshViewType.UPLOAD_FAILED:
                 case RefreshViewType.UPLOAD_SUCCESS:
-                case RefreshViewType.REFRESH_UPLOAD_INFO:
+                case RefreshViewType.REFRESH_UPLOAD_PROGRESS:
                     fragment.mBackupView.refreshViews(msg.what, msg.obj);
                     break;
             }
