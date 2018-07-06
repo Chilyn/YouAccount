@@ -14,6 +14,11 @@ public final class FilePath {
     private static final Date DATE = new Date();
 
     /**
+     * 项目名称
+     */
+    public static final String PROJECT_NAME;
+
+    /**
      * 项目根目录路径
      */
     public static final String ROOT_DIR_PATH;
@@ -39,11 +44,12 @@ public final class FilePath {
     public static final String ACCEPTED_DIR_PATH;
 
     static {
+        PROJECT_NAME = "YouAccount";
         FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_SSS", Locale.getDefault());
         FORMAT.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
 
         String userDir = System.getProperty("user.dir");
-        ROOT_DIR_PATH = userDir + File.separator + ".YouAccount";
+        ROOT_DIR_PATH = userDir + File.separator + "." + PROJECT_NAME;
         FileUtil.createDir(ROOT_DIR_PATH);
 
         SERVER_DIR_PATH = ROOT_DIR_PATH + File.separator + "server";
@@ -65,7 +71,7 @@ public final class FilePath {
      */
     public static String createUploadFilePath(long timeMillis){
         return ACCEPTED_DIR_PATH + File.separator +
-                "YouAccounts" + getTimeString(timeMillis) + ".db";
+                PROJECT_NAME + getTimeString(timeMillis) + ".db";
     }
 
     /**
@@ -75,7 +81,7 @@ public final class FilePath {
      */
     public static String createLogFilePath(long timeMillis){
         return ACCEPTED_DIR_PATH + File.separator +
-                "YouAccounts" + getTimeString(timeMillis) + ".log";
+                PROJECT_NAME + getTimeString(timeMillis) + ".log";
     }
 
     public static void checkDirCreation() {
