@@ -14,6 +14,7 @@ public class AccountBean implements Serializable{
     private float money;
     private String billType;
     private long timeMill;
+    private long updateTimeMill;
     private String time;
 
     public AccountBean() {
@@ -65,5 +66,13 @@ public class AccountBean implements Serializable{
 
     public void setMoney(float money) {
         this.money = money;
+    }
+
+    public long getUpdateTimeMill() {
+        return updateTimeMill;
+    }
+
+    public void setUpdateTimeMill(long updateTimeMill) {
+        this.updateTimeMill = updateTimeMill;
     }
 }

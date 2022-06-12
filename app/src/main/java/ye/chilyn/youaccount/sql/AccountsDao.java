@@ -125,6 +125,8 @@ public class AccountsDao {
         ContentValues values = new ContentValues();
         values.put(AccountTable.MONEY, bean.getMoney());
         values.put(AccountTable.BILL_TYPE, bean.getBillType());
+        values.put(AccountTable.PAYMENT_TIME_MILL, bean.getUpdateTimeMill());
+        values.put(AccountTable.PAYMENT_TIME, bean.getTime());
         int affectedRows = mSqlHelper.openDatabase().update(AccountTable.TABLE_NAME, values,
                 AccountTable.SQL_UPDATE_ACCOUNT_WHERE,
                 new String[]{bean.getUserId() + "", bean.getTimeMill() + ""});

@@ -845,7 +845,8 @@ public class DateTimePicker extends WheelPicker {
             return false;
         }
 
-        if (mCompareSelectedDate.get(Calendar.YEAR) == mCompareStartDate.get(Calendar.YEAR) &&
+        if (mCompareStartDate != null &&
+                mCompareSelectedDate.get(Calendar.YEAR) == mCompareStartDate.get(Calendar.YEAR) &&
                 mCompareSelectedDate.get(Calendar.MONTH) == mCompareStartDate.get(Calendar.MONTH) &&
                 mCompareSelectedDate.get(Calendar.DAY_OF_MONTH) == mCompareStartDate.get(Calendar.DAY_OF_MONTH)) {
             return true;
