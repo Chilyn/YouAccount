@@ -173,6 +173,10 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
                 case RefreshViewType.FORCE_CLOSE_SOFT_KEYBOARD:
                     SoftKeyboardUtil.forceCloseSoftKeyboard(view.mEtMoney);
                     break;
+
+                case RefreshViewType.UPDATE_CUSTOM_BILL_TYPES:
+                    view.mBillTypeWindowView.updateCustomBillTypes((List<String>) msg.obj);
+                    break;
             }
         }
     }

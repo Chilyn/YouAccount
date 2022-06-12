@@ -56,4 +56,6 @@ public interface RefreshViewType {
     int SHOW_CHOOSE_SERVER_DIALOG = 123;
     /**初始化我的模块弹窗*/
     int INIT_ME_FRAGMENT_DIALOGS = 124;
+    /**更新用户自定义账目类型*/
+    int UPDATE_CUSTOM_BILL_TYPES = 125;
 }

@@ -1,13 +1,19 @@
 package ye.chilyn.youaccount.keepaccount.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.util.Arrays;
 import java.util.List;
 
 import ye.chilyn.youaccount.R;
 import ye.chilyn.youaccount.base.common.CommonAdapter;
+import ye.chilyn.youaccount.constant.SharePreferenceKey;
+import ye.chilyn.youaccount.util.SharePreferencesUtils;
 
 /**
  * Created by Alex on 2018/1/18.
@@ -15,6 +21,8 @@ import ye.chilyn.youaccount.base.common.CommonAdapter;
  */
 
 public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewHolder> {
+
+    private String[] billTypes;
 
     public BillTypeAdapter(Context context) {
         super(context, R.layout.list_item_bill_type);
@@ -25,9 +33,13 @@ public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewH
      * 创建账单类型列表数据
      */
     private void createBillTypeData() {
-        String[] billTypes = mContext.getResources().getStringArray(R.array.bill_type);
-        for (int i = 0; i < billTypes.length; i++) {
-            mListData.add(billTypes[i]);
+        billTypes = mContext.getResources().getStringArray(R.array.bill_type);
+        mListData.addAll(Arrays.asList(billTypes));
+
+        String customJson = SharePreferencesUtils.getStringValue(SharePreferenceKey.BILL_TYPES);
+        if (!TextUtils.isEmpty(customJson)) {
+            String[] customBillTypes = new Gson().fromJson(customJson, String[].class);
+            mListData.addAll(Arrays.asList(customBillTypes));
         }
     }
 
@@ -53,6 +65,13 @@ public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewH
         }
 
         mListData.clear();
+        mListData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void updateCustomData(List<String> data) {
+        mListData.clear();
+        mListData.addAll(Arrays.asList(billTypes));
         mListData.addAll(data);
         notifyDataSetChanged();
     }

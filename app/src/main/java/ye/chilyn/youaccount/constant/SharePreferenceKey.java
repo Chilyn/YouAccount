@@ -13,4 +13,6 @@ public interface SharePreferenceKey {
     String NICKNAME = "nickname";
     /**用户密码*/
     String PASSWORD = "password";
+    /**账目类型*/
+    String BILL_TYPES = "BILL_TYPES";
 }

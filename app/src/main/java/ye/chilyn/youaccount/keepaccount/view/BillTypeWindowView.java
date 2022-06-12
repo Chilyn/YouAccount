@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import java.util.List;
+
 import ye.chilyn.youaccount.AccountApplication;
 import ye.chilyn.youaccount.R;
 import ye.chilyn.youaccount.keepaccount.adapter.BillTypeAdapter;
@@ -96,5 +98,9 @@ public class BillTypeWindowView {
         }
 
         mWindowBillType.dismiss();
+    }
+
+    public void updateCustomBillTypes(List<String> newData) {
+        mAdapterBillType.updateCustomData(newData);
     }
 }
