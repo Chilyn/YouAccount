@@ -195,6 +195,11 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
             mEtBillType.setText(billType);
             mEtBillType.setSelection(billType.length());
         }
+
+        @Override
+        public void onItemDelete(String billType) {
+
+        }
     };
 
     private RefreshViewListener mRefreshViewListener = new RefreshViewListener();

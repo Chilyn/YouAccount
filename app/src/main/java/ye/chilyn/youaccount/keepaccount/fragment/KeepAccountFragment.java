@@ -95,6 +95,7 @@ public class KeepAccountFragment extends BaseFragment {
             switch (type) {
                 case HandleModelType.INSERT_ACCOUNTS:
                 case HandleModelType.DELETE_ACCOUNTS:
+                case HandleModelType.DELETE_BILL_TYPE:
                     mKeepAccountsSqlModel.handleModelEvent(type, data);
                     break;
             }

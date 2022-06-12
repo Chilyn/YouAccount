@@ -5,4 +5,5 @@ package ye.chilyn.youaccount.keepaccount.interfaces;
  */
 public interface OnBillTypeSelectedListener {
     void onItemSelected(String billType);
+    void onItemDelete(String billType);
 }

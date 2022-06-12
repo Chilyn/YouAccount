@@ -95,6 +95,7 @@
     <string name="backup_to_local_server">备份至本地服务器</string>
     <string name="backup_to_remote_server">备份至远程服务器</string>
     <string name="connecting_server">正在连接服务器</string>
+    <string name="confirm_delete_bill_type">确定删除&#160;\"%s\"&#160;类型？</string>
 
     <string name="table_name_users">users</string>
     <string name="table_user_id">user_id</string>

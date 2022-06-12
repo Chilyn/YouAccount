@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import ye.chilyn.youaccount.AccountApplication;
+import ye.chilyn.youaccount.R;
 import ye.chilyn.youaccount.base.BaseModel;
 import ye.chilyn.youaccount.constant.HandleModelType;
 import ye.chilyn.youaccount.constant.RefreshViewType;
@@ -28,7 +30,8 @@ public class KeepAccountSqlModel extends BaseModel {
 
     private ExecutorService mSqlTaskExecutor = CacheExecutorHelper.getInstance().getCacheExecutor();
     private AccountsDao mAccountsDao = new AccountsDao();
-    private List<String> mBillTypes = new ArrayList<>();
+    private List<String> mDefaultBillTypes;
+    private List<String> mCustomBillTypes;
 
     public KeepAccountSqlModel(OnRefreshViewListener listener) {
         super(listener);
@@ -67,6 +70,10 @@ public class KeepAccountSqlModel extends BaseModel {
                 case HandleModelType.UPDATE_ACCOUNTS:
                     updateAccounts((AccountBean) mData);
                     break;
+
+                case HandleModelType.DELETE_BILL_TYPE:
+                    deleteBillType((String) mData);
+                    break;
             }
         }
     }
@@ -82,18 +89,14 @@ public class KeepAccountSqlModel extends BaseModel {
     }
 
     private void addNewBillType(String billType) {
-        if (mBillTypes.size() == 0) {
-            String customJson = SharePreferencesUtils.getStringValue(SharePreferenceKey.BILL_TYPES);
-            if (!TextUtils.isEmpty(customJson)) {
-                String[] customBillTypes = new Gson().fromJson(customJson, String[].class);
-                mBillTypes.addAll(Arrays.asList(customBillTypes));
-            }
+        if (mCustomBillTypes == null) {
+            initBillTypes();
         }
 
-        if (!mBillTypes.contains(billType)) {
-            mBillTypes.add(billType);
-            SharePreferencesUtils.save(SharePreferenceKey.BILL_TYPES, new Gson().toJson(mBillTypes));
-            callRefreshView(RefreshViewType.UPDATE_CUSTOM_BILL_TYPES, mBillTypes);
+        if (!mDefaultBillTypes.contains(billType) && !mCustomBillTypes.contains(billType)) {
+            mCustomBillTypes.add(billType);
+            SharePreferencesUtils.save(SharePreferenceKey.BILL_TYPES, new Gson().toJson(mCustomBillTypes));
+            callRefreshView(RefreshViewType.UPDATE_CUSTOM_BILL_TYPES, mCustomBillTypes);
         }
     }
 
@@ -118,6 +121,29 @@ public class KeepAccountSqlModel extends BaseModel {
         } else {
             callRefreshView(RefreshViewType.UPDATE_ACCOUNT_FAIL, null);
         }
+    }
+
+    private void deleteBillType(String billType) {
+        if (mCustomBillTypes == null) {
+            initBillTypes();
+        }
+
+        mCustomBillTypes.remove(billType);
+        SharePreferencesUtils.save(SharePreferenceKey.BILL_TYPES, new Gson().toJson(mCustomBillTypes));
+        callRefreshView(RefreshViewType.UPDATE_CUSTOM_BILL_TYPES, mCustomBillTypes);
+    }
+
+    private void initBillTypes() {
+        mCustomBillTypes = new ArrayList<>();
+        String customJson = SharePreferencesUtils.getStringValue(SharePreferenceKey.BILL_TYPES);
+        if (!TextUtils.isEmpty(customJson)) {
+            String[] customBillTypes = new Gson().fromJson(customJson, String[].class);
+            mCustomBillTypes.addAll(Arrays.asList(customBillTypes));
+        }
+
+        mDefaultBillTypes = new ArrayList<>();
+        String[] defaultBillTypes = AccountApplication.getAppContext().getResources().getStringArray(R.array.bill_type);
+        mDefaultBillTypes.addAll(Arrays.asList(defaultBillTypes));
     }
 
     @Override

@@ -53,7 +53,7 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
         mEtBillType = findView(R.id.et_bill_type);
         mTvKeepAccounts = findView(R.id.tv_keep_accounts);
         mTvThisWeekTotal = findView(R.id.tv_this_week_total);
-        mBillTypeWindowView = new BillTypeWindowView(mEtBillType, mBillTypeSelectedListener);
+        mBillTypeWindowView = new BillTypeWindowView(mEtBillType, mBillTypeSelectedListener, true);
         mProgressDialogView = new ProgressDialogView(mContext, getString(R.string.querying));
     }
 
@@ -113,6 +113,11 @@ public class KeepAccountView extends BaseAccountView implements View.OnClickList
         public void onItemSelected(String billType) {
             mEtBillType.setText(billType);
             mEtBillType.setSelection(billType.length());
+        }
+
+        @Override
+        public void onItemDelete(String billType) {
+            callHandleModel(HandleModelType.DELETE_BILL_TYPE, billType);
         }
     };
 

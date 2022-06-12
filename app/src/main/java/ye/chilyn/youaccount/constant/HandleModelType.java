@@ -30,4 +30,6 @@ public interface HandleModelType {
     int UPLOAD_TO_REMOTE_SERVER = 10;
     /**取消上传*/
     int CANCEL_UPLOAD = 11;
+    /**删除账目类型*/
+    int DELETE_BILL_TYPE = 12;
 }

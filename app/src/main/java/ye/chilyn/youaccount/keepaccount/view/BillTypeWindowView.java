@@ -36,8 +36,18 @@ public class BillTypeWindowView {
     private int mWindowXOffset = DimensionUtils.dip2Px(AccountApplication.getAppContext(), -5);
     private int mWindowYOffset = DimensionUtils.dip2Px(AccountApplication.getAppContext(), -3);
     private OnBillTypeSelectedListener mBillTypeSelectedListener;
+    private boolean mHasDeleteMode;
+
+    public BillTypeWindowView(View anchorView, OnBillTypeSelectedListener listener, boolean hasDeleteMode) {
+        this.mHasDeleteMode = hasDeleteMode;
+        init(anchorView, listener);
+    }
 
     public BillTypeWindowView(View anchorView, OnBillTypeSelectedListener listener) {
+        init(anchorView, listener);
+    }
+
+    private void init(View anchorView, OnBillTypeSelectedListener listener) {
         this.mAnchorView = anchorView;
         this.mContext = anchorView.getContext();
         this.mBillTypeSelectedListener = listener;
@@ -61,6 +71,9 @@ public class BillTypeWindowView {
 
     private void setViewListener() {
         mLvBillType.setOnItemClickListener(mOnItemClickListener);
+        if (mHasDeleteMode) {
+            mLvBillType.setOnItemLongClickListener(mOnItemLongClickListener);
+        }
     }
 
     private AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
@@ -71,6 +84,25 @@ public class BillTypeWindowView {
                 mBillTypeSelectedListener.onItemSelected(billType);
             }
             dismiss();
+        }
+    };
+
+    private AdapterView.OnItemLongClickListener mOnItemLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            String billType = mAdapterBillType.getItem(position);
+            if (mAdapterBillType.isDeletableBillType(billType)) {
+                DeleteBillTypeDialog dialog = new DeleteBillTypeDialog(mContext, billType);
+                dialog.setConfirmDeleteListener(new DeleteBillTypeDialog.ConfirmDeleteListener() {
+                    @Override
+                    public void confirmDelete(String billType) {
+                        mBillTypeSelectedListener.onItemDelete(billType);
+                    }
+                });
+                dialog.show();
+            }
+
+            return true;
         }
     };
 

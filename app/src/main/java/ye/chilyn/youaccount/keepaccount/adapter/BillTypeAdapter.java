@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import ye.chilyn.youaccount.util.SharePreferencesUtils;
 
 public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewHolder> {
 
-    private String[] billTypes;
+    private List<String> mDefaultBillTypes = new ArrayList<>();
 
     public BillTypeAdapter(Context context) {
         super(context, R.layout.list_item_bill_type);
@@ -33,7 +34,8 @@ public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewH
      * 创建账单类型列表数据
      */
     private void createBillTypeData() {
-        billTypes = mContext.getResources().getStringArray(R.array.bill_type);
+        String[] billTypes = mContext.getResources().getStringArray(R.array.bill_type);
+        mDefaultBillTypes.addAll(Arrays.asList(billTypes));
         mListData.addAll(Arrays.asList(billTypes));
 
         String customJson = SharePreferencesUtils.getStringValue(SharePreferenceKey.BILL_TYPES);
@@ -71,9 +73,13 @@ public class BillTypeAdapter extends CommonAdapter<String, BillTypeAdapter.ViewH
 
     public void updateCustomData(List<String> data) {
         mListData.clear();
-        mListData.addAll(Arrays.asList(billTypes));
+        mListData.addAll(mDefaultBillTypes);
         mListData.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public boolean isDeletableBillType(String billType) {
+        return !mDefaultBillTypes.contains(billType);
     }
 
     protected class ViewHolder extends CommonAdapter.ViewHolder {
