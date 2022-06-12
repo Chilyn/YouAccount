@@ -49,11 +49,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_login);
         initView();
         setListener();
         initData();
+    }
+
+    @Override
+    protected boolean isDarkFontMode() {
+        return true;
     }
 
     private void initView() {

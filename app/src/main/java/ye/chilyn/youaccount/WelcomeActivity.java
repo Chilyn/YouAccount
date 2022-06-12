@@ -20,7 +20,7 @@ import ye.chilyn.youaccount.util.SharePreferencesUtils;
 public class WelcomeActivity extends BaseActivity {
 
     private static final int LOGIN_OR_TO_MAIN = 0;
-    private static final long WAITING_MILLIS = 500L;
+    private static final long WAITING_MILLIS = 300L;
     private boolean mIsLogined = false;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSIONS_STORAGE = {
@@ -33,6 +33,11 @@ public class WelcomeActivity extends BaseActivity {
         setContentView(ye.chilyn.youaccount.R.layout.activity_welcome);
         mIsLogined = SharePreferencesUtils.getBooleanValue(SharePreferenceKey.IS_LOGINED);
         verifyStoragePermissions(this);
+    }
+
+    @Override
+    protected boolean isDarkFontMode() {
+        return true;
     }
 
     private Handler mHandler = new Handler() {
