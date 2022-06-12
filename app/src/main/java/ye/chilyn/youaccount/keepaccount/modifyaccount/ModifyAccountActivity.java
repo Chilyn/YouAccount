@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import ye.chilyn.youaccount.AccountApplication;
 import ye.chilyn.youaccount.R;
@@ -169,6 +170,9 @@ public class ModifyAccountActivity extends BaseActivity implements View.OnClickL
         String timeStr = mTvTime.getText().toString();
         try {
             Date modifyDate = dateFormat.parse(timeStr);
+            // 修改时间的秒数随机，防止时间戳相同
+            long randomMillTime = modifyDate.getTime() + new Random().nextInt(60000);
+            modifyDate.setTime(randomMillTime);
             float money = Float.valueOf(moneyStr);
             mModifyBean.setMoney(money);
             mModifyBean.setBillType(billType);
